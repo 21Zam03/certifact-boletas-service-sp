@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.certicom.certifact_boletas_service_sp.mapper.PaymentCuotasMapper">
+    <insert id="save" parameterType="com.certicom.certifact_boletas_service_sp.model.PaymentCuotasModel">
+        INSERT INTO payment_cuotas (id_cuotas, numero, monto, fecha, id_payment_voucher)
+        VALUES (nextval('payment_cuotas_id_cuotas_seq'), #{numero}, #{monto}, #{fecha}, #{idPaymentVoucher})
+    </insert>
+    <delete id="deleteById" parameterType="Long">
+        DELETE FROM payment_cuotas WHERE id_cuotas = #{id}
+    </delete>
+    <select id="findAllByIdPaymentVoucher" parameterType="Long">
+        SELECT id_cuotas, numero, monto, fecha, id_payment_voucher FROM payment_cuotas WHERE id_payment_voucher = #{id}
+    </select>
+</mapper>

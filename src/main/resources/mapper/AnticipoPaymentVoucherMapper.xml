@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.certicom.certifact_boletas_service_sp.mapper.AnticipoPaymentVoucherMapper">
+    <insert id="save" parameterType="com.certicom.certifact_boletas_service_sp.response.AnticipoPaymentVoucherResponse">
+        INSERT INTO anticipo_payment_voucher (id_anticipo_payment, monto_anticipo, numero_anticipo, serie_anticipo, tipo_doc_anticipo, id_payment_voucher)
+        values (nextval('anticipo_payment_voucher_seq'), #{montoAnticipo}, #{numeroAnticipo}, #{serieAnticipo}, #{tipoDocAnticipo}, #{idPaymentVoucher})
+    </insert>
+    <delete id="deleteById" parameterType="Long">
+        DELETE FROM anticipo_payment_voucher WHERE id_anticipo_payment = #{id}
+    </delete>
+    <select id="findAllByIdPaymentVoucher" parameterType="Long">
+        SELECT id_anticipo_payment, monto_anticipo, numero_anticipo, serie_anticipo, tipo_doc_anticipo, id_payment_voucher
+        FROM anticipo_payment_voucher WHERE Id_anticipo_payment = #{id}
+    </select>
+</mapper>
