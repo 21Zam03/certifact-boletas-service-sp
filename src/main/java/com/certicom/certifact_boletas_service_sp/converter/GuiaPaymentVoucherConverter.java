@@ -1,7 +1,7 @@
 package com.certicom.certifact_boletas_service_sp.converter;
 
 import com.certicom.certifact_boletas_service_sp.model.GuiaPaymentVoucherModel;
-import com.certicom.certifact_boletas_service_sp.request.GuiaPaymentVoucherRequest;
+import com.certicom.certifact_boletas_service_sp.dto.GuiaPaymentVoucherRequest;
 
 public class GuiaPaymentVoucherConverter {
 

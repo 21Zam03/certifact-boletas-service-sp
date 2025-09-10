@@ -1,6 +1,6 @@
 package com.certicom.certifact_boletas_service_sp.controller;
 
-import com.certicom.certifact_boletas_service_sp.request.PaymentVoucherRequest;
+import com.certicom.certifact_boletas_service_sp.dto.PaymentVoucherDto;
 import com.certicom.certifact_boletas_service_sp.service.PaymentVoucherService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,8 +18,8 @@ public class PaymentVoucherController {
     private final PaymentVoucherService paymentVoucherService;
 
     @PostMapping
-    public ResponseEntity<?> savePaymentVoucher(@RequestBody PaymentVoucherRequest paymentVoucherRequest) {
-        return new ResponseEntity<>(paymentVoucherService.save(paymentVoucherRequest), HttpStatus.OK);
+    public ResponseEntity<?> savePaymentVoucher(@RequestBody PaymentVoucherDto paymentVoucherDto) {
+        return new ResponseEntity<>(paymentVoucherService.save(paymentVoucherDto), HttpStatus.OK);
     }
 
     @PutMapping

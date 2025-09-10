@@ -5,9 +5,9 @@ spring:
   application:
     name: certifact-facturas-service-sp
   datasource:
-    url: jdbc:postgresql://psetest-brasilia.cttrybvmh4sz.sa-east-1.rds.amazonaws.com/psetest
-    username: psetest
-    password: s0p0rt32019
+    url:
+    username:
+    password:
     driver-class-name: org.postgresql.Driver
 
 mybatis:

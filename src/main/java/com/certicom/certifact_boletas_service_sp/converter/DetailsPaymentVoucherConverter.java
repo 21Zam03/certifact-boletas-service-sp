@@ -1,7 +1,7 @@
 package com.certicom.certifact_boletas_service_sp.converter;
 
 import com.certicom.certifact_boletas_service_sp.model.DetailsPaymentVoucherModel;
-import com.certicom.certifact_boletas_service_sp.request.DetailsPaymentVoucherRequest;
+import com.certicom.certifact_boletas_service_sp.dto.DetailsPaymentVoucherRequest;
 
 public class DetailsPaymentVoucherConverter {
 

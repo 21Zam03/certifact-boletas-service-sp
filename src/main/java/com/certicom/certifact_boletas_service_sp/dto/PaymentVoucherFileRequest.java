@@ -1,4 +1,4 @@
-package com.certicom.certifact_boletas_service_sp.request;
+package com.certicom.certifact_boletas_service_sp.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

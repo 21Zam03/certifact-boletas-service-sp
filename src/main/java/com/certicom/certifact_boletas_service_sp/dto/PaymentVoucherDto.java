@@ -1,6 +1,5 @@
-package com.certicom.certifact_boletas_service_sp.request;
+package com.certicom.certifact_boletas_service_sp.dto;
 
-import com.certicom.certifact_boletas_service_sp.response.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PaymentVoucherRequest {
+public class PaymentVoucherDto {
 
     private Long idPaymentVoucher;
 
@@ -91,7 +90,6 @@ public class PaymentVoucherRequest {
     private BigDecimal cantidadCuotas;
     private BigDecimal pagoCuenta;
 
-    private BranchOfficeRequest branchOffice;
     private String idpay;
 
     private String estado;
@@ -103,11 +101,10 @@ public class PaymentVoucherRequest {
     private String userName;
     private Timestamp fechaModificacion;
     private String userNameModificacion;
-    private String codigoTipoDocumentoRelacionado;
-    private String serieNumeroDocumentoRelacionado;
     private String Uuid;
     private Date fechaEmisionDate;
 
+    private BranchOfficeRequest branchOffice;
     private List<PaymentVoucherFileRequest> paymentVoucherFileModelList;
 
 }

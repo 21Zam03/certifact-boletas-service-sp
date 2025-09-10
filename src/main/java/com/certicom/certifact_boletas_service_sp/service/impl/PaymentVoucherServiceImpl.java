@@ -3,7 +3,7 @@ package com.certicom.certifact_boletas_service_sp.service.impl;
 import com.certicom.certifact_boletas_service_sp.converter.*;
 import com.certicom.certifact_boletas_service_sp.mapper.*;
 import com.certicom.certifact_boletas_service_sp.model.PaymentVoucherModel;
-import com.certicom.certifact_boletas_service_sp.request.PaymentVoucherRequest;
+import com.certicom.certifact_boletas_service_sp.dto.PaymentVoucherDto;
 import com.certicom.certifact_boletas_service_sp.response.PaymentVoucherResponse;
 import com.certicom.certifact_boletas_service_sp.service.PaymentVoucherService;
 import lombok.RequiredArgsConstructor;
@@ -25,64 +25,64 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
     private final GuiaPaymentVoucherMapper guiaPaymentVoucherMapper;
 
     @Override
-    public PaymentVoucherResponse save(PaymentVoucherRequest paymentVoucherRequest) {
+    public PaymentVoucherResponse save(PaymentVoucherDto paymentVoucherDto) {
         PaymentVoucherResponse model = null;
         int result = 0;
         try {
-            PaymentVoucherModel paymentVoucher = PaymentVoucherConverter.requestToModel(paymentVoucherRequest);
+            PaymentVoucherModel paymentVoucher = PaymentVoucherConverter.dtoToModel(paymentVoucherDto);
             result = paymentVoucherMapper.save(paymentVoucher);
             if(result == 0) {
                 throw new RuntimeException("No se pudo registrar el comprobante");
             }
-            for (int i=0; i<paymentVoucherRequest.getPaymentVoucherFileModelList().size(); i++) {
-                paymentVoucherRequest.getPaymentVoucherFileModelList().get(i).setIdPaymentVoucher(paymentVoucher.getIdPaymentVoucher());
-                result = paymentVoucherFileMapper.save(PaymentVoucherFileConverter.requetsToModel(paymentVoucherRequest.getPaymentVoucherFileModelList().get(i)));
+            for (int i = 0; i< paymentVoucherDto.getPaymentVoucherFileModelList().size(); i++) {
+                paymentVoucherDto.getPaymentVoucherFileModelList().get(i).setIdPaymentVoucher(paymentVoucher.getIdPaymentVoucher());
+                result = paymentVoucherFileMapper.save(PaymentVoucherFileConverter.requetsToModel(paymentVoucherDto.getPaymentVoucherFileModelList().get(i)));
                 if(result == 0) {
                     throw new RuntimeException("No se pudo registrar el comprobante archivo");
                 }
             }
-            if(paymentVoucherRequest.getAnticipos() != null && !paymentVoucherRequest.getAnticipos().isEmpty()) {
-                for (int i=0; i<paymentVoucherRequest.getAnticipos().size(); i++) {
-                    paymentVoucherRequest.getAnticipos().get(i).setIdPaymentVoucher(paymentVoucher.getIdPaymentVoucher());
-                    result = anticipoPaymentVoucherMapper.save(AnticipoPaymentVoucherConverter.requestToModel(paymentVoucherRequest.getAnticipos().get(i)));
+            if(paymentVoucherDto.getAnticipos() != null && !paymentVoucherDto.getAnticipos().isEmpty()) {
+                for (int i = 0; i< paymentVoucherDto.getAnticipos().size(); i++) {
+                    paymentVoucherDto.getAnticipos().get(i).setIdPaymentVoucher(paymentVoucher.getIdPaymentVoucher());
+                    result = anticipoPaymentVoucherMapper.save(AnticipoPaymentVoucherConverter.requestToModel(paymentVoucherDto.getAnticipos().get(i)));
                     if(result == 0) {
                         throw new RuntimeException("No se pudo registrar el comprobante archivo");
                     }
                 }
             }
-            if(paymentVoucherRequest.getCamposAdicionales()!= null && !paymentVoucherRequest.getCamposAdicionales().isEmpty()) {
-                for (int i = 0; i < paymentVoucherRequest.getCamposAdicionales().size(); i++) {
-                    paymentVoucherRequest.getCamposAdicionales().get(i).setIdPaymentVoucher(paymentVoucher.getIdPaymentVoucher());
-                    Integer id = typeFieldMapper.getIdByName(paymentVoucherRequest.getCamposAdicionales().get(i).getNombreCampo());
-                    paymentVoucherRequest.getCamposAdicionales().get(i).setTypeFieldId(id);
-                    result = aditionalFieldPaymentVoucherMapper.save(AditionalFIeldPaymentVoucherConverter.requestToModel(paymentVoucherRequest.getCamposAdicionales().get(i)));
+            if(paymentVoucherDto.getCamposAdicionales()!= null && !paymentVoucherDto.getCamposAdicionales().isEmpty()) {
+                for (int i = 0; i < paymentVoucherDto.getCamposAdicionales().size(); i++) {
+                    paymentVoucherDto.getCamposAdicionales().get(i).setIdPaymentVoucher(paymentVoucher.getIdPaymentVoucher());
+                    Integer id = typeFieldMapper.getIdByName(paymentVoucherDto.getCamposAdicionales().get(i).getNombreCampo());
+                    paymentVoucherDto.getCamposAdicionales().get(i).setTypeFieldId(id);
+                    result = aditionalFieldPaymentVoucherMapper.save(AditionalFIeldPaymentVoucherConverter.requestToModel(paymentVoucherDto.getCamposAdicionales().get(i)));
                     if(result == 0){
                         throw new RuntimeException("No se pudo registrar el campo adicional");
                     }
                 }
             }
-            if (paymentVoucherRequest.getCuotas() != null && !paymentVoucherRequest.getCuotas().isEmpty()) {
-                for (int i = 0; i< paymentVoucherRequest.getCuotas().size(); i++) {
-                    paymentVoucherRequest.getCuotas().get(i).setIdPaymentVoucher(paymentVoucherRequest.getIdPaymentVoucher());
-                    result = paymentCuotasMapper.save(PaymentCuotasConverter.requestToModel(paymentVoucherRequest.getCuotas().get(i)));
+            if (paymentVoucherDto.getCuotas() != null && !paymentVoucherDto.getCuotas().isEmpty()) {
+                for (int i = 0; i< paymentVoucherDto.getCuotas().size(); i++) {
+                    paymentVoucherDto.getCuotas().get(i).setIdPaymentVoucher(paymentVoucherDto.getIdPaymentVoucher());
+                    result = paymentCuotasMapper.save(PaymentCuotasConverter.requestToModel(paymentVoucherDto.getCuotas().get(i)));
                     if(result == 0){
                         throw new RuntimeException("No se pudo registrar la cuota");
                     }
                 }
             }
-            if(paymentVoucherRequest.getItems() != null && !paymentVoucherRequest.getItems().isEmpty()) {
-                for (int i = 0; i < paymentVoucherRequest.getItems().size(); i++) {
-                    paymentVoucherRequest.getItems().get(i).setIdPaymentVoucher(paymentVoucher.getIdPaymentVoucher());
-                    result = detailsPaymentVoucherMapper.save(DetailsPaymentVoucherConverter.requestToModel(paymentVoucherRequest.getItems().get(i)));
+            if(paymentVoucherDto.getItems() != null && !paymentVoucherDto.getItems().isEmpty()) {
+                for (int i = 0; i < paymentVoucherDto.getItems().size(); i++) {
+                    paymentVoucherDto.getItems().get(i).setIdPaymentVoucher(paymentVoucher.getIdPaymentVoucher());
+                    result = detailsPaymentVoucherMapper.save(DetailsPaymentVoucherConverter.requestToModel(paymentVoucherDto.getItems().get(i)));
                     if(result == 0){
                         throw new RuntimeException("No se pudo registrar los items");
                     }
                 }
             }
-            if(paymentVoucherRequest.getGuiasRelacionadas() != null && !paymentVoucherRequest.getGuiasRelacionadas().isEmpty()) {
-                for (int i = 0; i < paymentVoucherRequest.getGuiasRelacionadas().size(); i++) {
-                    paymentVoucherRequest.getGuiasRelacionadas().get(i).setIdPaymentVoucher(paymentVoucher.getIdPaymentVoucher());
-                    result = guiaPaymentVoucherMapper.save(GuiaPaymentVoucherConverter.requestToModel(paymentVoucherRequest.getGuiasRelacionadas().get(i)));
+            if(paymentVoucherDto.getGuiasRelacionadas() != null && !paymentVoucherDto.getGuiasRelacionadas().isEmpty()) {
+                for (int i = 0; i < paymentVoucherDto.getGuiasRelacionadas().size(); i++) {
+                    paymentVoucherDto.getGuiasRelacionadas().get(i).setIdPaymentVoucher(paymentVoucher.getIdPaymentVoucher());
+                    result = guiaPaymentVoucherMapper.save(GuiaPaymentVoucherConverter.requestToModel(paymentVoucherDto.getGuiasRelacionadas().get(i)));
                     if(result == 0){
                         throw new RuntimeException("No se pudo registrar la guia relacionada");
                     }
