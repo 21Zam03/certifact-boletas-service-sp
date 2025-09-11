@@ -1,12 +1,15 @@
 package com.certicom.certifact_boletas_service_sp.controller;
 
 import com.certicom.certifact_boletas_service_sp.dto.PaymentVoucherDto;
+import com.certicom.certifact_boletas_service_sp.response.PaymentVoucherResponse;
 import com.certicom.certifact_boletas_service_sp.service.PaymentVoucherService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(PaymentVoucherController.API_PATH)
@@ -23,13 +26,23 @@ public class PaymentVoucherController {
     }
 
     @PutMapping
-    public ResponseEntity<?> updatePaymentVoucher() {
-      return new ResponseEntity<>("", HttpStatus.OK);
+    public ResponseEntity<?> updatePaymentVoucher(@RequestBody PaymentVoucherDto paymentVoucherDto) {
+      return new ResponseEntity<>(paymentVoucherService.update(paymentVoucherDto), HttpStatus.OK);
     }
 
-    @DeleteMapping
-    public ResponseEntity<?> deletePaymentVoucher() {
-        return new ResponseEntity<>("", HttpStatus.OK);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deletePaymentVoucher(@PathVariable Long id) {
+        return new ResponseEntity<>(paymentVoucherService.delete(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/id-document")
+    public ResponseEntity<PaymentVoucherDto> findByIdentificadorDocumento(@RequestParam String identificadorDocumento) {
+        return new ResponseEntity<>(paymentVoucherService.findByIdentificadorDocumento(identificadorDocumento), HttpStatus.OK);
+    }
+
+    @GetMapping("/number")
+    public ResponseEntity<Integer> getNumeracion(@RequestParam String tipoComprobante, @RequestParam String serie, @RequestParam String ruc) {
+        return new ResponseEntity<>(paymentVoucherService.getNumeracion(tipoComprobante, serie, ruc) ,HttpStatus.OK);
     }
 
 }

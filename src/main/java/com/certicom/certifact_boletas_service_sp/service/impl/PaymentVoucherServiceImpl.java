@@ -99,4 +99,25 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
         return model;
     }
 
+    @Override
+    public PaymentVoucherDto update(PaymentVoucherDto paymentVoucherDto) {
+        return null;
+    }
+
+    @Override
+    public int delete(Long id) {
+        return 0;
+    }
+
+    @Override
+    public PaymentVoucherDto findByIdentificadorDocumento(String identificadorDocumento) {
+
+        return null;
+    }
+
+    @Override
+    public Integer getNumeracion(String tipoComprobante, String serie, String ruc) {
+        return 0;
+    }
+
 }
