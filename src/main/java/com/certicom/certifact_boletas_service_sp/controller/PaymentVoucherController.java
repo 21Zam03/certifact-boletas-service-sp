@@ -1,15 +1,12 @@
 package com.certicom.certifact_boletas_service_sp.controller;
 
 import com.certicom.certifact_boletas_service_sp.dto.PaymentVoucherDto;
-import com.certicom.certifact_boletas_service_sp.response.PaymentVoucherResponse;
 import com.certicom.certifact_boletas_service_sp.service.PaymentVoucherService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping(PaymentVoucherController.API_PATH)

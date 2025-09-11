@@ -17,7 +17,7 @@
         #{codigoTipoOperacion}, #{fechaEmisionDate}, #{fechaRegistro, javaType=java.sql.Timestamp, jdbcType=TIMESTAMP}, #{identificadorDocumento}, #{codigoHash}, #{detraccion}, #{estado},
         #{estadoAnterior}, #{estadoSunat}, #{horaEmision}, #{mensajeRespuesta}, #{ublVersion}, #{userName}, #{userNameModificacion}, #{uuid}, #{oficinaId}, #{tipoTransaccion}, #{montoPendiente})
     </insert>
-    <select id="findById" parameterType="long" resultType="com.certicom.certifact_boletas_service_sp_service_sp.model.PaymentVoucherModel">
+    <select id="findById" parameterType="long" resultType="com.certicom.certifact_boletas_service_sp.model.PaymentVoucherModel">
         select p.id_payment_voucher, p.uuid, p.identificador_documento, p.codigo_hash, p.tipo_comprobante from payment_voucher p
         where p.id_payment_voucher = #{id}
     </select>

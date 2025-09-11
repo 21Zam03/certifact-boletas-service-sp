@@ -1,0 +1,18 @@
+package com.certicom.certifact_boletas_service_sp.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class OseDto {
+
+    private Integer id;
+    private String urlFacturas;
+    private String urlGuias;
+
+}
