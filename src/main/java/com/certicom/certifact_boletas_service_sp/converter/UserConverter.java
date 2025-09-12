@@ -9,13 +9,12 @@ public class UserConverter {
         return UserDto.builder()
                 .idUser(userModel.getIdUser())
                 .idOficina(userModel.getIdOficina())
-                .nombreUsuario(userModel.getNombreUsuario())
-                .contrasena(userModel.getContrasena())
-                .nombreCompleto(userModel.getNombreCompleto())
+                .nombreUsuario(userModel.getDeLogin())
+                .contrasena(userModel.getPassword())
+                .nombreCompleto(userModel.getFullName())
                 .dni(userModel.getDni())
                 .estado(userModel.getEstado())
-                .activo(userModel.getActivo())
-                .ruc(userModel.getRuc())
+                .activo(userModel.getEnabled())
                 .build();
     }
 

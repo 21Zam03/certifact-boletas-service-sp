@@ -34,11 +34,11 @@ public class PaymentVoucherModel {
     private String emailReceptor;
     private String codigoTipoDocumentoRelacionado;
     private String serieNumeroDocumentoRelacionado;
-    private BigDecimal totalValorVentaOperacionExportada;
-    private BigDecimal totalValorVentaOperacionGravada;
-    private BigDecimal totalValorVentaOperacionInafecta;
-    private BigDecimal totalValorVentaOperacionExonerada;
-    private BigDecimal totalValorVentaOperacionGratuita;
+    private BigDecimal totalOperExportada;
+    private BigDecimal totalOperGravada;
+    private BigDecimal totalOperInafecta;
+    private BigDecimal totalOperExonerada;
+    private BigDecimal totalOperGratuita;
     private BigDecimal totalValorBaseIsc;
     private BigDecimal totalValorBaseOtrosTributos;
     private BigDecimal totalValorVentaGravadaIVAP;
@@ -48,17 +48,17 @@ public class PaymentVoucherModel {
     private BigDecimal sumatoriaIvap;
     private BigDecimal sumatoriaIgv;
     private BigDecimal sumatoriaIsc;
-    private BigDecimal sumatoriaOtrostributos;
+    private BigDecimal sumatoriaOtrostrib;
     private BigDecimal montoDescuentoGlobal;
-    private BigDecimal montoSumatorioOtrosCargos;
-    private BigDecimal montoImporteTotalVenta;
+    private BigDecimal montoSumOtrosCarg;
+    private BigDecimal montoImpTotalVenta;
     private BigDecimal montoTotalAnticipos;
     private String serieAfectado;
     private Integer numeroAfectado;
-    private String tipoComprobanteAfectado;
+    private String tipComprobAfectado;
     private String motivoNota;
-    private String codigoTipoNotaCredito;
-    private String codigoTipoNotaDebito;
+    private String codTipNotaCred;
+    private String codTipNotaDebit;
     private String identificadorDocumento;
     private Integer estadoItem;
     private String estadoSunat;
@@ -97,5 +97,6 @@ public class PaymentVoucherModel {
     private String tipoDocumentoEmisor;
 
     private Integer oficinaId;
+    private Boolean boletaAnuladaSinEmitir;
 
 }

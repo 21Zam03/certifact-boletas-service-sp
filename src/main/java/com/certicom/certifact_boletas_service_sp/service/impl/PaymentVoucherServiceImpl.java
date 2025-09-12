@@ -9,6 +9,10 @@ import com.certicom.certifact_boletas_service_sp.service.PaymentVoucherService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collections;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -25,8 +29,9 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
     private final GuiaPaymentVoucherMapper guiaPaymentVoucherMapper;
 
     @Override
-    public PaymentVoucherResponse save(PaymentVoucherDto paymentVoucherDto) {
-        PaymentVoucherResponse model = null;
+    @Transactional
+    public PaymentVoucherDto save(PaymentVoucherDto paymentVoucherDto) {
+        PaymentVoucherDto model = null;
         int result = 0;
         try {
             PaymentVoucherModel paymentVoucher = PaymentVoucherConverter.dtoToModel(paymentVoucherDto);
@@ -53,6 +58,7 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
             if(paymentVoucherDto.getCamposAdicionales()!= null && !paymentVoucherDto.getCamposAdicionales().isEmpty()) {
                 for (int i = 0; i < paymentVoucherDto.getCamposAdicionales().size(); i++) {
                     paymentVoucherDto.getCamposAdicionales().get(i).setIdPaymentVoucher(paymentVoucher.getIdPaymentVoucher());
+                    System.out.println("NAME TEST: "+paymentVoucherDto.getCamposAdicionales().get(i).getNombreCampo());
                     Integer id = typeFieldMapper.getIdByName(paymentVoucherDto.getCamposAdicionales().get(i).getNombreCampo());
                     paymentVoucherDto.getCamposAdicionales().get(i).setTypeFieldId(id);
                     result = aditionalFieldPaymentVoucherMapper.save(AditionalFIeldPaymentVoucherConverter.requestToModel(paymentVoucherDto.getCamposAdicionales().get(i)));
@@ -72,6 +78,7 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
             }
             if(paymentVoucherDto.getItems() != null && !paymentVoucherDto.getItems().isEmpty()) {
                 for (int i = 0; i < paymentVoucherDto.getItems().size(); i++) {
+                    System.out.println("ID paymente voucher: "+paymentVoucher.getIdPaymentVoucher());
                     paymentVoucherDto.getItems().get(i).setIdPaymentVoucher(paymentVoucher.getIdPaymentVoucher());
                     result = detailsPaymentVoucherMapper.save(DetailsPaymentVoucherConverter.requestToModel(paymentVoucherDto.getItems().get(i)));
                     if(result == 0){
@@ -89,12 +96,12 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
                 }
             }
             PaymentVoucherModel payment = paymentVoucherMapper.findById(paymentVoucher.getIdPaymentVoucher());
-            model = PaymentVoucherConverter.ModelToResponse(payment);
+            model = PaymentVoucherConverter.modelToDto(payment);
             if(model==null) {
                 throw new RuntimeException("No se pudo obtener el registro de payment");
             }
         } catch (Exception e) {
-            log.error("ERROR: {} ",e.getMessage());
+            watchLogs(e);
         }
         return model;
     }
@@ -111,13 +118,39 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
 
     @Override
     public PaymentVoucherDto findByIdentificadorDocumento(String identificadorDocumento) {
-
-        return null;
+        PaymentVoucherDto paymentVoucherDto = null;
+        try {
+            PaymentVoucherModel paymentVoucherModel = paymentVoucherMapper.findByIdentificadorDocumento(identificadorDocumento);
+            if(paymentVoucherModel!=null) {
+                paymentVoucherDto = PaymentVoucherConverter.modelToDto(paymentVoucherModel);
+            }
+        } catch (Exception e) {
+            watchLogs(e);
+        }
+        return paymentVoucherDto;
     }
 
     @Override
     public Integer getNumeracion(String tipoComprobante, String serie, String ruc) {
-        return 0;
+        return paymentVoucherMapper.getNumeroByTipoComprobanteAndSerieAndRucEmisor(tipoComprobante, serie, ruc);
+    }
+
+    @Override
+    public List<PaymentVoucherDto> findListSpecificForSummary(String ruc, String fechaEmision, String tipo, String serie, Integer numero) {
+        List<PaymentVoucherDto> listSummaryDto = null;
+        try {
+            List<PaymentVoucherModel> listSummary = paymentVoucherMapper.findListSpecificForSummary(ruc, fechaEmision, tipo, serie, numero);
+            if (listSummary != null && !listSummary.isEmpty()) {
+                listSummaryDto = PaymentVoucherConverter.modelListToDtoList(listSummary);
+            }
+        } catch (Exception e) {
+            watchLogs(e);
+        }
+        return listSummaryDto;
+    }
+
+    private void watchLogs(Exception e) {
+        log.error("ERROR: {}", e.getMessage());
     }
 
 }

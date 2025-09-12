@@ -14,6 +14,8 @@ import java.math.BigDecimal;
 public class DetailsPaymentVoucherModel {
 
     private Long idComprobanteDetalle;
+    private Long idPaymentVoucher;
+
     private Integer numeroItem;
     private String codigoUnidadMedida;
 

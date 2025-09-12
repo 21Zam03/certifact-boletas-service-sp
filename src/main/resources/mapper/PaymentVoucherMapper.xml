@@ -2,7 +2,6 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
 <mapper namespace="com.certicom.certifact_boletas_service_sp.mapper.PaymentVoucherMapper">
     <insert id="save"
             parameterType="com.certicom.certifact_boletas_service_sp.model.PaymentVoucherModel"
@@ -12,13 +11,55 @@
         denominacion_receptor, direccion_receptor, email_receptor, total_oper_gravada, sumatoria_igv, monto_imp_total_venta, tipo_operacion, fecha_emision_date, fecha_registro,
         identificador_documento, codigo_hash, detraccion, estado, estado_anterior, estado_sunat, hora_emision, mensaje_respuesta, ubl_version, user_name, user_name_modify, uuid,
         oficina_id, tipo_transaccion, monto_pendiente)
-        VALUES (nextval('comprobante_pago_seq'), #{rucEmisor}, #{tipoComprobante}, #{serie}, #{numero}, #{fechaEmision}, #{codigoMoneda}, #{fechaVencimiento}, #{tipoDocumentoReceptor},
-        #{numeroDocumentoReceptor}, #{denominacionReceptor}, #{direccionReceptor}, #{emailReceptor}, #{totalValorVentaGravada}, #{totalIgv}, #{importeTotalVenta},
-        #{codigoTipoOperacion}, #{fechaEmisionDate}, #{fechaRegistro, javaType=java.sql.Timestamp, jdbcType=TIMESTAMP}, #{identificadorDocumento}, #{codigoHash}, #{detraccion}, #{estado},
-        #{estadoAnterior}, #{estadoSunat}, #{horaEmision}, #{mensajeRespuesta}, #{ublVersion}, #{userName}, #{userNameModificacion}, #{uuid}, #{oficinaId}, #{tipoTransaccion}, #{montoPendiente})
+        VALUES (nextval('comprobante_pago_seq'), #{rucEmisor}, #{tipoComprobante}, #{serie}, #{numero}, #{fechaEmision}, #{codigoMoneda}, #{fechaVencimiento}, #{tipoDocIdenReceptor},
+        #{numDocIdenReceptor}, #{denominacionReceptor}, #{direccionReceptor}, #{emailReceptor}, #{totalOperGravada}, #{sumatoriaIgv}, #{montoImpTotalVenta},
+        #{tipoOperacion}, #{fechaEmisionDate}, #{fechaRegistro, javaType=java.sql.Timestamp, jdbcType=TIMESTAMP}, #{identificadorDocumento}, #{codigoHash}, #{detraccion}, #{estado},
+        #{estadoAnterior}, #{estadoSunat}, #{horaEmision}, #{mensajeRespuesta}, #{ublVersion}, #{userName}, #{userNameModify}, #{uuid}, #{oficinaId}, #{tipoTransaccion}, #{montoPendiente})
     </insert>
     <select id="findById" parameterType="long" resultType="com.certicom.certifact_boletas_service_sp.model.PaymentVoucherModel">
         select p.id_payment_voucher, p.uuid, p.identificador_documento, p.codigo_hash, p.tipo_comprobante from payment_voucher p
         where p.id_payment_voucher = #{id}
+    </select>
+    <select id="getNumeroByTipoComprobanteAndSerieAndRucEmisor" parameterType="map" resultType="Integer">
+        SELECT p.numero FROM payment_voucher p
+        WHERE p.tipo_comprobante = #{tipo} AND p.serie = #{serie} AND p.ruc_emisor = #{ruc}
+        ORDER BY p.numero DESC LIMIT 1
+    </select>
+    <select id="findByIdentificadorDocumento" parameterType="map" resultType="com.certicom.certifact_boletas_service_sp.model.PaymentVoucherModel">
+        SELECT p.fecha_emision, p.fecha_registro, p.id_payment_voucher, p.uuid, p.identificador_documento, p.codigo_hash, p.estado FROM payment_voucher p
+        WHERE p.identificador_documento = #{idDocument}
+    </select>
+    <select id="findListSpecificForSummary" parameterType="map" resultType="com.certicom.certifact_boletas_service_sp.model.PaymentVoucherModel">
+        SELECT
+            pv.id_payment_voucher,
+            pv.boleta_anulada_sin_emitir,
+            pv.serie,
+            pv.numero,
+            pv.tipo_comprobante,
+            pv.codigo_moneda,
+            pv.tip_doc_ident_receptor,
+            pv.num_doc_ident_receptor,
+            pv.cod_tip_nota_cred,
+            pv.cod_tip_nota_debit,
+            pv.serie_afectado,
+            pv.numero_afectado,
+            pv.tip_comprob_afectado,
+            pv.monto_imp_total_venta,
+            pv.monto_sum_otros_carg,
+            pv.sumatoria_igv,
+            pv.sumatoria_isc,
+            pv.sumatoria_otros_trib,
+            pv.total_oper_exportada,
+            pv.total_oper_gravada,
+            pv.total_oper_inafecta,
+            pv.total_oper_exonerada,
+            pv.total_oper_gratuita,
+            pv.estado_item
+        FROM payment_voucher pv
+        WHERE pv.ruc_emisor = #{ruc}
+            AND pv.fecha_emision_date = to_timestamp(#{fechaEmision}, 'YYYY-MM-DD')
+            AND pv.tipo_comprobante = #{tipo}
+            AND pv.serie = #{serie}
+            AND pv.numero = #{numero}
     </select>
 </mapper>

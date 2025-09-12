@@ -4,6 +4,9 @@ import com.certicom.certifact_boletas_service_sp.model.PaymentVoucherModel;
 import com.certicom.certifact_boletas_service_sp.dto.PaymentVoucherDto;
 import com.certicom.certifact_boletas_service_sp.response.PaymentVoucherResponse;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PaymentVoucherConverter {
 
     public static PaymentVoucherModel dtoToModel(PaymentVoucherDto paymentVoucherDto) {
@@ -26,11 +29,11 @@ public class PaymentVoucherConverter {
                 .emailReceptor(paymentVoucherDto.getEmailReceptor())
                 .codigoTipoDocumentoRelacionado(paymentVoucherDto.getCodigoTipoOtroDocumentoRelacionado())
                 .serieNumeroDocumentoRelacionado(paymentVoucherDto.getSerieNumeroOtroDocumentoRelacionado())
-                .totalValorVentaOperacionExportada(paymentVoucherDto.getTotalValorVentaExportacion())
-                .totalValorVentaOperacionGravada(paymentVoucherDto.getTotalValorVentaGravada())
-                .totalValorVentaOperacionInafecta(paymentVoucherDto.getTotalValorVentaInafecta())
-                .totalValorVentaOperacionExonerada(paymentVoucherDto.getTotalValorVentaExonerada())
-                .totalValorVentaOperacionGratuita(paymentVoucherDto.getTotalValorVentaGratuita())
+                .totalOperExportada(paymentVoucherDto.getTotalValorVentaExportacion())
+                .totalOperGravada(paymentVoucherDto.getTotalValorVentaGravada())
+                .totalOperInafecta(paymentVoucherDto.getTotalValorVentaInafecta())
+                .totalOperExonerada(paymentVoucherDto.getTotalValorVentaExonerada())
+                .totalOperGratuita(paymentVoucherDto.getTotalValorVentaGratuita())
                 .totalValorBaseIsc(paymentVoucherDto.getTotalValorBaseIsc())
                 .totalValorBaseOtrosTributos(paymentVoucherDto.getTotalValorBaseOtrosTributos())
                 .totalValorVentaGravadaIVAP(paymentVoucherDto.getTotalValorVentaGravadaIVAP())
@@ -39,17 +42,17 @@ public class PaymentVoucherConverter {
                 .sumatoriaIvap(paymentVoucherDto.getTotalIvap())
                 .sumatoriaIgv(paymentVoucherDto.getTotalIgv())
                 .sumatoriaIsc(paymentVoucherDto.getTotalIsc())
-                .sumatoriaOtrostributos(paymentVoucherDto.getTotalOtrostributos())
+                .sumatoriaOtrostrib(paymentVoucherDto.getTotalOtrostributos())
                 .montoDescuentoGlobal(paymentVoucherDto.getDescuentoGlobales())
-                .montoSumatorioOtrosCargos(paymentVoucherDto.getSumatoriaOtrosCargos())
-                .montoImporteTotalVenta(paymentVoucherDto.getImporteTotalVenta())
+                .montoSumOtrosCarg(paymentVoucherDto.getSumatoriaOtrosCargos())
+                .montoImpTotalVenta(paymentVoucherDto.getImporteTotalVenta())
                 .montoTotalAnticipos(paymentVoucherDto.getTotalAnticipos())
                 .serieAfectado(paymentVoucherDto.getSerieAfectado())
                 .numeroAfectado(paymentVoucherDto.getNumeroAfectado())
-                .tipoComprobanteAfectado(paymentVoucherDto.getTipoComprobanteAfectado())
+                .tipComprobAfectado(paymentVoucherDto.getTipoComprobanteAfectado())
                 .motivoNota(paymentVoucherDto.getMotivoNota())
-                .codigoTipoNotaCredito(paymentVoucherDto.getCodigoTipoNotaCredito())
-                .codigoTipoNotaDebito(paymentVoucherDto.getCodigoTipoNotaDebito())
+                .codTipNotaCred(paymentVoucherDto.getCodigoTipoNotaCredito())
+                .codTipNotaDebit(paymentVoucherDto.getCodigoTipoNotaDebito())
                 .identificadorDocumento(paymentVoucherDto.getIdentificadorDocumento())
                 .estadoItem(paymentVoucherDto.getEstadoItem())
                 .estadoSunat(paymentVoucherDto.getEstadoSunat())
@@ -76,11 +79,91 @@ public class PaymentVoucherConverter {
                 .montoPendiente(paymentVoucherDto.getMontoPendiente())
                 .cantidadCuotas(paymentVoucherDto.getCantidadCuotas())
                 .pagoCuenta(paymentVoucherDto.getPagoCuenta())
+                .oficinaId(paymentVoucherDto.getOficinaId())
                 .build();
     }
 
-    public static PaymentVoucherResponse ModelToResponse(PaymentVoucherModel paymentVoucherModel) {
-        return PaymentVoucherResponse.builder().build();
+    public static PaymentVoucherDto modelToDto(PaymentVoucherModel paymentVoucherModel) {
+        return PaymentVoucherDto.builder()
+                .idPaymentVoucher(paymentVoucherModel.getIdPaymentVoucher())
+                .serie(paymentVoucherModel.getSerie())
+                .numero(paymentVoucherModel.getNumero())
+                .fechaEmision(paymentVoucherModel.getFechaEmision())
+                .fechaEmisionDate(paymentVoucherModel.getFechaEmisionDate())
+                .horaEmision(paymentVoucherModel.getHoraEmision())
+                .tipoComprobante(paymentVoucherModel.getTipoComprobante())
+                .codigoMoneda(paymentVoucherModel.getCodigoMoneda())
+                .fechaVencimiento(paymentVoucherModel.getFechaVencimiento())
+                .codigoTipoOperacion(paymentVoucherModel.getTipoOperacion())
+                .rucEmisor(paymentVoucherModel.getRucEmisor())
+                .codigoLocalAnexoEmisor(paymentVoucherModel.getCodigoLocalAnexo())
+                .tipoDocumentoReceptor(paymentVoucherModel.getTipoDocIdenReceptor())
+                .numeroDocumentoReceptor(paymentVoucherModel.getNumDocIdenReceptor())
+                .denominacionReceptor(paymentVoucherModel.getDenominacionReceptor())
+                .direccionReceptor(paymentVoucherModel.getDireccionReceptor())
+                .emailReceptor(paymentVoucherModel.getEmailReceptor())
+                .codigoTipoOtroDocumentoRelacionado(paymentVoucherModel.getCodigoTipoOtroDocumentoRelacionado())
+                .serieNumeroOtroDocumentoRelacionado(paymentVoucherModel.getSerieNumeroOtroDocumentoRelacionado())
+                .totalValorVentaExportacion(paymentVoucherModel.getTotalOperExportada())
+                .totalValorVentaGravada(paymentVoucherModel.getTotalOperGravada())
+                .totalValorVentaInafecta(paymentVoucherModel.getTotalOperInafecta())
+                .totalValorVentaExonerada(paymentVoucherModel.getTotalOperExonerada())
+                .totalValorVentaGratuita(paymentVoucherModel.getTotalOperGratuita())
+                .totalValorBaseIsc(paymentVoucherModel.getTotalValorBaseIsc())
+                .totalValorBaseOtrosTributos(paymentVoucherModel.getTotalValorBaseOtrosTributos())
+                .totalValorVentaGravadaIVAP(paymentVoucherModel.getTotalValorVentaGravadaIVAP())
+                .totalDescuento(paymentVoucherModel.getTotalDescuento())
+                .totalImpOperGratuita(paymentVoucherModel.getSumatoriaTributosOperacionGratuita())
+                .totalIvap(paymentVoucherModel.getSumatoriaIvap())
+                .totalIgv(paymentVoucherModel.getSumatoriaIgv())
+                .totalIsc(paymentVoucherModel.getSumatoriaIsc())
+                .totalOtrostributos(paymentVoucherModel.getSumatoriaOtrostrib())
+                .descuentoGlobales(paymentVoucherModel.getMontoDescuentoGlobal())
+                .sumatoriaOtrosCargos(paymentVoucherModel.getMontoSumOtrosCarg())
+                .importeTotalVenta(paymentVoucherModel.getMontoImpTotalVenta())
+                .totalAnticipos(paymentVoucherModel.getMontoTotalAnticipos())
+                .serieAfectado(paymentVoucherModel.getSerieAfectado())
+                .numeroAfectado(paymentVoucherModel.getNumeroAfectado())
+                .tipoComprobanteAfectado(paymentVoucherModel.getTipComprobAfectado())
+                .motivoNota(paymentVoucherModel.getMotivoNota())
+                .codigoTipoNotaCredito(paymentVoucherModel.getCodTipNotaCred())
+                .codigoTipoNotaDebito(paymentVoucherModel.getCodTipNotaDebit())
+                .identificadorDocumento(paymentVoucherModel.getIdentificadorDocumento())
+                .estadoItem(paymentVoucherModel.getEstadoItem())
+                .estadoSunat(paymentVoucherModel.getEstadoSunat())
+                .estado(paymentVoucherModel.getEstado())
+                .estadoAnterior(paymentVoucherModel.getEstadoAnterior())
+                .mensajeRespuesta(paymentVoucherModel.getMensajeRespuesta())
+                .fechaRegistro(paymentVoucherModel.getFechaRegistro())
+                .fechaModificacion(paymentVoucherModel.getFechaModificacion())
+                .userName(paymentVoucherModel.getUserName())
+                .userNameModificacion(paymentVoucherModel.getUserNameModify())
+                .Uuid(paymentVoucherModel.getUuid())
+                .ordenCompra(paymentVoucherModel.getOrdenCompra())
+                .codigoHash(paymentVoucherModel.getCodigoHash())
+                .codigoMedioPago(paymentVoucherModel.getCodigoMedioPago())
+                .cuentaFinancieraBeneficiario(paymentVoucherModel.getCuentaFinancieraBeneficiario())
+                .codigoBienDetraccion(paymentVoucherModel.getCodigoBienDetraccion())
+                .porcentajeDetraccion(paymentVoucherModel.getPorcentajeDetraccion())
+                .porcentajeRetencion(paymentVoucherModel.getPorcentajeRetencion())
+                .montoDetraccion(paymentVoucherModel.getMontoDetraccion())
+                .montoRetencion(paymentVoucherModel.getMontoRetencion())
+                .detraccion(paymentVoucherModel.getDetraccion())
+                .retencion(paymentVoucherModel.getRetencion())
+                .tipoTransaccion(paymentVoucherModel.getTipoTransaccion())
+                .montoPendiente(paymentVoucherModel.getMontoPendiente())
+                .cantidadCuotas(paymentVoucherModel.getCantidadCuotas())
+                .pagoCuenta(paymentVoucherModel.getPagoCuenta())
+                .build();
     }
 
+    public static List<PaymentVoucherDto> modelListToDtoList(List<PaymentVoucherModel> paymentVoucherModels) {
+        if(paymentVoucherModels != null && !paymentVoucherModels.isEmpty()) {
+            List<PaymentVoucherDto> paymentVoucherDtos = new ArrayList<>();
+            for (PaymentVoucherModel paymentVoucherModel : paymentVoucherModels) {
+                paymentVoucherDtos.add(PaymentVoucherConverter.modelToDto(paymentVoucherModel));
+            }
+            return paymentVoucherDtos;
+        } else return null;
+    }
 }

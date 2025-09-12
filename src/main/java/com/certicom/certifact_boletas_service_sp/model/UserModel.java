@@ -2,6 +2,8 @@ package com.certicom.certifact_boletas_service_sp.model;
 
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -10,13 +12,19 @@ import lombok.*;
 public class UserModel {
 
     private Long idUser;
-    private Integer idOficina;
-    private String nombreUsuario;
-    private String contrasena;
-    private String nombreCompleto;
     private String dni;
+    private Boolean enabled;
     private String estado;
-    private Boolean activo;
-    private String ruc;
+    private String fullName;
+    private String password;
+    private String typeUser;
+    private String deLogin;
+    private Long codCompany;
+    private Integer idOficina;
+    private Boolean changePass;
+    private Boolean hidecomprobante;
+    private Boolean pdfUnico;
+    private LocalDateTime dateLastSeenNotifications;
+    private Boolean viewCompra;
 
 }

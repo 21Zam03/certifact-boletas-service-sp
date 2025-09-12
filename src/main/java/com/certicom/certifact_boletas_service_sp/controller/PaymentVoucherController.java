@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(PaymentVoucherController.API_PATH)
 @RequiredArgsConstructor
@@ -18,7 +20,8 @@ public class PaymentVoucherController {
     private final PaymentVoucherService paymentVoucherService;
 
     @PostMapping
-    public ResponseEntity<?> savePaymentVoucher(@RequestBody PaymentVoucherDto paymentVoucherDto) {
+    public ResponseEntity<PaymentVoucherDto> savePaymentVoucher(@RequestBody PaymentVoucherDto paymentVoucherDto) {
+        log.info("OBJECT: {}", paymentVoucherDto);
         return new ResponseEntity<>(paymentVoucherService.save(paymentVoucherDto), HttpStatus.OK);
     }
 
@@ -40,6 +43,14 @@ public class PaymentVoucherController {
     @GetMapping("/number")
     public ResponseEntity<Integer> getNumeracion(@RequestParam String tipoComprobante, @RequestParam String serie, @RequestParam String ruc) {
         return new ResponseEntity<>(paymentVoucherService.getNumeracion(tipoComprobante, serie, ruc) ,HttpStatus.OK);
+    }
+
+    @GetMapping("/specific-summary")
+    public ResponseEntity<List<PaymentVoucherDto>> findListSpecificForSummary(
+            @RequestParam String rucEmisor, @RequestParam String fechaEmision,
+            @RequestParam String tipo, @RequestParam String serie, @RequestParam Integer numero
+    ) {
+        return new ResponseEntity<>(paymentVoucherService.findListSpecificForSummary(rucEmisor, fechaEmision, tipo, serie, numero), HttpStatus.OK);
     }
 
 }
