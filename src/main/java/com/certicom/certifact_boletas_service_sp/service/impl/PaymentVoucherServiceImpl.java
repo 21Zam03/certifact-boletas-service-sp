@@ -11,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLOutput;
+import java.sql.Timestamp;
 import java.util.Collections;
 import java.util.List;
 
@@ -41,7 +43,9 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
             }
             for (int i = 0; i< paymentVoucherDto.getPaymentVoucherFileModelList().size(); i++) {
                 paymentVoucherDto.getPaymentVoucherFileModelList().get(i).setIdPaymentVoucher(paymentVoucher.getIdPaymentVoucher());
-                result = paymentVoucherFileMapper.save(PaymentVoucherFileConverter.requetsToModel(paymentVoucherDto.getPaymentVoucherFileModelList().get(i)));
+                System.out.println("LISTA: "+paymentVoucherDto.getPaymentVoucherFileModelList());
+                System.out.println("ID: "+paymentVoucher.getIdPaymentVoucher());
+                result = paymentVoucherFileMapper.save(PaymentVoucherFileConverter.dtoToModel(paymentVoucherDto.getPaymentVoucherFileModelList().get(i)));
                 if(result == 0) {
                     throw new RuntimeException("No se pudo registrar el comprobante archivo");
                 }
@@ -140,14 +144,36 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
         List<PaymentVoucherDto> listSummaryDto = null;
         try {
             List<PaymentVoucherModel> listSummary = paymentVoucherMapper.findListSpecificForSummary(ruc, fechaEmision, tipo, serie, numero);
-            if (listSummary != null && !listSummary.isEmpty()) {
-                listSummaryDto = PaymentVoucherConverter.modelListToDtoList(listSummary);
-            }
+            listSummaryDto = PaymentVoucherConverter.modelListToDtoList(listSummary);
         } catch (Exception e) {
             watchLogs(e);
         }
         return listSummaryDto;
     }
+
+    @Override
+    public List<PaymentVoucherDto> findAllForSummaryByRucEmisorAndFechaEmision(String rucEmisor, String fechaEmision) {
+        List<PaymentVoucherDto> listSummaryDto = null;
+        try {
+            List<PaymentVoucherModel> listSummary = paymentVoucherMapper.findAllForSummaryByRucEmisorAndFechaEmision(rucEmisor, fechaEmision);
+            listSummaryDto = PaymentVoucherConverter.modelListToDtoList(listSummary);
+        } catch (Exception e) {
+            watchLogs(e);
+        }
+        return listSummaryDto;
+    }
+
+    @Override
+    public int updateStateToSendSunatForSummaryDocuments(List<Long> ids, String usuario, Timestamp fechaModificacion) {
+        int result = 0;
+        try {
+            result = paymentVoucherMapper.updateStateToSendSunatForSummaryDocuments(ids, usuario, fechaModificacion);
+        } catch (Exception e) {
+            watchLogs(e);
+        }
+        return result;
+    }
+
 
     private void watchLogs(Exception e) {
         log.error("ERROR: {}", e.getMessage());

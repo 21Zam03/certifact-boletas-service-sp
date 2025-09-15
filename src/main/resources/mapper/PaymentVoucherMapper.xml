@@ -62,4 +62,40 @@
             AND pv.serie = #{serie}
             AND pv.numero = #{numero}
     </select>
+    <select id="findAllForSummaryByRucEmisorAndFechaEmision">
+        SELECT
+            pv.id_payment_voucher as idPaymentVoucher,
+            pv.boleta_anulada_sin_emitir as boletaAnuladaSinEmitir,
+            pv.serie,
+            pv.numero,
+            pv.tipo_comprobante as tipoComprobante,
+            pv.codigo_moneda as codigoMoneda,
+            pv.tip_doc_ident_receptor as tipoDocIdentReceptor,
+            pv.num_doc_ident_receptor as numDocIdentReceptor,
+            pv.cod_tip_nota_cred as codigoTipoNotaCredito,
+            pv.cod_tip_nota_debit as codigoTipoNotaDebito,
+            pv.serie_afectado as serieAfectado,
+            pv.numero_afectado as numeroAfectado,
+            pv.tip_comprob_afectado as tipoComprobanteAfectado,
+            pv.monto_imp_total_venta as montoImporteTotalVenta,
+            pv.monto_sum_otros_carg as montoSumatorioOtrosCargos,
+            pv.sumatoria_igv as sumatoriaIGV,
+            pv.sumatoria_isc as sumatoriaISC,
+            pv.sumatoria_otros_trib as sumatoriaOtrosTributos,
+            pv.total_oper_exportada as totalValorVentaOperacionExportada,
+            pv.total_oper_gravada as totalValorVentaOperacionGravada,
+            pv.total_oper_inafecta as totalValorVentaOperacionInafecta,
+            pv.total_oper_exonerada as totalValorVentaOperacionExonerada,
+            pv.total_oper_gratuita as totalValorVentaOperacionGratuita,
+            pv.estado_item as estadoItem from payment_voucher pv
+        WHERE pv.ruc_emisor = #{rucEmisor} and pv.fecha_emision_date = to_timestamp(#{fechaEmision}, 'YYYY-MM-DD') and tipo_comprobante='03'
+        AND estado_item!=0 and estado in ('01','09')
+    </select>
+    <update id="updateStateToSendSunatForSummaryDocuments" parameterType="map">
+        UPDATE PaymentVoucherEntity p
+        set p.estadoAnterior = '06',
+        p.userNameModify = :usuario
+        p.fechaModificacion = :fechaModificacion "
+        where p.idPaymentVoucher in :ids"
+    </update>
 </mapper>

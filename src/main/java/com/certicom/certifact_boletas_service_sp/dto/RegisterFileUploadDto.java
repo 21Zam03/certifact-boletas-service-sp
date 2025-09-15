@@ -13,7 +13,7 @@ import java.sql.Timestamp;
 @Builder
 public class RegisterFileUploadDto {
 
-    private Long id;
+    private Long idRegisterFileSend;
     private String extension;
     private Timestamp fechaUpload;
     private String bucket;

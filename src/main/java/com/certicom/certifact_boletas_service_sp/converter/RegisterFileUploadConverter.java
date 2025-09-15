@@ -7,7 +7,7 @@ public class RegisterFileUploadConverter {
 
     public static RegisterFileUploadDto modelToDto(RegisterFileUploadModel registerFileUploadModel) {
         return RegisterFileUploadDto.builder()
-                .id(registerFileUploadModel.getIdRegisterFileSend())
+                .idRegisterFileSend(registerFileUploadModel.getIdRegisterFileSend())
                 .extension(registerFileUploadModel.getExtension())
                 .fechaUpload(registerFileUploadModel.getFechaUpload())
                 .bucket(registerFileUploadModel.getBucket())
@@ -27,7 +27,7 @@ public class RegisterFileUploadConverter {
 
     public static RegisterFileUploadModel dtoToModel(RegisterFileUploadDto registerFileUploadDto) {
         return RegisterFileUploadModel.builder()
-                .idRegisterFileSend(registerFileUploadDto.getId())
+                .idRegisterFileSend(registerFileUploadDto.getIdRegisterFileSend())
                 .extension(registerFileUploadDto.getExtension())
                 .fechaUpload(registerFileUploadDto.getFechaUpload())
                 .bucket(registerFileUploadDto.getBucket())

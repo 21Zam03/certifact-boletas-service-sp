@@ -4,6 +4,7 @@ import com.certicom.certifact_boletas_service_sp.dto.PaymentVoucherDto;
 import com.certicom.certifact_boletas_service_sp.model.PaymentVoucherModel;
 import com.certicom.certifact_boletas_service_sp.response.PaymentVoucherResponse;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 public interface PaymentVoucherService {
@@ -17,4 +18,6 @@ public interface PaymentVoucherService {
             String ruc, String fechaEmision, String tipo,
             String  serie, Integer numero
     );
+    List<PaymentVoucherDto> findAllForSummaryByRucEmisorAndFechaEmision(String rucEmisor, String fechaEmision);
+    int updateStateToSendSunatForSummaryDocuments(List<Long> ids, String usuario, Timestamp fechaModificacion);
 }

@@ -103,6 +103,6 @@ public class PaymentVoucherDto {
     private Date fechaEmisionDate;
 
     private BranchOfficeRequest branchOffice;
-    private List<PaymentVoucherFileRequest> paymentVoucherFileModelList;
+    private List<PaymentVoucherFileDto> paymentVoucherFileModelList;
 
 }

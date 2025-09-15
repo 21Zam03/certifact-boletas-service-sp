@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @RestController
@@ -51,6 +52,18 @@ public class PaymentVoucherController {
             @RequestParam String tipo, @RequestParam String serie, @RequestParam Integer numero
     ) {
         return new ResponseEntity<>(paymentVoucherService.findListSpecificForSummary(rucEmisor, fechaEmision, tipo, serie, numero), HttpStatus.OK);
+    }
+
+    @GetMapping("/summary-ruc-date")
+    public ResponseEntity<List<PaymentVoucherDto>> findAllForSummaryByRucEmisorAndFechaEmision(
+            @RequestParam String rucEmisor, @RequestParam String fechaEmision) {
+        return new ResponseEntity<>(paymentVoucherService.findAllForSummaryByRucEmisorAndFechaEmision(rucEmisor, fechaEmision), HttpStatus.OK);
+    }
+
+    @PutMapping("/state")
+    public ResponseEntity<Integer> updateStateToSendSunatForSummaryDocuments(
+            @RequestParam List<Long> ids, @RequestParam String usuario, @RequestParam Timestamp fechaModificacion) {
+        return new ResponseEntity<>(paymentVoucherService.updateStateToSendSunatForSummaryDocuments(ids, usuario, fechaModificacion), HttpStatus.OK);
     }
 
 }

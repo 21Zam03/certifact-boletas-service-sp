@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PaymentVoucherFileRequest {
+public class PaymentVoucherFileDto {
 
     private Long id;
     private String tipoArchivo;
