@@ -34,7 +34,7 @@ public class SummaryDocumentsConverter {
                     .estadoDocumento(summaryDto.getEstadoComprobante())
                     .fechaEmision(summaryDto.getFechaEmision())
                     .fechaGeneracion(summaryDto.getFechaGeneracion())
-                    .fechaGeneracionResumen(summaryDto)
+                    //.fechaGeneracionResumen(summaryDto)
                     .build();
         } else return null;
     }

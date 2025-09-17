@@ -36,12 +36,11 @@ public class SummaryDocumentsServiceImpl implements SummaryDocumentsService {
         SummaryDto summaryDto = null;
         int result = 0;
         try {
-            SummaryDocumentsModel summaryDocumentsModel = SummaryDocumentsConverter.modelToDto()
-            result = summaryDocumentsMapper.save(summary);
+            SummaryDocumentsModel summaryDocumentsModel = SummaryDocumentsConverter.dtoToModel(summary);
+            result = summaryDocumentsMapper.save(summaryDocumentsModel);
             if(result == 0) {
                 throw new RuntimeException("No se pudo registrar el comprobante");
             }
-            summaryDto = SummaryDocumentsConverter.modelToDto(summaryCreated);
         } catch (Exception e) {
             watchLogs(e);
         }
