@@ -8,4 +8,14 @@
         FROM summary_documents s
         WHERE s.ruc_emisor = #{rucEmisor} and s.fecha_emision = #{fechaEmision};
     </select>
+    <insert id="save" parameterType="com.certicom.certifact_boletas_service_sp.model.SummaryDocumentsModel">
+        INSERT INTO summary_documents (
+            id_document_summary, code_response, correlativo_dia, descripcion_response, estado, estado_documento, fecha_emision,
+            fecha_generacion, fecha_generacion_resumen, fecha_modificacion, id_document, ruc_emisor, ticket_sunat, user_name,
+            user_name_modify, intentos_get_status
+        )
+        VALUES (nextval('documents_summary_seq'), #{codeResponse}, #{correlativoDia}, #{descripcionResponse}, #{estado}, #{estadoDocumento},
+                #{fechaEmision}, #{fechaGeneracion}, #{fechaGeneracionResumen}, #{fechaModificacion}, #{idDocument}, #{rucEmisor}, #{ticketSunat},
+                #{userName}, #{userNameModify}, #{intentosGetStatus})
+    </insert>
 </mapper>

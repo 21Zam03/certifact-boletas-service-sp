@@ -38,9 +38,9 @@
         WHERE c.ruc = #{ruc}
     </select>
     <select id="findOseByRuc" parameterType="map" resultType="com.certicom.certifact_boletas_service_sp.model.OseModel">
-        SELECT o.oses_id AS id,
-        o.url_facturas AS urlFacturas,
-        o.url_guias AS urlGuias
+        SELECT o.oses_id,
+        o.url_facturas,
+        o.url_guias
         FROM company c
         INNER JOIN oses o ON o.oses_id = c.ose_id
         WHERE c.ruc = #{ruc}

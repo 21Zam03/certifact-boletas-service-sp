@@ -26,7 +26,7 @@ public class CompanyController {
         return new ResponseEntity<>(companyService.findByRuc(ruc), HttpStatus.OK);
     }
 
-    @GetMapping("/api/company/ose")
+    @GetMapping("/ose")
     public ResponseEntity<OseDto> findOseByRucInter(@RequestParam String ruc) {
         return new ResponseEntity<>(companyService.findOseByRuc(ruc), HttpStatus.OK);
     }

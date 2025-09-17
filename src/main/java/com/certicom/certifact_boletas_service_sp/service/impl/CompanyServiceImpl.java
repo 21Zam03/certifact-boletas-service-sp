@@ -47,7 +47,6 @@ public class CompanyServiceImpl implements CompanyService {
         }
         return oseDto;
     }
-
     public void watchLogs(Exception e) {
         log.error("ERROR: {} ",e.getMessage());
     }
