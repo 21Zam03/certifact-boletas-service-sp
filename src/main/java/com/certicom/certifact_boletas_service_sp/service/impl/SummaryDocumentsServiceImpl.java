@@ -3,7 +3,9 @@ package com.certicom.certifact_boletas_service_sp.service.impl;
 import com.certicom.certifact_boletas_service_sp.converter.DetailDocsSummaryConverter;
 import com.certicom.certifact_boletas_service_sp.converter.SummaryDocumentsConverter;
 import com.certicom.certifact_boletas_service_sp.converter.SummaryFileConverter;
+import com.certicom.certifact_boletas_service_sp.dto.SummaryDetailDto;
 import com.certicom.certifact_boletas_service_sp.dto.SummaryDto;
+import com.certicom.certifact_boletas_service_sp.dto.others.RucEstadoOther;
 import com.certicom.certifact_boletas_service_sp.mapper.DetailDocsSummaryMapper;
 import com.certicom.certifact_boletas_service_sp.mapper.SummaryDocumentsMapper;
 import com.certicom.certifact_boletas_service_sp.mapper.SummaryFileMapper;
@@ -16,7 +18,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.beans.Transient;
 import java.util.List;
 
 @Service
@@ -71,6 +72,32 @@ public class SummaryDocumentsServiceImpl implements SummaryDocumentsService {
             }
             SummaryDocumentsModel summaryCreated = summaryDocumentsMapper.findById(summaryDocumentsModel.getIdDocumentSummary());
             summaryDto = SummaryDocumentsConverter.modelToDto(summaryCreated);
+        } catch (Exception e) {
+            watchLogs(e);
+        }
+        return summaryDto;
+    }
+
+    @Override
+    public String getEstadoByNumeroTicket(String ticket) {
+        return summaryDocumentsMapper.getEstadoByNumeroTicket(ticket);
+    }
+
+    @Override
+    public List<RucEstadoOther> getEstadoAndRucEmisorByNumeroTicket(String ticket) {
+        return summaryDocumentsMapper.getEstadoAndRucEmisorByNumeroTicket(ticket);
+    }
+
+    @Override
+    public SummaryDto findByTicket(String ticket) {
+        SummaryDto summaryDto = null;
+        try {
+            SummaryDocumentsModel summary = summaryDocumentsMapper.findByTicket(ticket);
+            summaryDto = SummaryDocumentsConverter.modelToDto(summary);
+
+            List<DetailDocsSummaryModel> detailDocsSummaryModelList = detailDocsSummaryMapper.findByIdDocsSummary(summary.getIdDocumentSummary());
+            System.out.println("ITEMS: "+detailDocsSummaryModelList);
+            summaryDto.setItems(DetailDocsSummaryConverter.modelListToDtoList(detailDocsSummaryModelList));
         } catch (Exception e) {
             watchLogs(e);
         }

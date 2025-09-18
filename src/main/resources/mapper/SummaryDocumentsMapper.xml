@@ -24,8 +24,17 @@
         fecha_generacion, fecha_generacion_resumen, fecha_modificacion, id_document, ruc_emisor, ticket_sunat, user_name,
         user_name_modify, intentos_get_status FROM summary_documents WHERE id_document_summary = #{id}
     </select>
-    <select id="">
-        select rucEmisor, estado from SummaryDocumentEntity s "
-        + "where s.ticketSunat = :numeroTicket
+    <select id="getEstadoAndRucEmisorByNumeroTicket" parameterType="String" resultType="com.certicom.certifact_boletas_service_sp.dto.others.RucEstadoOther">
+        SELECT ruc_emisor, estado FROM summary_documents
+        WHERE ticket_sunat = #{ticket}
+    </select>
+    <select id="getEstadoByNumeroTicket" parameterType="String">
+        SELECT estado from summary_documents s
+        where s.ticket_sunat = #{ticket}
+    </select>
+    <select id="findByTicket" resultType="com.certicom.certifact_boletas_service_sp.model.SummaryDocumentsModel">
+        SELECT id_document_summary, code_response, correlativo_dia, description_response, estado, estado_documento, fecha_emision,
+        fecha_generacion, fecha_generacion_resumen, fecha_modificacion, id_document, ruc_emisor, ticket_sunat, user_name,
+        user_name_modify, intentos_get_status FROM summary_documents WHERE ticket_sunat = #{ticketSunat}
     </select>
 </mapper>

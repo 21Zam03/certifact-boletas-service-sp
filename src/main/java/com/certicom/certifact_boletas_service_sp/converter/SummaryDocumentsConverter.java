@@ -7,6 +7,7 @@ public class SummaryDocumentsConverter {
 
     public static SummaryDto modelToDto(SummaryDocumentsModel summaryDocumentsModel) {
         if (summaryDocumentsModel != null) {
+            System.out.println("TICKET SUNAT: "+summaryDocumentsModel.getTicketSunat());
             return SummaryDto.builder()
                     .fechaEmision(summaryDocumentsModel.getFechaEmision())
                     .nroResumenDelDia(summaryDocumentsModel.getCorrelativoDia())
@@ -28,13 +29,17 @@ public class SummaryDocumentsConverter {
     public static SummaryDocumentsModel dtoToModel(SummaryDto summaryDto) {
         if (summaryDto != null) {
             return SummaryDocumentsModel.builder()
+                    .fechaEmision(summaryDto.getFechaEmision())
                     .correlativoDia(summaryDto.getNroResumenDelDia())
+                    .rucEmisor(summaryDto.getRucEmisor())
                     .descripcionResponse(null)
                     .estado(summaryDto.getEstado())
                     .estadoDocumento(summaryDto.getEstadoComprobante())
-                    .fechaEmision(summaryDto.getFechaEmision())
                     .fechaGeneracion(summaryDto.getFechaGeneracion())
-                    //.fechaGeneracionResumen(summaryDto)
+                    .fechaGeneracionResumen(summaryDto.getFechaGereracionResumen())
+                    .ticketSunat(summaryDto.getTicketSunat())
+                    .userNameModify(summaryDto.getUserNameModify())
+                    .userName(summaryDto.getUserName())
                     .build();
         } else return null;
     }

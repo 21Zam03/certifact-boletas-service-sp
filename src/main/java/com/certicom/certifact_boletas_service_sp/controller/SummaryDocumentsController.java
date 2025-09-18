@@ -1,12 +1,15 @@
 package com.certicom.certifact_boletas_service_sp.controller;
 
 import com.certicom.certifact_boletas_service_sp.dto.SummaryDto;
+import com.certicom.certifact_boletas_service_sp.dto.others.RucEstadoOther;
 import com.certicom.certifact_boletas_service_sp.service.SummaryDocumentsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(SummaryDocumentsController.API_PATH)
@@ -24,8 +27,23 @@ public class SummaryDocumentsController {
     }
 
     @PostMapping
-    public ResponseEntity<SummaryDto>  getSummaryByFechaEmision(@RequestBody SummaryDto summaryDto) {
+    public ResponseEntity<SummaryDto>  save(@RequestBody SummaryDto summaryDto) {
         return new ResponseEntity<>(summaryDocumentsService.save(summaryDto), HttpStatus.OK);
+    }
+
+    @GetMapping("/state-ruc")
+    public ResponseEntity<List<RucEstadoOther>> getEstadoAndRucEmisorByNumeroTicket(@RequestParam String ticket) {
+        return new ResponseEntity<>(summaryDocumentsService.getEstadoAndRucEmisorByNumeroTicket(ticket), HttpStatus.OK);
+    }
+
+    @GetMapping("/state")
+    public ResponseEntity<String> getEstadoByNumeroTicket(@RequestParam String ticket) {
+        return new ResponseEntity<>(summaryDocumentsService.getEstadoByNumeroTicket(ticket), HttpStatus.OK);
+    }
+
+    @GetMapping("/ticket")
+    public ResponseEntity<SummaryDto> findByTicket(@RequestParam String ticket) {
+        return new ResponseEntity<>(summaryDocumentsService.findByTicket(ticket), HttpStatus.OK);
     }
 
 }
