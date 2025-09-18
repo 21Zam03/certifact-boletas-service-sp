@@ -8,5 +8,6 @@ public interface SummaryDocumentsMapper {
 
     Integer getCorrelativoInSummary(String rucEmisor, String fechaEmision);
     int save(SummaryDocumentsModel summaryDocumentsModel);
+    SummaryDocumentsModel findById(Long id);
 
 }

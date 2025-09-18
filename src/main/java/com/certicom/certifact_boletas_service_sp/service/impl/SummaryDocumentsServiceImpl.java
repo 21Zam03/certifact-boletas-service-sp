@@ -1,9 +1,15 @@
 package com.certicom.certifact_boletas_service_sp.service.impl;
 
+import com.certicom.certifact_boletas_service_sp.converter.DetailDocsSummaryConverter;
 import com.certicom.certifact_boletas_service_sp.converter.SummaryDocumentsConverter;
+import com.certicom.certifact_boletas_service_sp.converter.SummaryFileConverter;
 import com.certicom.certifact_boletas_service_sp.dto.SummaryDto;
+import com.certicom.certifact_boletas_service_sp.mapper.DetailDocsSummaryMapper;
 import com.certicom.certifact_boletas_service_sp.mapper.SummaryDocumentsMapper;
+import com.certicom.certifact_boletas_service_sp.mapper.SummaryFileMapper;
+import com.certicom.certifact_boletas_service_sp.model.DetailDocsSummaryModel;
 import com.certicom.certifact_boletas_service_sp.model.SummaryDocumentsModel;
+import com.certicom.certifact_boletas_service_sp.model.SummaryFileModel;
 import com.certicom.certifact_boletas_service_sp.service.SummaryDocumentsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.beans.Transient;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +25,8 @@ import java.beans.Transient;
 public class SummaryDocumentsServiceImpl implements SummaryDocumentsService {
 
     private final SummaryDocumentsMapper summaryDocumentsMapper;
+    private final DetailDocsSummaryMapper detailDocsSummaryMapper;
+    private final SummaryFileMapper summaryFileMapper;
 
     @Override
     public Integer getCorrelativoInSummary(String rucEmisor, String fechaEmision) {
@@ -41,6 +50,27 @@ public class SummaryDocumentsServiceImpl implements SummaryDocumentsService {
             if(result == 0) {
                 throw new RuntimeException("No se pudo registrar el comprobante");
             }
+            if (summary.getItems() != null && !summary.getItems().isEmpty()) {
+                List<DetailDocsSummaryModel> list = DetailDocsSummaryConverter.dtoListToModelList(summary.getItems());
+                for (DetailDocsSummaryModel detailDocsSummaryModel : list) {
+                    detailDocsSummaryModel.setIdDocsSummary(summaryDocumentsModel.getIdDocumentSummary());
+                    result = detailDocsSummaryMapper.save(detailDocsSummaryModel);
+                    if(result == 0) {
+                        throw new RuntimeException("No se pudo registrar el detail summary");
+                    }
+                }
+            }
+            if(summary.getSummaryFileDtoList() != null && !summary.getSummaryFileDtoList().isEmpty()) {
+                List<SummaryFileModel> list = SummaryFileConverter.dtoListToModelList(summary.getSummaryFileDtoList());
+                for (SummaryFileModel summaryFileModel : list) {
+                    result = summaryFileMapper.save(summaryFileModel);
+                    if (result == 0) {
+                        throw new RuntimeException("No se pudo registrar el summary file");
+                    }
+                }
+            }
+            SummaryDocumentsModel summaryCreated = summaryDocumentsMapper.findById(summaryDocumentsModel.getIdDocumentSummary());
+            summaryDto = SummaryDocumentsConverter.modelToDto(summaryCreated);
         } catch (Exception e) {
             watchLogs(e);
         }

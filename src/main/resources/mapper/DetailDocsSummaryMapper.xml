@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.certicom.certifact_boletas_service_sp.mapper.DetailDocsSummaryMapper">
+    <insert id="save" parameterType="com.certicom.certifact_boletas_service_sp.model.DetailDocsSummaryModel">
+        INSERT INTO detail_docs_summary (
+        id_detail_docs_summary, estado, estado_item, importe_total_venta, num_doc_receptor, numero_afectado, numero_documento,
+        numero_item, serie_afectado, serie_documento, sumatoria_otro_cargos, tipo_comprobante, tip_comprob_afectado, tip_doc_ident_receptor,
+        total_igv, total_isc, total_otros_trib, total_oper_exonerado, total_oper_exportacion, total_oper_gratuita, total_oper_gravada,
+        total_oper_inafecta, id_docs_summary
+        )
+        VALUES (nextval('detail_summary_seq'), #{estado}, #{estadoItem}, #{importeTotalVenta}, #{numDocReceptor}, #{numeroAfectado},
+        #{numeroDocumento}, #{numeroItem}, #{serieAfectado}, #{serieDocumento}, #{sumatoriaOtroCargos}, #{tipoComprobante}, #{tipComprobAfectado},
+        #{tipDocIdentReceptor}, #{totalIgv}, #{totalIsc}, #{totalOtrosTrib}, #{totalOperExonerado}, #{totalOperExportacion}, #{totalOperGratuita},
+        #{totalOperGravada}, #{totalOperInafecta}, #{idDocsSummary})
+    </insert>
+</mapper>

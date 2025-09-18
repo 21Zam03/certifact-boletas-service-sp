@@ -164,6 +164,7 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
     }
 
     @Override
+    @Transactional
     public int updateStateToSendSunatForSummaryDocuments(List<Long> ids, String usuario, Timestamp fechaModificacion) {
         int result = 0;
         try {

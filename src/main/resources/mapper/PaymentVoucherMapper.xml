@@ -92,11 +92,14 @@
         WHERE pv.ruc_emisor = #{rucEmisor} and pv.fecha_emision_date = to_timestamp(#{fechaEmision}, 'YYYY-MM-DD') and tipo_comprobante='03'
         AND estado_item!=0 and estado in ('01','09')
     </select>
-    <update id="updateStateToSendSunatForSummaryDocuments" parameterType="map">
-        UPDATE PaymentVoucherEntity p
-        set p.estadoAnterior = '06',
-        p.userNameModify = :usuario
-        p.fechaModificacion = :fechaModificacion "
-        where p.idPaymentVoucher in :ids"
+    <update id="updateStateToSendSunatForSummaryDocuments">
+        UPDATE payment_voucher
+        SET estado_anterior = '06',
+        user_name_modify = #{usuario},
+        fecha_modificacion = #{fechaModificacion}
+        WHERE id_payment_voucher IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
     </update>
 </mapper>

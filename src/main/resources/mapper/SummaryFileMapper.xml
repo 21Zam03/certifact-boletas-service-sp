@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.certicom.certifact_boletas_service_sp.mapper.SummaryFileMapper">
+    <insert id="save" parameterType="com.certicom.certifact_boletas_service_sp.model.SummaryFileModel">
+        INSERT INTO summary_file (id, estado_archivo, orden, tipo_archivo, id_register_file_send, id_document_summary)
+        VALUES (nextval('file_summary_pago_seq'), #{estadoArchivo}, #{orden}, #{tipoArchivo}, #{idRegisterFileSend}, #{idDocumentSummary})
+    </insert>
+</mapper>

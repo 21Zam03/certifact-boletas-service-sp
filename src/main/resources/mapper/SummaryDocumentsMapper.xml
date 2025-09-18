@@ -8,9 +8,10 @@
         FROM summary_documents s
         WHERE s.ruc_emisor = #{rucEmisor} and s.fecha_emision = #{fechaEmision};
     </select>
-    <insert id="save" parameterType="com.certicom.certifact_boletas_service_sp.model.SummaryDocumentsModel">
+    <insert id="save" parameterType="com.certicom.certifact_boletas_service_sp.model.SummaryDocumentsModel"
+            useGeneratedKeys="true" keyProperty="idDocumentSummary" keyColumn="id_document_summary">
         INSERT INTO summary_documents (
-            id_document_summary, code_response, correlativo_dia, descripcion_response, estado, estado_documento, fecha_emision,
+            id_document_summary, code_response, correlativo_dia, description_response, estado, estado_documento, fecha_emision,
             fecha_generacion, fecha_generacion_resumen, fecha_modificacion, id_document, ruc_emisor, ticket_sunat, user_name,
             user_name_modify, intentos_get_status
         )
@@ -18,4 +19,13 @@
                 #{fechaEmision}, #{fechaGeneracion}, #{fechaGeneracionResumen}, #{fechaModificacion}, #{idDocument}, #{rucEmisor}, #{ticketSunat},
                 #{userName}, #{userNameModify}, #{intentosGetStatus})
     </insert>
+    <select id="findById" parameterType="Long" resultType="com.certicom.certifact_boletas_service_sp.model.SummaryDocumentsModel">
+        SELECT id_document_summary, code_response, correlativo_dia, description_response, estado, estado_documento, fecha_emision,
+        fecha_generacion, fecha_generacion_resumen, fecha_modificacion, id_document, ruc_emisor, ticket_sunat, user_name,
+        user_name_modify, intentos_get_status FROM summary_documents WHERE id_document_summary = #{id}
+    </select>
+    <select id="">
+        select rucEmisor, estado from SummaryDocumentEntity s "
+        + "where s.ticketSunat = :numeroTicket
+    </select>
 </mapper>
