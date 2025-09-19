@@ -66,4 +66,13 @@ public class PaymentVoucherController {
         return new ResponseEntity<>(paymentVoucherService.updateStateToSendSunatForSummaryDocuments(ids, usuario, fechaModificacion), HttpStatus.OK);
     }
 
+    @PutMapping("/payment-summary")
+    public ResponseEntity<?> updateComprobantesBySummaryDocuments(
+            @RequestParam List<String> comprobantesByAceptar,
+            @RequestParam String codigo,
+            @RequestParam String abreviado,
+            @RequestParam String usuario,
+            @RequestParam Timestamp fechaModificacion) {
+        return new ResponseEntity<>(paymentVoucherService.updateComprobantesBySummaryDocuments(comprobantesByAceptar, codigo, abreviado, usuario, fechaModificacion), HttpStatus.OK);
+    }
 }

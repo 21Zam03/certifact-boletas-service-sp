@@ -90,6 +90,7 @@ public class SummaryDocumentsServiceImpl implements SummaryDocumentsService {
 
     @Override
     public SummaryDto findByTicket(String ticket) {
+        System.out.println("TICKER ENTRADA: "+ticket);
         SummaryDto summaryDto = null;
         try {
             SummaryDocumentsModel summary = summaryDocumentsMapper.findByTicket(ticket);

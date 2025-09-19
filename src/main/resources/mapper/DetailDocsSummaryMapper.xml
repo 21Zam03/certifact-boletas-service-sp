@@ -19,6 +19,6 @@
         SELECT id_detail_docs_summary, estado, estado_item, importe_total_venta, num_doc_receptor, numero_afectado, numero_documento,
         numero_item, serie_afectado, serie_documento, sumatoria_otro_cargos, tipo_comprobante, tip_comprob_afectado, tip_doc_ident_receptor,
         total_igv, total_isc, total_otros_trib, total_oper_exonerado, total_oper_exportacion, total_oper_gratuita, total_oper_gravada,
-        total_oper_inafecta, id_docs_summary FROM detail_docs_summary = #{id_docs_summary}
+        total_oper_inafecta, id_docs_summary FROM detail_docs_summary WHERE id_docs_summary = #{idDocsSummary}
     </select>
 </mapper>

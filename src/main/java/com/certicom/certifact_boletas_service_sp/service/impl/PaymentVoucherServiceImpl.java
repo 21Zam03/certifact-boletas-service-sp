@@ -175,6 +175,10 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
         return result;
     }
 
+    @Override
+    public int updateComprobantesBySummaryDocuments(List<String> identificadorComprobantes, String estado, String estadoSunat, String usuario, Timestamp fechaModificacion) {
+        return paymentVoucherMapper.updateComprobantesBySummaryDocuments(identificadorComprobantes, estado, estadoSunat, usuario, fechaModificacion);
+    }
 
     private void watchLogs(Exception e) {
         log.error("ERROR: {}", e.getMessage());

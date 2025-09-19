@@ -20,5 +20,7 @@ public interface PaymentVoucherMapper {
     );
     List<PaymentVoucherModel> findAllForSummaryByRucEmisorAndFechaEmision(String rucEmisor, String fechaEmision);
     int updateStateToSendSunatForSummaryDocuments(List<Long> ids, String usuario, Timestamp fechaModificacion);
+    int updateComprobantesBySummaryDocuments(List<String> identificadorComprobantes, String estado, String estadoSunat, String usuario,
+                                             Timestamp fechaModificacion);
 
 }
