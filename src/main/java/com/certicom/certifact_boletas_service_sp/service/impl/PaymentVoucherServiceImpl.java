@@ -180,6 +180,23 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
         return paymentVoucherMapper.updateComprobantesBySummaryDocuments(identificadorComprobantes, estado, estadoSunat, usuario, fechaModificacion);
     }
 
+    @Override
+    public int updateComprobantesOnResumenError(List<String> identificadoresComprobantes, String usuario, Timestamp fechaModificacion) {
+        return paymentVoucherMapper.updateComprobantesOnResumenError(identificadoresComprobantes, usuario, fechaModificacion)   ;
+    }
+
+    @Override
+    public PaymentVoucherDto findByRucAndTipoAndSerieAndNumero(String finalRucEmisor, String tipoComprobante, String serie, Integer numero) {
+        PaymentVoucherDto paymentVoucherDto = null;
+        try {
+            PaymentVoucherModel paymentVoucherModel = paymentVoucherMapper.findByRucAndTipoAndSerieAndNumero(finalRucEmisor, tipoComprobante, serie, numero);
+            paymentVoucherDto = PaymentVoucherConverter.modelToDto(paymentVoucherModel);
+        } catch (Exception e) {
+            watchLogs(e);
+        }
+        return paymentVoucherDto;
+    }
+
     private void watchLogs(Exception e) {
         log.error("ERROR: {}", e.getMessage());
     }

@@ -1,6 +1,5 @@
 package com.certicom.certifact_boletas_service_sp.mapper;
 
-import com.certicom.certifact_boletas_service_sp.dto.PaymentVoucherDto;
 import com.certicom.certifact_boletas_service_sp.model.PaymentVoucherModel;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -22,5 +21,14 @@ public interface PaymentVoucherMapper {
     int updateStateToSendSunatForSummaryDocuments(List<Long> ids, String usuario, Timestamp fechaModificacion);
     int updateComprobantesBySummaryDocuments(List<String> identificadorComprobantes, String estado, String estadoSunat, String usuario,
                                              Timestamp fechaModificacion);
+    int updateComprobantesOnResumenError(
+            List<String> identificadoresComprobantes,
+            String usuario,
+            Timestamp fechaModificacion);
 
+    PaymentVoucherModel findByRucAndTipoAndSerieAndNumero(
+            String finalRucEmisor,
+            String tipoComprobante,
+            String serie,
+            Integer numero);
 }

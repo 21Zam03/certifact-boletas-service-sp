@@ -7,4 +7,13 @@
         INSERT INTO summary_file (id, estado_archivo, orden, tipo_archivo, id_register_file_send, id_document_summary)
         VALUES (nextval('file_summary_pago_seq'), #{estadoArchivo}, #{orden}, #{tipoArchivo}, #{idRegisterFileSend}, #{idDocumentSummary})
     </insert>
+     <update id="update" parameterType="com.certicom.certifact_boletas_service_sp.model.SummaryFileModel">
+        UPDATE summary_file
+            SET estado_archivo = #{estadoArchivo},
+                orden = #{orden},
+                tipo_archivo = #{tipoArchivo},
+                id_register_file_send = #{idRegisterFileSend},
+                id_document_summary = #{idDocumentSummary}
+            WHERE id = #{id}
+    </update>
 </mapper>

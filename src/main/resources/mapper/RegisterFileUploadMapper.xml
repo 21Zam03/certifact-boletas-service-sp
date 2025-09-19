@@ -38,25 +38,18 @@
         ORDER BY u.id_register_file_send DESC
         LIMIT 1
     </select>
-    <select id="findByIdPaymentVoucherAndUuidTipo">
-        SELECT
-        pv.id_payment_voucher AS id,
-        u.is_old AS isOld,
-        u.bucket,
-        u.nombre_generado AS nombreGenerado,
-        u.ruc_company AS rucCompany,
-        u.uuid,
-        u.extension,
-        pvf.tipo_archivo AS tipo
-        FROM register_file_upload u
-        INNER JOIN payment_voucher_file pvf
-        ON pvf.id_register_file_send = u.id_register_file_send
-        INNER JOIN payment_voucher pv
-        ON pv.id_payment_voucher = pvf.id_payment_voucher
-        WHERE pv.id_payment_voucher = #{id}
-        AND pv.uuid = #{uuid}
-        AND pvf.tipo_archivo = #{tipo}
-        ORDER BY u.id_register_file_send DESC
-        LIMIT 1
+    <select id="getDataForCdr">
+        select
+            <!--sd.id_document_summary,-->
+            u.is_old,
+            u.bucket,
+            u.nombre_generado,
+            u.ruc_company,
+            u.uuid,
+            u.extension
+        from register_file_upload u
+        inner join summary_file sf on sf.id_register_file_send = u.id_register_file_send
+        inner join summary_documents sd on sd.id_document_summary = sd.id_document_summary
+        where sd.id_document_summary = #{id} order by u.id_register_file_send desc limit 1;
     </select>
 </mapper>

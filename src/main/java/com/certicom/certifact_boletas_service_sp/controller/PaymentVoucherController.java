@@ -66,7 +66,7 @@ public class PaymentVoucherController {
         return new ResponseEntity<>(paymentVoucherService.updateStateToSendSunatForSummaryDocuments(ids, usuario, fechaModificacion), HttpStatus.OK);
     }
 
-    @PutMapping("/payment-summary")
+    @PutMapping("/payment-summary-accept")
     public ResponseEntity<?> updateComprobantesBySummaryDocuments(
             @RequestParam List<String> comprobantesByAceptar,
             @RequestParam String codigo,
@@ -75,4 +75,22 @@ public class PaymentVoucherController {
             @RequestParam Timestamp fechaModificacion) {
         return new ResponseEntity<>(paymentVoucherService.updateComprobantesBySummaryDocuments(comprobantesByAceptar, codigo, abreviado, usuario, fechaModificacion), HttpStatus.OK);
     }
+
+    @PutMapping("/payment-summary-error")
+    public ResponseEntity<?> updateComprobantesOnResumenError(
+            @RequestParam List<String> identificadoresComprobantes,
+            @RequestParam String usuario,
+            @RequestParam Timestamp fechaModificacion) {
+        return new ResponseEntity<>(paymentVoucherService.updateComprobantesOnResumenError(identificadoresComprobantes, usuario, fechaModificacion), HttpStatus.OK);
+    }
+
+    @GetMapping("/ruc-type-serie-number")
+    ResponseEntity<PaymentVoucherDto> findByRucAndTipoAndSerieAndNumero(
+            @RequestParam String finalRucEmisor,
+            @RequestParam String tipoComprobante,
+            @RequestParam String serie,
+            @RequestParam Integer numero) {
+        return new ResponseEntity<>(paymentVoucherService.findByRucAndTipoAndSerieAndNumero(finalRucEmisor, tipoComprobante, serie, numero), HttpStatus.OK);
+    }
+
 }

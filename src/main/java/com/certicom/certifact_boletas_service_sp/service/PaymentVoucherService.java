@@ -22,4 +22,14 @@ public interface PaymentVoucherService {
     int updateStateToSendSunatForSummaryDocuments(List<Long> ids, String usuario, Timestamp fechaModificacion);
     int updateComprobantesBySummaryDocuments(List<String> identificadorComprobantes, String estado, String estadoSunat, String usuario,
                                              Timestamp fechaModificacion);
+    int updateComprobantesOnResumenError(
+            List<String> identificadoresComprobantes,
+            String usuario,
+            Timestamp fechaModificacion);
+
+    PaymentVoucherDto findByRucAndTipoAndSerieAndNumero(
+            String finalRucEmisor,
+            String tipoComprobante,
+            String serie,
+            Integer numero);
 }

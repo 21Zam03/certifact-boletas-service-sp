@@ -12,6 +12,7 @@ import java.util.List;
 @ToString
 public class SummaryDto {
 
+    private Long idDocumentSummary;
     private String fechaEmision;
     private Integer nroResumenDelDia;
     private List<SummaryDetailDto> items;
@@ -32,7 +33,7 @@ public class SummaryDto {
     private List<SummaryFileDto> summaryFileDtoList;
 
     private String codeResponse;
-    private String descripcionResponse;
+    private String descripionResponse;
     private String userNameModify;
     private Timestamp fechaModificacion;
     private Integer intentosGetStatus;

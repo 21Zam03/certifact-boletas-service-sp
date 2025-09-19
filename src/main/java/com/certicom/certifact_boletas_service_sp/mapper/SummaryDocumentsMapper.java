@@ -15,5 +15,6 @@ public interface SummaryDocumentsMapper {
     List<RucEstadoOther> getEstadoAndRucEmisorByNumeroTicket(String ticket);
     String getEstadoByNumeroTicket(String ticket);
     SummaryDocumentsModel findByTicket(String ticket);
+    int update(SummaryDocumentsModel summaryDocumentsModel);
 
 }

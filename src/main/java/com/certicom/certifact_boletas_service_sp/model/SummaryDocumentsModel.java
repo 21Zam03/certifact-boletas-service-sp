@@ -16,7 +16,7 @@ public class SummaryDocumentsModel {
     private Long idDocumentSummary;
     private String codeResponse;
     private Integer correlativoDia;
-    private String descripcionResponse;
+    private String descriptionResponse;
     private String estado;
     private String estadoDocumento;
     private String fechaEmision;

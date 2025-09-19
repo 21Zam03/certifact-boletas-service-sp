@@ -42,13 +42,19 @@ public class RegisterFileUploadServiceImpl implements RegisterFileUploadService 
 
     @Override
     public RegisterFileUploadDto findFirst1ByPaymentVoucherIdPaymentVoucherAndTipoArchivoAndEstadoArchivoOrderByOrdenDesc(Long idPayment, String tipoArchivo, String estadoArchivo) {
-
         return null;
     }
 
     @Override
-    public RegisterFileUploadDto findByIdPaymentVoucherAndUuidTipo(Long id, String uuid, String tipo) {
-        return null;
+    public RegisterFileUploadDto getDataForCdr(Long id) {
+        RegisterFileUploadDto registerFileUploadDto = null;
+        try {
+            RegisterFileUploadModel registerFileUploadModel = registerFileUploadMapper.getDataForCdr(id);
+            registerFileUploadDto = RegisterFileUploadConverter.modelToDto(registerFileUploadModel);
+        } catch (Exception e) {
+            watchLogs(e);
+        }
+        return registerFileUploadDto;
     }
 
     public void watchLogs(Exception e) {

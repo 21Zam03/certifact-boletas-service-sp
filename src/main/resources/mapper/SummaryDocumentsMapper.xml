@@ -15,10 +15,29 @@
             fecha_generacion, fecha_generacion_resumen, fecha_modificacion, id_document, ruc_emisor, ticket_sunat, user_name,
             user_name_modify, intentos_get_status
         )
-        VALUES (nextval('documents_summary_seq'), #{codeResponse}, #{correlativoDia}, #{descripcionResponse}, #{estado}, #{estadoDocumento},
+        VALUES (nextval('documents_summary_seq'), #{codeResponse}, #{correlativoDia}, #{descriptionResponse}, #{estado}, #{estadoDocumento},
                 #{fechaEmision}, #{fechaGeneracion}, #{fechaGeneracionResumen}, #{fechaModificacion}, #{idDocument}, #{rucEmisor}, #{ticketSunat},
                 #{userName}, #{userNameModify}, #{intentosGetStatus})
     </insert>
+    <update id="update" parameterType="com.certicom.certifact_boletas_service_sp.model.SummaryDocumentsModel">
+        UPDATE summary_documents
+        SET code_response = #{codeResponse},
+            correlativo_dia = #{correlativoDia},
+            description_response = #{descriptionResponse},
+            estado = #{estado},
+            estado_documento = #{estadoDocumento},
+            fecha_emision = #{fechaEmision},
+            fecha_generacion = #{fechaGeneracion},
+            fecha_generacion_resumen = #{fechaGeneracionResumen},
+            fecha_modificacion = #{fechaModificacion},
+            id_document = #{idDocument},
+            ruc_emisor = #{rucEmisor},
+            ticket_sunat = #{ticketSunat},
+            user_name = #{userName},
+            user_name_modify = #{userNameModify},
+            intentos_get_status = #{intentosGetStatus}
+        WHERE id_document_summary = #{idDocumentSummary}
+    </update>
     <select id="findById" parameterType="Long" resultType="com.certicom.certifact_boletas_service_sp.model.SummaryDocumentsModel">
         SELECT id_document_summary, code_response, correlativo_dia, description_response, estado, estado_documento, fecha_emision,
         fecha_generacion, fecha_generacion_resumen, fecha_modificacion, id_document, ruc_emisor, ticket_sunat, user_name,

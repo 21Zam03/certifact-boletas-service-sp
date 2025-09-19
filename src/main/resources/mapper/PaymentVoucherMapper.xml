@@ -114,4 +114,24 @@
             #{id}
         </foreach>
     </update>
+    <update id="updateComprobantesOnResumenError" parameterType="map">
+        UPDATE payment_voucher
+        SET estado = '01',
+            estado_sunat = 'N_ENV',
+            user_name_modify = :usuario,
+            fecha_modificacion = :fechaModificacion
+        WHERE identificador_documento IN
+        <foreach item="item" index="index" collection="identificadorComprobantes"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND estado_sunat &lt;&gt; 'ACEPTADO'
+    </update>
+    <select id="findByRucAndTipoAndSerieAndNumero" parameterType="map">
+        SELECT id_payment_voucher, identificador_documento, ruc_emisor, estado_sunat, tipo_comprobante, tip_comprob_afectado,
+        total_oper_inafecta FROM payment_voucher
+        WHERE ruc_emisor = #{finalRucEmisor}
+        AND tipo_comprobante like #{tipoComprobante} and serie like #{serie}
+        AND numero = #{numero}
+    </select>
 </mapper>

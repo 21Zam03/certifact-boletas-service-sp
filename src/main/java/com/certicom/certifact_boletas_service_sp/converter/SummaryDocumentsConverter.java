@@ -9,6 +9,8 @@ public class SummaryDocumentsConverter {
         if (summaryDocumentsModel != null) {
             System.out.println("TICKET SUNAT: "+summaryDocumentsModel.getTicketSunat());
             return SummaryDto.builder()
+                    .descripionResponse(summaryDocumentsModel.getDescriptionResponse())
+                    .idDocumentSummary(summaryDocumentsModel.getIdDocumentSummary())
                     .fechaEmision(summaryDocumentsModel.getFechaEmision())
                     .nroResumenDelDia(summaryDocumentsModel.getCorrelativoDia())
                     .rucEmisor(summaryDocumentsModel.getRucEmisor())
@@ -29,10 +31,11 @@ public class SummaryDocumentsConverter {
     public static SummaryDocumentsModel dtoToModel(SummaryDto summaryDto) {
         if (summaryDto != null) {
             return SummaryDocumentsModel.builder()
+                    .idDocumentSummary(summaryDto.getIdDocumentSummary())
                     .fechaEmision(summaryDto.getFechaEmision())
                     .correlativoDia(summaryDto.getNroResumenDelDia())
                     .rucEmisor(summaryDto.getRucEmisor())
-                    .descripcionResponse(null)
+                    .descriptionResponse(null)
                     .estado(summaryDto.getEstado())
                     .estadoDocumento(summaryDto.getEstadoComprobante())
                     .fechaGeneracion(summaryDto.getFechaGeneracion())

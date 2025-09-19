@@ -31,8 +31,8 @@ public class RegisterFileUploadController {
     }
 
     @GetMapping("/id&uuid&tipo")
-    public ResponseEntity<RegisterFileUploadDto> findByIdPaymentVoucherAndUuidTipo(@RequestParam Long id, @RequestParam String uuid, @RequestParam String tipo) {
-        return new ResponseEntity<>(registerFileUploadService.findByIdPaymentVoucherAndUuidTipo(id, uuid, tipo), HttpStatus.OK);
+    public ResponseEntity<RegisterFileUploadDto> findByIdPaymentVoucherAndUuidTipo(@RequestParam Long id) {
+        return new ResponseEntity<>(registerFileUploadService.getDataForCdr(id), HttpStatus.OK);
     }
 
 }

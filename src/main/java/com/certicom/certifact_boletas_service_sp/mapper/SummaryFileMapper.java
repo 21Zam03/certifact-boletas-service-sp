@@ -7,5 +7,6 @@ import org.apache.ibatis.annotations.Mapper;
 public interface SummaryFileMapper {
 
     int save(SummaryFileModel summaryFileModel);
+    int update(SummaryFileModel summaryFileModel);
 
 }
