@@ -34,5 +34,6 @@ public class DetailDocsSummaryModel {
     private BigDecimal totalIsc;
     private BigDecimal totalOtrosTrib;
     private String estado;
+    private Long idPaymentVoucher;
 
 }

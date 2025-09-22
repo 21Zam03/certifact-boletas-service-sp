@@ -46,4 +46,9 @@ public class SummaryDocumentsController {
         return new ResponseEntity<>(summaryDocumentsService.findByTicket(ticket), HttpStatus.OK);
     }
 
+    @GetMapping("/id-document-summary")
+    public ResponseEntity<Long> getIdDocumentSummaryByIdPaymentVoucher(@RequestParam Long idPaymentVoucher) {
+        return new ResponseEntity<>(summaryDocumentsService.getIdDocumentSummaryByIdPaymentVoucher(idPaymentVoucher), HttpStatus.OK);
+    }
+
 }

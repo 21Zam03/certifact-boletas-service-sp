@@ -12,6 +12,7 @@ public class DetailDocsSummaryConverter {
     public static DetailDocsSummaryModel dtoToModel(SummaryDetailDto summaryDetailDto) {
         if(summaryDetailDto != null) {
             return DetailDocsSummaryModel.builder()
+                    .idPaymentVoucher(summaryDetailDto.getIdPaymentVoucher())
                     .numeroItem(summaryDetailDto.getNumeroItem())
                     .serieDocumento(summaryDetailDto.getSerie())
                     .numeroDocumento(summaryDetailDto.getNumero())
@@ -40,6 +41,7 @@ public class DetailDocsSummaryConverter {
     public static SummaryDetailDto modelToDto(DetailDocsSummaryModel detailDocsSummaryModel) {
         if(detailDocsSummaryModel != null) {
             return SummaryDetailDto.builder()
+                    .idPaymentVoucher(detailDocsSummaryModel.getIdPaymentVoucher())
                     .numeroItem(detailDocsSummaryModel.getNumeroItem())
                     .serie(detailDocsSummaryModel.getSerieDocumento())
                     .numero(detailDocsSummaryModel.getNumeroDocumento())

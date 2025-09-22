@@ -46,10 +46,22 @@ public class RegisterFileUploadServiceImpl implements RegisterFileUploadService 
     }
 
     @Override
-    public RegisterFileUploadDto getDataForCdr(Long id) {
+    public RegisterFileUploadDto getDataForCdr(Long id, String uuid, String tipo) {
         RegisterFileUploadDto registerFileUploadDto = null;
         try {
-            RegisterFileUploadModel registerFileUploadModel = registerFileUploadMapper.getDataForCdr(id);
+            RegisterFileUploadModel registerFileUploadModel = registerFileUploadMapper.getDataForCdr(id, uuid, tipo);
+            registerFileUploadDto = RegisterFileUploadConverter.modelToDto(registerFileUploadModel);
+        } catch (Exception e) {
+            watchLogs(e);
+        }
+        return registerFileUploadDto;
+    }
+
+    @Override
+    public RegisterFileUploadDto getDataForXml(Long id, String uuid, String tipo) {
+        RegisterFileUploadDto registerFileUploadDto = null;
+        try {
+            RegisterFileUploadModel registerFileUploadModel = registerFileUploadMapper.getDataForXml(id, uuid, tipo);
             registerFileUploadDto = RegisterFileUploadConverter.modelToDto(registerFileUploadModel);
         } catch (Exception e) {
             watchLogs(e);

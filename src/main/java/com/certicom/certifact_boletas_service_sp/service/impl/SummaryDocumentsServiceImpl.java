@@ -125,6 +125,11 @@ public class SummaryDocumentsServiceImpl implements SummaryDocumentsService {
         return null;
     }
 
+    @Override
+    public Long getIdDocumentSummaryByIdPaymentVoucher(Long idPaymentVoucher) {
+        return detailDocsSummaryMapper.getIdDocumentSummaryByIdPaymentVoucher(idPaymentVoucher);
+    }
+
     private void watchLogs(Exception e) {
         log.error("ERROR: {}", e.getMessage());
     }

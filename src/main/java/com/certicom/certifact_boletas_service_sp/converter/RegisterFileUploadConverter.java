@@ -3,6 +3,8 @@ package com.certicom.certifact_boletas_service_sp.converter;
 import com.certicom.certifact_boletas_service_sp.dto.RegisterFileUploadDto;
 import com.certicom.certifact_boletas_service_sp.model.RegisterFileUploadModel;
 
+import java.sql.SQLOutput;
+
 public class RegisterFileUploadConverter {
 
     public static RegisterFileUploadDto modelToDto(RegisterFileUploadModel registerFileUploadModel) {
@@ -26,6 +28,8 @@ public class RegisterFileUploadConverter {
     }
 
     public static RegisterFileUploadModel dtoToModel(RegisterFileUploadDto registerFileUploadDto) {
+        System.out.println("BUCKET: " + registerFileUploadDto.getBucket());
+        System.out.println("NOMBRE GENERADO: " + registerFileUploadDto.getNombreGenerado());
         return RegisterFileUploadModel.builder()
                 .idRegisterFileSend(registerFileUploadDto.getIdRegisterFileSend())
                 .extension(registerFileUploadDto.getExtension())

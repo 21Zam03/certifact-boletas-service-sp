@@ -7,6 +7,7 @@ public interface RegisterFileUploadService {
     public RegisterFileUploadDto save(RegisterFileUploadDto registerFileUpload);
     public RegisterFileUploadDto findFirst1ByPaymentVoucherIdPaymentVoucherAndTipoArchivoAndEstadoArchivoOrderByOrdenDesc
             (Long idPayment, String tipoArchivo, String estadoArchivo);
-    public RegisterFileUploadDto getDataForCdr(Long id);
+    public RegisterFileUploadDto getDataForCdr(Long id, String uuid, String tipo);
+    public RegisterFileUploadDto getDataForXml(Long id, String uuid, String tipo);
 
 }

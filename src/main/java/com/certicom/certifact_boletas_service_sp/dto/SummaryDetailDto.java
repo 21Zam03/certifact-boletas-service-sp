@@ -38,5 +38,6 @@ public class SummaryDetailDto {
     private BigDecimal totalValorVentaOperacionInafecta;
 
     private String estado;
+    private Long idPaymentVoucher;
 
 }

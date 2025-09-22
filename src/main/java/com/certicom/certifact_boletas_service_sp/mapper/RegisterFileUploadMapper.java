@@ -12,6 +12,8 @@ public interface RegisterFileUploadMapper {
     public RegisterFileUploadModel findFirst1ByPaymentVoucherIdPaymentVoucherAndTipoArchivoAndEstadoArchivoOrderByOrdenDesc(
             @Param("id") Long idPayment, @Param("tipo") String tipoArchivo, @Param("estado") String estado
     );
-    public RegisterFileUploadModel getDataForCdr(Long id);
+    public RegisterFileUploadModel getDataForCdr(Long id, String uuid, String tipo);
+    public RegisterFileUploadModel getDataForXml(Long id, String uuid, String tipo);
+
 
 }

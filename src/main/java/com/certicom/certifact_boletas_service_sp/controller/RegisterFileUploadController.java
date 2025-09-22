@@ -30,9 +30,14 @@ public class RegisterFileUploadController {
         );
     }
 
-    @GetMapping("/id&uuid&tipo")
-    public ResponseEntity<RegisterFileUploadDto> findByIdPaymentVoucherAndUuidTipo(@RequestParam Long id) {
-        return new ResponseEntity<>(registerFileUploadService.getDataForCdr(id), HttpStatus.OK);
+    @GetMapping("/cdr-info")
+    public ResponseEntity<RegisterFileUploadDto> findForCdrInfo(@RequestParam Long id, @RequestParam String uuid, @RequestParam String tipo) {
+        return new ResponseEntity<>(registerFileUploadService.getDataForCdr(id, uuid, tipo), HttpStatus.OK);
+    }
+
+    @GetMapping("/xml-info")
+    public ResponseEntity<RegisterFileUploadDto> findForXmlInfo(@RequestParam Long id, @RequestParam String uuid, @RequestParam String tipo) {
+        return new ResponseEntity<>(registerFileUploadService.getDataForXml(id, uuid, tipo), HttpStatus.OK);
     }
 
 }

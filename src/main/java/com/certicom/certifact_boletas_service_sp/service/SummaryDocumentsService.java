@@ -13,5 +13,5 @@ public interface SummaryDocumentsService {
     List<RucEstadoOther> getEstadoAndRucEmisorByNumeroTicket(String ticket);
     SummaryDto findByTicket(String ticket);
     SummaryDto update(SummaryDto summaryDto);
-
+    Long getIdDocumentSummaryByIdPaymentVoucher(Long idPaymentVoucher);
 }
