@@ -33,7 +33,7 @@ public class SummaryDto {
     private List<SummaryFileDto> summaryFileDtoList;
 
     private String codeResponse;
-    private String descripionResponse;
+    private String descripcionResponse;
     private String userNameModify;
     private Timestamp fechaModificacion;
     private Integer intentosGetStatus;

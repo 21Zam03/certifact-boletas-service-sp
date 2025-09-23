@@ -27,7 +27,7 @@
         ORDER BY p.numero DESC LIMIT 1
     </select>
     <select id="findByIdentificadorDocumento" parameterType="map" resultType="com.certicom.certifact_boletas_service_sp.model.PaymentVoucherModel">
-        SELECT p.fecha_emision, p.fecha_registro, p.id_payment_voucher, p.uuid, p.identificador_documento, p.codigo_hash, p.estado FROM payment_voucher p
+        SELECT p.fecha_emision, p.fecha_registro, p.id_payment_voucher, p.uuid, p.identificador_documento, p.codigo_hash, p.estado, p.estado_sunat FROM payment_voucher p
         WHERE p.identificador_documento = #{idDocument}
     </select>
     <select id="findListSpecificForSummary" parameterType="map" resultType="com.certicom.certifact_boletas_service_sp.model.PaymentVoucherModel">
@@ -93,8 +93,9 @@
         AND estado_item!=0 and estado in ('01','09')
     </select>
     <update id="updateStateToSendSunatForSummaryDocuments">
-        UPDATE payment_voucher
-        SET estado_anterior = '06',
+        UPDATE payment_voucher SET
+        estado_anterior = estado,
+        estado = '07',
         user_name_modify = #{usuario},
         fecha_modificacion = #{fechaModificacion}
         WHERE id_payment_voucher IN
