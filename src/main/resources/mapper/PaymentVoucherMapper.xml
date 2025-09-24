@@ -11,12 +11,49 @@
         denominacion_receptor, direccion_receptor, email_receptor, total_oper_gravada, sumatoria_igv, monto_imp_total_venta, tipo_operacion, fecha_emision_date, fecha_registro,
         identificador_documento, codigo_hash, detraccion, estado, estado_anterior, estado_sunat, hora_emision, mensaje_respuesta, ubl_version, user_name, user_name_modify, uuid,
         oficina_id, tipo_transaccion, monto_pendiente, estado_item)
-        VALUES (nextval('comprobante_pago_seq'), #{rucEmisor}, #{tipoComprobante}, #{serie}, #{numero}, #{fechaEmision}, #{codigoMoneda}, #{fechaVencimiento}, #{tipoDocIdenReceptor},
-        #{numDocIdenReceptor}, #{denominacionReceptor}, #{direccionReceptor}, #{emailReceptor}, #{totalOperGravada}, #{sumatoriaIgv}, #{montoImpTotalVenta},
+        VALUES (nextval('comprobante_pago_seq'), #{rucEmisor}, #{tipoComprobante}, #{serie}, #{numero}, #{fechaEmision}, #{codigoMoneda}, #{fechaVencimiento}, #{tipDocIdentReceptor},
+        #{numDocIdentReceptor}, #{denominacionReceptor}, #{direccionReceptor}, #{emailReceptor}, #{totalOperGravada}, #{sumatoriaIgv}, #{montoImpTotalVenta},
         #{tipoOperacion}, #{fechaEmisionDate}, #{fechaRegistro, javaType=java.sql.Timestamp, jdbcType=TIMESTAMP}, #{identificadorDocumento}, #{codigoHash}, #{detraccion}, #{estado},
         #{estadoAnterior}, #{estadoSunat}, #{horaEmision}, #{mensajeRespuesta}, #{ublVersion}, #{userName}, #{userNameModify}, #{uuid}, #{oficinaId}, #{tipoTransaccion}, #{montoPendiente},
                 #{estadoItem})
     </insert>
+    <update id="update" parameterType="com.certicom.certifact_boletas_service_sp.model.PaymentVoucherModel">
+        UPDATE payment_voucher
+        SET ruc_emisor              = #{rucEmisor},
+            tipo_comprobante        = #{tipoComprobante},
+            serie                   = #{serie},
+            numero                  = #{numero},
+            fecha_emision           = #{fechaEmision},
+            codigo_moneda           = #{codigoMoneda},
+            fecha_vencimiento       = #{fechaVencimiento},
+            tip_doc_ident_receptor  = #{tipDocIdentReceptor},
+            num_doc_ident_receptor  = #{numDocIdentReceptor},
+            denominacion_receptor   = #{denominacionReceptor},
+            direccion_receptor      = #{direccionReceptor},
+            email_receptor          = #{emailReceptor},
+            total_oper_gravada      = #{totalOperGravada},
+            sumatoria_igv           = #{sumatoriaIgv},
+            monto_imp_total_venta   = #{montoImpTotalVenta},
+            tipo_operacion          = #{tipoOperacion},
+            fecha_emision_date      = #{fechaEmisionDate},
+            fecha_registro          = #{fechaRegistro, javaType=java.sql.Timestamp, jdbcType=TIMESTAMP},
+            identificador_documento = #{identificadorDocumento},
+            codigo_hash             = #{codigoHash},
+            detraccion              = #{detraccion},
+            estado                  = #{estado},
+            estado_anterior         = #{estadoAnterior},
+            estado_sunat            = #{estadoSunat},
+            hora_emision            = #{horaEmision},
+            mensaje_respuesta       = #{mensajeRespuesta},
+            ubl_version             = #{ublVersion},
+            user_name               = #{userName},
+            user_name_modify        = #{userNameModify},
+            uuid                    = #{uuid},
+            oficina_id              = #{oficinaId},
+            tipo_transaccion        = #{tipoTransaccion},
+            monto_pendiente         = #{montoPendiente}
+        WHERE id_payment_voucher = #{idPaymentVoucher}
+    </update>
     <select id="findById" parameterType="long" resultType="com.certicom.certifact_boletas_service_sp.model.PaymentVoucherModel">
         select p.id_payment_voucher, p.uuid, p.identificador_documento, p.codigo_hash, p.tipo_comprobante from payment_voucher p
         where p.id_payment_voucher = #{id}
@@ -27,8 +64,11 @@
         ORDER BY p.numero DESC LIMIT 1
     </select>
     <select id="findByIdentificadorDocumento" parameterType="map" resultType="com.certicom.certifact_boletas_service_sp.model.PaymentVoucherModel">
-        SELECT p.fecha_emision, p.fecha_registro, p.id_payment_voucher, p.uuid, p.identificador_documento, p.codigo_hash, p.estado, p.estado_sunat FROM payment_voucher p
-        WHERE p.identificador_documento = #{idDocument}
+        SELECT id_payment_voucher, ruc_emisor, tipo_comprobante, serie, numero, fecha_emision, codigo_moneda, fecha_vencimiento, tip_doc_ident_receptor, num_doc_ident_receptor,
+               denominacion_receptor, direccion_receptor, email_receptor, total_oper_gravada, sumatoria_igv, monto_imp_total_venta, tipo_operacion, fecha_emision_date, fecha_registro,
+               identificador_documento, codigo_hash, detraccion, estado, estado_anterior, estado_sunat, hora_emision, mensaje_respuesta, ubl_version, user_name, user_name_modify, uuid,
+               oficina_id, tipo_transaccion, monto_pendiente, estado_item FROM payment_voucher
+        WHERE identificador_documento = #{idDocument}
     </select>
     <select id="findListSpecificForSummary" parameterType="map" resultType="com.certicom.certifact_boletas_service_sp.model.PaymentVoucherModel">
         SELECT
@@ -55,7 +95,8 @@
             pv.total_oper_inafecta,
             pv.total_oper_exonerada,
             pv.total_oper_gratuita,
-            pv.estado_item
+            pv.estado_item,
+            pv.ruc_emisor
         FROM payment_voucher pv
         WHERE pv.ruc_emisor = #{ruc}
             AND pv.fecha_emision_date = to_timestamp(#{fechaEmision}, 'YYYY-MM-DD')
@@ -71,7 +112,7 @@
             pv.numero,
             pv.tipo_comprobante as tipoComprobante,
             pv.codigo_moneda as codigoMoneda,
-            pv.tip_doc_ident_receptor as tipoDocIdentReceptor,
+            pv.tip_doc_ident_receptor as tipDocIdentReceptor,
             pv.num_doc_ident_receptor as numDocIdentReceptor,
             pv.cod_tip_nota_cred as codigoTipoNotaCredito,
             pv.cod_tip_nota_debit as codigoTipoNotaDebito,

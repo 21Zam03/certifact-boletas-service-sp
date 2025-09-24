@@ -1,9 +1,6 @@
 package com.certicom.certifact_boletas_service_sp.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -13,6 +10,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@ToString
 public class PaymentVoucherModel {
 
     private Long idPaymentVoucher;
@@ -27,8 +25,8 @@ public class PaymentVoucherModel {
     private String tipoOperacion;
     private String rucEmisor;
     private String codigoLocalAnexo;
-    private String tipoDocIdenReceptor;
-    private String numDocIdenReceptor;
+    private String tipDocIdentReceptor;
+    private String numDocIdentReceptor;
     private String denominacionReceptor;
     private String direccionReceptor;
     private String emailReceptor;

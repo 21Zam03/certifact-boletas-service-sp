@@ -10,6 +10,7 @@ import java.util.List;
 public interface PaymentVoucherMapper {
 
     int save(PaymentVoucherModel paymentVoucherModel);
+    int update(PaymentVoucherModel paymentVoucherModel);
     PaymentVoucherModel findById(Long id);
     PaymentVoucherModel findByIdentificadorDocumento(String idDocumento);
     Integer getNumeroByTipoComprobanteAndSerieAndRucEmisor(String tipo, String serie, String ruc);

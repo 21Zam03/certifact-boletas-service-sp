@@ -37,17 +37,23 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
         int result = 0;
         try {
             PaymentVoucherModel paymentVoucher = PaymentVoucherConverter.dtoToModel(paymentVoucherDto);
-            result = paymentVoucherMapper.save(paymentVoucher);
+            if(paymentVoucher.getIdPaymentVoucher()==null) {
+                result = paymentVoucherMapper.save(paymentVoucher);
+            } else {
+                result = paymentVoucherMapper.update(paymentVoucher);
+            }
             if(result == 0) {
                 throw new RuntimeException("No se pudo registrar el comprobante");
             }
-            for (int i = 0; i< paymentVoucherDto.getPaymentVoucherFileModelList().size(); i++) {
-                paymentVoucherDto.getPaymentVoucherFileModelList().get(i).setIdPaymentVoucher(paymentVoucher.getIdPaymentVoucher());
-                System.out.println("LISTA: "+paymentVoucherDto.getPaymentVoucherFileModelList());
-                System.out.println("ID: "+paymentVoucher.getIdPaymentVoucher());
-                result = paymentVoucherFileMapper.save(PaymentVoucherFileConverter.dtoToModel(paymentVoucherDto.getPaymentVoucherFileModelList().get(i)));
-                if(result == 0) {
-                    throw new RuntimeException("No se pudo registrar el comprobante archivo");
+            if(paymentVoucherDto.getPaymentVoucherFileModelList()!=null && !paymentVoucherDto.getPaymentVoucherFileModelList().isEmpty()) {
+                for (int i = 0; i< paymentVoucherDto.getPaymentVoucherFileModelList().size(); i++) {
+                    paymentVoucherDto.getPaymentVoucherFileModelList().get(i).setIdPaymentVoucher(paymentVoucher.getIdPaymentVoucher());
+                    System.out.println("LISTA: "+paymentVoucherDto.getPaymentVoucherFileModelList());
+                    System.out.println("ID: "+paymentVoucher.getIdPaymentVoucher());
+                    result = paymentVoucherFileMapper.save(PaymentVoucherFileConverter.dtoToModel(paymentVoucherDto.getPaymentVoucherFileModelList().get(i)));
+                    if(result == 0) {
+                        throw new RuntimeException("No se pudo registrar el comprobante archivo");
+                    }
                 }
             }
             if(paymentVoucherDto.getAnticipos() != null && !paymentVoucherDto.getAnticipos().isEmpty()) {
@@ -124,9 +130,12 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
     public PaymentVoucherDto findByIdentificadorDocumento(String identificadorDocumento) {
         PaymentVoucherDto paymentVoucherDto = null;
         try {
+            System.out.println("IDENTIFICADOR: "+identificadorDocumento);
             PaymentVoucherModel paymentVoucherModel = paymentVoucherMapper.findByIdentificadorDocumento(identificadorDocumento);
+            System.out.println("MODEL: "+ paymentVoucherModel);
             if(paymentVoucherModel!=null) {
                 paymentVoucherDto = PaymentVoucherConverter.modelToDto(paymentVoucherModel);
+                System.out.println("PAYNMENTVOUCHER DTO: "+paymentVoucherDto);
             }
         } catch (Exception e) {
             watchLogs(e);
@@ -144,6 +153,7 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
         List<PaymentVoucherDto> listSummaryDto = null;
         try {
             List<PaymentVoucherModel> listSummary = paymentVoucherMapper.findListSpecificForSummary(ruc, fechaEmision, tipo, serie, numero);
+            System.out.println("LIST SUMMARY: "+listSummary);
             listSummaryDto = PaymentVoucherConverter.modelListToDtoList(listSummary);
         } catch (Exception e) {
             watchLogs(e);

@@ -11,6 +11,7 @@ public class PaymentVoucherConverter {
 
     public static PaymentVoucherModel dtoToModel(PaymentVoucherDto paymentVoucherDto) {
         return PaymentVoucherModel.builder()
+                .idPaymentVoucher(paymentVoucherDto.getIdPaymentVoucher())
                 .serie(paymentVoucherDto.getSerie())
                 .numero(paymentVoucherDto.getNumero())
                 .fechaEmision(paymentVoucherDto.getFechaEmision())
@@ -22,8 +23,8 @@ public class PaymentVoucherConverter {
                 .tipoOperacion(paymentVoucherDto.getCodigoTipoOperacion())
                 .rucEmisor(paymentVoucherDto.getRucEmisor())
                 .codigoLocalAnexo(paymentVoucherDto.getCodigoLocalAnexoEmisor())
-                .tipoDocIdenReceptor(paymentVoucherDto.getTipoDocumentoReceptor())
-                .numDocIdenReceptor(paymentVoucherDto.getNumeroDocumentoReceptor())
+                .tipDocIdentReceptor(paymentVoucherDto.getTipoDocumentoReceptor())
+                .numDocIdentReceptor(paymentVoucherDto.getNumeroDocumentoReceptor())
                 .denominacionReceptor(paymentVoucherDto.getDenominacionReceptor())
                 .direccionReceptor(paymentVoucherDto.getDireccionReceptor())
                 .emailReceptor(paymentVoucherDto.getEmailReceptor())
@@ -84,6 +85,9 @@ public class PaymentVoucherConverter {
     }
 
     public static PaymentVoucherDto modelToDto(PaymentVoucherModel paymentVoucherModel) {
+        System.out.println("TIPO DOCUMENTO RECEPTOR: "+paymentVoucherModel.getTipDocIdentReceptor());
+        System.out.println("OFICINA ID: "+paymentVoucherModel.getOficinaId());
+        System.out.println("NUMERO DOC IDENT RECEPTOR: "+paymentVoucherModel.getNumDocIdentReceptor());
         return PaymentVoucherDto.builder()
                 .idPaymentVoucher(paymentVoucherModel.getIdPaymentVoucher())
                 .serie(paymentVoucherModel.getSerie())
@@ -97,8 +101,8 @@ public class PaymentVoucherConverter {
                 .codigoTipoOperacion(paymentVoucherModel.getTipoOperacion())
                 .rucEmisor(paymentVoucherModel.getRucEmisor())
                 .codigoLocalAnexoEmisor(paymentVoucherModel.getCodigoLocalAnexo())
-                .tipoDocumentoReceptor(paymentVoucherModel.getTipoDocIdenReceptor())
-                .numeroDocumentoReceptor(paymentVoucherModel.getNumDocIdenReceptor())
+                .tipoDocumentoReceptor(paymentVoucherModel.getTipDocIdentReceptor())
+                .numeroDocumentoReceptor(paymentVoucherModel.getNumDocIdentReceptor())
                 .denominacionReceptor(paymentVoucherModel.getDenominacionReceptor())
                 .direccionReceptor(paymentVoucherModel.getDireccionReceptor())
                 .emailReceptor(paymentVoucherModel.getEmailReceptor())
