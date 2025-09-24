@@ -85,10 +85,8 @@ public class PaymentVoucherConverter {
     }
 
     public static PaymentVoucherDto modelToDto(PaymentVoucherModel paymentVoucherModel) {
-        System.out.println("TIPO DOCUMENTO RECEPTOR: "+paymentVoucherModel.getTipDocIdentReceptor());
-        System.out.println("OFICINA ID: "+paymentVoucherModel.getOficinaId());
-        System.out.println("NUMERO DOC IDENT RECEPTOR: "+paymentVoucherModel.getNumDocIdentReceptor());
         return PaymentVoucherDto.builder()
+                .oficinaId(paymentVoucherModel.getOficinaId())
                 .idPaymentVoucher(paymentVoucherModel.getIdPaymentVoucher())
                 .serie(paymentVoucherModel.getSerie())
                 .numero(paymentVoucherModel.getNumero())
