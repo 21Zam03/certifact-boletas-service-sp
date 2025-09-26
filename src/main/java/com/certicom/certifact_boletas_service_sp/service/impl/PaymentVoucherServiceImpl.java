@@ -37,6 +37,7 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
         int result = 0;
         try {
             PaymentVoucherModel paymentVoucher = PaymentVoucherConverter.dtoToModel(paymentVoucherDto);
+            System.out.println("PAYMENTVOUCHER ANTES STATE ITEM: "+paymentVoucher.getEstadoItem());
             if(paymentVoucher.getIdPaymentVoucher()==null) {
                 result = paymentVoucherMapper.save(paymentVoucher);
             } else {
@@ -106,6 +107,7 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
                 }
             }
             PaymentVoucherModel payment = paymentVoucherMapper.findById(paymentVoucher.getIdPaymentVoucher());
+            System.out.println("PAYMENT estado item: {}"+payment.getEstadoItem());
             model = PaymentVoucherConverter.modelToDto(payment);
             if(model==null) {
                 throw new RuntimeException("No se pudo obtener el registro de payment");

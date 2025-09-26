@@ -11,5 +11,6 @@ public interface DetailDocsSummaryMapper {
     int save(DetailDocsSummaryModel detailDocsSummaryModel);
     List<DetailDocsSummaryModel> findByIdDocsSummary(Long id);
     Long getIdDocumentSummaryByIdPaymentVoucher(Long id);
+    int update(DetailDocsSummaryModel detailDocsSummaryModel);
 
 }

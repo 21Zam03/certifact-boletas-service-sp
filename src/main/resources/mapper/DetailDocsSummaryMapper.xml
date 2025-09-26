@@ -15,6 +15,33 @@
         #{tipDocIdentReceptor}, #{totalIgv}, #{totalIsc}, #{totalOtrosTrib}, #{totalOperExonerado}, #{totalOperExportacion}, #{totalOperGratuita},
         #{totalOperGravada}, #{totalOperInafecta}, #{idDocsSummary}, #{idPaymentVoucher})
     </insert>
+    <update id="update" parameterType="com.certicom.certifact_boletas_service_sp.model.DetailDocsSummaryModel">
+        UPDATE detail_docs_summary SET
+            estado                   = #{estado},
+            estado_item              = #{estadoItem},
+            importe_total_venta      = #{importeTotalVenta},
+            num_doc_receptor         = #{numDocReceptor},
+            numero_afectado          = #{numeroAfectado},
+            numero_documento         = #{numeroDocumento},
+            numero_item              = #{numeroItem},
+            serie_afectado           = #{serieAfectado},
+            serie_documento          = #{serieDocumento},
+            sumatoria_otro_cargos    = #{sumatoriaOtroCargos},
+            tipo_comprobante         = #{tipoComprobante},
+            tip_comprob_afectado     = #{tipComprobAfectado},
+            tip_doc_ident_receptor   = #{tipDocIdentReceptor},
+            total_igv                = #{totalIgv},
+            total_isc                = #{totalIsc},
+            total_otros_trib         = #{totalOtrosTrib},
+            total_oper_exonerado     = #{totalOperExonerado},
+            total_oper_exportacion   = #{totalOperExportacion},
+            total_oper_gratuita      = #{totalOperGratuita},
+            total_oper_gravada       = #{totalOperGravada},
+            total_oper_inafecta      = #{totalOperInafecta},
+            id_docs_summary          = #{idDocsSummary},
+            id_payment_voucher       = #{idPaymentVoucher}
+        WHERE id_payment_voucher = #{idPaymentVoucher}
+    </update>
     <select id="findByIdDocsSummary" resultType="com.certicom.certifact_boletas_service_sp.model.DetailDocsSummaryModel">
         SELECT id_detail_docs_summary, estado, estado_item, importe_total_venta, num_doc_receptor, numero_afectado, numero_documento,
         numero_item, serie_afectado, serie_documento, sumatoria_otro_cargos, tipo_comprobante, tip_comprob_afectado, tip_doc_ident_receptor,

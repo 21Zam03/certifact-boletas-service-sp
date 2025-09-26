@@ -43,6 +43,7 @@
             estado                  = #{estado},
             estado_anterior         = #{estadoAnterior},
             estado_sunat            = #{estadoSunat},
+            estado_item             = #{estadoItem},
             hora_emision            = #{horaEmision},
             mensaje_respuesta       = #{mensajeRespuesta},
             ubl_version             = #{ublVersion},
@@ -55,7 +56,7 @@
         WHERE id_payment_voucher = #{idPaymentVoucher}
     </update>
     <select id="findById" parameterType="long" resultType="com.certicom.certifact_boletas_service_sp.model.PaymentVoucherModel">
-        select p.id_payment_voucher, p.uuid, p.identificador_documento, p.codigo_hash, p.tipo_comprobante from payment_voucher p
+        select p.id_payment_voucher, p.uuid, p.identificador_documento, p.codigo_hash, p.tipo_comprobante, p.estado_item from payment_voucher p
         where p.id_payment_voucher = #{id}
     </select>
     <select id="getNumeroByTipoComprobanteAndSerieAndRucEmisor" parameterType="map" resultType="Integer">

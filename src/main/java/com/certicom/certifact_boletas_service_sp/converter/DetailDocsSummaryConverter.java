@@ -2,7 +2,6 @@ package com.certicom.certifact_boletas_service_sp.converter;
 
 import com.certicom.certifact_boletas_service_sp.dto.SummaryDetailDto;
 import com.certicom.certifact_boletas_service_sp.model.DetailDocsSummaryModel;
-import com.certicom.certifact_boletas_service_sp.model.SummaryDocumentsModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +11,7 @@ public class DetailDocsSummaryConverter {
     public static DetailDocsSummaryModel dtoToModel(SummaryDetailDto summaryDetailDto) {
         if(summaryDetailDto != null) {
             return DetailDocsSummaryModel.builder()
+                    .idDetailDocsSummary(summaryDetailDto.getIdDetailDocsSummary())
                     .idPaymentVoucher(summaryDetailDto.getIdPaymentVoucher())
                     .numeroItem(summaryDetailDto.getNumeroItem())
                     .serieDocumento(summaryDetailDto.getSerie())
@@ -41,6 +41,7 @@ public class DetailDocsSummaryConverter {
     public static SummaryDetailDto modelToDto(DetailDocsSummaryModel detailDocsSummaryModel) {
         if(detailDocsSummaryModel != null) {
             return SummaryDetailDto.builder()
+                    .idDetailDocsSummary(detailDocsSummaryModel.getIdDetailDocsSummary())
                     .idPaymentVoucher(detailDocsSummaryModel.getIdPaymentVoucher())
                     .numeroItem(detailDocsSummaryModel.getNumeroItem())
                     .serie(detailDocsSummaryModel.getSerieDocumento())

@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLOutput;
 import java.util.List;
 
 @Service
@@ -55,11 +56,18 @@ public class SummaryDocumentsServiceImpl implements SummaryDocumentsService {
                 throw new RuntimeException("No se pudo registrar el comprobante");
             }
             if (summary.getItems() != null && !summary.getItems().isEmpty()) {
+                System.out.println("ITEM ID: "+summary.getItems().get(0).getIdDetailDocsSummary());
                 List<DetailDocsSummaryModel> list = DetailDocsSummaryConverter.dtoListToModelList(summary.getItems());
                 if(summary.getIdDocumentSummary()==null) {
                     for (DetailDocsSummaryModel detailDocsSummaryModel : list) {
                         detailDocsSummaryModel.setIdDocsSummary(summaryDocumentsModel.getIdDocumentSummary());
-                        result = detailDocsSummaryMapper.save(detailDocsSummaryModel);
+                        if (detailDocsSummaryModel.getIdDetailDocsSummary() == null) {
+                            System.out.println("DETAIL SAVE");
+                            result = detailDocsSummaryMapper.save(detailDocsSummaryModel);
+                        } else {
+                            System.out.println("DETAIL UPDATE");
+                            result = detailDocsSummaryMapper.update(detailDocsSummaryModel);
+                        }
                         if(result == 0) {
                             throw new RuntimeException("No se pudo registrar el detail summary");
                         }

@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 @Builder
 public class SummaryDetailDto {
 
+    private Long idDetailDocsSummary;
     private Integer numeroItem;
     private String serie;
     private Integer numero;
