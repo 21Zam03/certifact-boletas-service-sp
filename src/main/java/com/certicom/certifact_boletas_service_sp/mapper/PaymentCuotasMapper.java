@@ -11,5 +11,6 @@ public interface PaymentCuotasMapper {
     int save(PaymentCuotasModel paymentCuotasModel);
     int deleteById(Long id);
     List<PaymentCuotasModel> findAllByIdPaymentVoucher(Long id);
+    int update(PaymentCuotasModel paymentCuotasModel);
 
 }

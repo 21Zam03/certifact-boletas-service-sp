@@ -11,5 +11,6 @@ public interface AditionalFieldPaymentVoucherMapper {
     int save(AditionalFieldPaymentVoucherModel aditionalFieldPaymentVoucherModel);
     int deleteById(Long id);
     List<AditionalFieldPaymentVoucherModel> findAllByIdPaymentVoucher(Long id);
+    int update(AditionalFieldPaymentVoucherModel aditionalFieldPaymentVoucherModel);
 
 }

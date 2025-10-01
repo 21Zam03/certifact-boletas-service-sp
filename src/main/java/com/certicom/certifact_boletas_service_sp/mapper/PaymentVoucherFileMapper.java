@@ -11,6 +11,6 @@ public interface PaymentVoucherFileMapper {
 
     int save(PaymentVoucherFileModel paymentVoucherFileModel);
     List<PaymentVoucherFileModel> findAllByIdPaymentVoucher(Long id);
-    int update(PaymentVoucherFileResponse paymentVoucherFileResponse);
+    int update(PaymentVoucherFileModel paymentVoucherFileModel);
 
 }

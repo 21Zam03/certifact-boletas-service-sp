@@ -15,4 +15,13 @@
         SELECT id_anticipo_payment, monto_anticipo, numero_anticipo, serie_anticipo, tipo_doc_anticipo, id_payment_voucher
         FROM anticipo_payment_voucher WHERE Id_anticipo_payment = #{id}
     </select>
+    <update id="update" parameterType="com.certicom.certifact_boletas_service_sp.response.An">
+        UPDATE anticipo_payment_voucher
+        set monto_anticipo = #{montoAnticipo},
+            numero_anticipo = #{numeroAnticipo},
+            serie_anticipo = #{serieAnticipo},
+            tipo_doc_anticipo = #{tipoDocAnticipo},
+            id_payment_voucher = #{idPaymentVoucher}
+        WHERE id_anticipo_payment = #{idAnticipoPayment}
+    </update>
 </mapper>

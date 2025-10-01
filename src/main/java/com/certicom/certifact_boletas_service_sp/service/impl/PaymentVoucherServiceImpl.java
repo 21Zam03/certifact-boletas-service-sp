@@ -1,12 +1,15 @@
 package com.certicom.certifact_boletas_service_sp.service.impl;
 
 import com.certicom.certifact_boletas_service_sp.converter.*;
+import com.certicom.certifact_boletas_service_sp.exception.ServiceException;
 import com.certicom.certifact_boletas_service_sp.mapper.*;
 import com.certicom.certifact_boletas_service_sp.model.PaymentVoucherModel;
 import com.certicom.certifact_boletas_service_sp.dto.PaymentVoucherDto;
 import com.certicom.certifact_boletas_service_sp.response.PaymentVoucherResponse;
 import com.certicom.certifact_boletas_service_sp.service.PaymentVoucherService;
+import com.certicom.certifact_boletas_service_sp.util.LogMessages;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,14 +35,14 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
 
     @Override
     @Transactional
-    public PaymentVoucherDto save(PaymentVoucherDto paymentVoucherDto) {
+    public PaymentVoucherDto savePaymentVoucher(PaymentVoucherDto paymentVoucherDto) {
+        log.debug("Guardando paymentvoucher con datos completos: {}", paymentVoucherDto);
         PaymentVoucherDto model = null;
         int result = 0;
         try {
             PaymentVoucherModel paymentVoucher = PaymentVoucherConverter.dtoToModel(paymentVoucherDto);
-            System.out.println("PAYMENTVOUCHER ANTES STATE ITEM: "+paymentVoucher.getEstadoItem());
             if(paymentVoucher.getIdPaymentVoucher()==null) {
-                result = paymentVoucherMapper.save(paymentVoucher);
+                result = paymentVoucherMapper.insert(paymentVoucher);
             } else {
                 result = paymentVoucherMapper.update(paymentVoucher);
             }
@@ -107,20 +110,98 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
                 }
             }
             PaymentVoucherModel payment = paymentVoucherMapper.findById(paymentVoucher.getIdPaymentVoucher());
-            System.out.println("PAYMENT estado item: {}"+payment.getEstadoItem());
             model = PaymentVoucherConverter.modelToDto(payment);
             if(model==null) {
                 throw new RuntimeException("No se pudo obtener el registro de payment");
             }
         } catch (Exception e) {
-            watchLogs(e);
+            watchErrorLogs(e);
         }
         return model;
     }
 
+    @Transactional
     @Override
-    public PaymentVoucherDto update(PaymentVoucherDto paymentVoucherDto) {
-        return null;
+    public PaymentVoucherDto updatePaymentVoucher(PaymentVoucherDto paymentVoucherDto) {
+        log.debug("Iniciando proceso de actualizacion : {}", paymentVoucherDto);
+        PaymentVoucherDto model = null;
+        int result = 0;
+        try {
+            PaymentVoucherModel paymentVoucherModel = PaymentVoucherConverter.dtoToModel(paymentVoucherDto);
+            result = paymentVoucherMapper.update(paymentVoucherModel);
+            validateUpdateResult(result, LogMessages.PAYMENT_VOUCHER_NOT_UPDATE, paymentVoucherModel.getIdPaymentVoucher());
+            if(paymentVoucherDto.getPaymentVoucherFileModelList()!=null && !paymentVoucherDto.getPaymentVoucherFileModelList().isEmpty()) {
+                for (int i = 0; i< paymentVoucherDto.getPaymentVoucherFileModelList().size(); i++) {
+                    paymentVoucherDto.getPaymentVoucherFileModelList().get(i).setIdPaymentVoucher(paymentVoucherModel.getIdPaymentVoucher());
+                    result = paymentVoucherFileMapper.update(PaymentVoucherFileConverter.dtoToModel(paymentVoucherDto.getPaymentVoucherFileModelList().get(i)));
+                    validateUpdateResult(result, LogMessages.PAYMENT_VOUCHER_FILE_NOT_UPDATE, paymentVoucherModel.getIdPaymentVoucher());
+                }
+            }
+            if(paymentVoucherDto.getAnticipos() != null && !paymentVoucherDto.getAnticipos().isEmpty()) {
+                for (int i = 0; i< paymentVoucherDto.getAnticipos().size(); i++) {
+                    paymentVoucherDto.getAnticipos().get(i).setIdPaymentVoucher(paymentVoucherModel.getIdPaymentVoucher());
+                    result = anticipoPaymentVoucherMapper.update(AnticipoPaymentVoucherConverter.requestToModel(paymentVoucherDto.getAnticipos().get(i)));
+                    validateUpdateResult(result, LogMessages.ANTICIPO_PAYMENT_VOUCHER_NOT_UPDATE, paymentVoucherDto.getAnticipos().get(i).getIdAnticipoPayment());
+                }
+            }
+            if(paymentVoucherDto.getCamposAdicionales()!= null && !paymentVoucherDto.getCamposAdicionales().isEmpty()) {
+                for (int i = 0; i < paymentVoucherDto.getCamposAdicionales().size(); i++) {
+                    paymentVoucherDto.getCamposAdicionales().get(i).setIdPaymentVoucher(paymentVoucherModel.getIdPaymentVoucher());
+                    Integer id = typeFieldMapper.getIdByName(paymentVoucherDto.getCamposAdicionales().get(i).getNombreCampo());
+                    paymentVoucherDto.getCamposAdicionales().get(i).setTypeFieldId(id);
+                    result = aditionalFieldPaymentVoucherMapper.update(AditionalFIeldPaymentVoucherConverter.requestToModel(paymentVoucherDto.getCamposAdicionales().get(i)));
+                    validateUpdateResult(result, LogMessages.ADITIONAL_FIELD_PAYMENT_VOUCHER_NOT_UPDATE, paymentVoucherDto.getCamposAdicionales().get(i).getId());
+                }
+            }
+            if (paymentVoucherDto.getCuotas() != null && !paymentVoucherDto.getCuotas().isEmpty()) {
+                for (int i = 0; i< paymentVoucherDto.getCuotas().size(); i++) {
+                    paymentVoucherDto.getCuotas().get(i).setIdPaymentVoucher(paymentVoucherDto.getIdPaymentVoucher());
+                    result = paymentCuotasMapper.update(PaymentCuotasConverter.requestToModel(paymentVoucherDto.getCuotas().get(i)));
+                    validateUpdateResult(result, LogMessages.PAYMENT_CUOTAS_NOT_UPDATE, paymentVoucherDto.getCuotas().get(i).getIdCuotas());
+                }
+            }
+            if(paymentVoucherDto.getItems() != null && !paymentVoucherDto.getItems().isEmpty()) {
+                for (int i = 0; i < paymentVoucherDto.getItems().size(); i++) {
+                    paymentVoucherDto.getItems().get(i).setIdPaymentVoucher(paymentVoucherModel.getIdPaymentVoucher());
+                    result = detailsPaymentVoucherMapper.update(DetailsPaymentVoucherConverter.requestToModel(paymentVoucherDto.getItems().get(i)));
+                    validateUpdateResult(result, LogMessages.DETAILS_PAYMENT_VOUCHER_NOT_UPDATE, paymentVoucherDto.getItems().get(i).getIdPaymentVoucher());
+                }
+            }
+            if(paymentVoucherDto.getGuiasRelacionadas() != null && !paymentVoucherDto.getGuiasRelacionadas().isEmpty()) {
+                for (int i = 0; i < paymentVoucherDto.getGuiasRelacionadas().size(); i++) {
+                    paymentVoucherDto.getGuiasRelacionadas().get(i).setIdPaymentVoucher(paymentVoucherModel.getIdPaymentVoucher());
+                    result = guiaPaymentVoucherMapper.update(GuiaPaymentVoucherConverter.requestToModel(paymentVoucherDto.getGuiasRelacionadas().get(i)));
+                    validateUpdateResult(result, LogMessages.GUIA_PAYMENT_VOUCHER_NOT_UPDATE, paymentVoucherDto.getGuiasRelacionadas().get(i).getIdPaymentVoucher());
+                }
+            }
+            PaymentVoucherModel payment = paymentVoucherMapper.findById(paymentVoucherModel.getIdPaymentVoucher());
+            if(payment == null) {
+                throw new ServiceException("");
+            }
+            model = PaymentVoucherConverter.modelToDto(payment);
+        } catch (Exception e) {
+            log.error(LogMessages.PROCESS_FAILED_LOG, e.getMessage());
+            throw new ServiceException(LogMessages.PROCESS_FAILED_EXCEPTION+ e.getMessage());
+        }
+        log.info(LogMessages.PAYMENT_VOUCHER_UPDATED, model.getIdentificadorDocumento());
+        return model;
+    }
+
+    @Override
+    public int save(PaymentVoucherDto paymentVoucherDto) {
+        return 0;
+    }
+
+    @Override
+    public int update(PaymentVoucherDto paymentVoucherDto) {
+        int result = 0;
+        try {
+            result = paymentVoucherMapper.update(PaymentVoucherConverter.dtoToModel(paymentVoucherDto));
+            validateUpdateResult(result, LogMessages.PAYMENT_VOUCHER_NOT_UPDATE, paymentVoucherDto.getIdPaymentVoucher());
+        } catch (Exception e) {
+            log.error(LogMessages.ERROR_EXCEPTION, e.getMessage());
+        }
+        return result;
     }
 
     @Override
@@ -140,7 +221,7 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
                 System.out.println("PAYNMENTVOUCHER DTO: "+paymentVoucherDto);
             }
         } catch (Exception e) {
-            watchLogs(e);
+            watchErrorLogs(e);
         }
         return paymentVoucherDto;
     }
@@ -158,7 +239,7 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
             System.out.println("LIST SUMMARY: "+listSummary);
             listSummaryDto = PaymentVoucherConverter.modelListToDtoList(listSummary);
         } catch (Exception e) {
-            watchLogs(e);
+            watchErrorLogs(e);
         }
         return listSummaryDto;
     }
@@ -170,7 +251,7 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
             List<PaymentVoucherModel> listSummary = paymentVoucherMapper.findAllForSummaryByRucEmisorAndFechaEmision(rucEmisor, fechaEmision);
             listSummaryDto = PaymentVoucherConverter.modelListToDtoList(listSummary);
         } catch (Exception e) {
-            watchLogs(e);
+            watchErrorLogs(e);
         }
         return listSummaryDto;
     }
@@ -182,7 +263,7 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
         try {
             result = paymentVoucherMapper.updateStateToSendSunatForSummaryDocuments(ids, usuario, fechaModificacion);
         } catch (Exception e) {
-            watchLogs(e);
+            watchErrorLogs(e);
         }
         return result;
     }
@@ -204,13 +285,20 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
             PaymentVoucherModel paymentVoucherModel = paymentVoucherMapper.findByRucAndTipoAndSerieAndNumero(finalRucEmisor, tipoComprobante, serie, numero);
             paymentVoucherDto = PaymentVoucherConverter.modelToDto(paymentVoucherModel);
         } catch (Exception e) {
-            watchLogs(e);
+            watchErrorLogs(e);
         }
         return paymentVoucherDto;
     }
 
-    private void watchLogs(Exception e) {
+    private void watchErrorLogs(Exception e) {
         log.error("ERROR: {}", e.getMessage());
+    }
+
+    private void validateUpdateResult(int result, String message, Object id) {
+        if(result == 0) {
+            log.warn(message, id);
+            throw new ServiceException(message);
+        }
     }
 
 }

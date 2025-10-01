@@ -9,7 +9,7 @@ import java.util.List;
 @Mapper
 public interface PaymentVoucherMapper {
 
-    int save(PaymentVoucherModel paymentVoucherModel);
+    int insert(PaymentVoucherModel paymentVoucherModel);
     int update(PaymentVoucherModel paymentVoucherModel);
     PaymentVoucherModel findById(Long id);
     PaymentVoucherModel findByIdentificadorDocumento(String idDocumento);

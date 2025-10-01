@@ -9,8 +9,12 @@ import java.util.List;
 
 public interface PaymentVoucherService {
 
-    PaymentVoucherDto save(PaymentVoucherDto paymentVoucherDto);
-    PaymentVoucherDto update(PaymentVoucherDto paymentVoucherDto);
+    PaymentVoucherDto savePaymentVoucher(PaymentVoucherDto paymentVoucherDto);
+    PaymentVoucherDto updatePaymentVoucher(PaymentVoucherDto paymentVoucherDto);
+
+    int save(PaymentVoucherDto paymentVoucherDto);
+    int update(PaymentVoucherDto paymentVoucherDto);
+
     int delete(Long id);
     PaymentVoucherDto findByIdentificadorDocumento(String identificadorDocumento);
     Integer getNumeracion(String tipoComprobante, String serie, String ruc);

@@ -11,7 +11,7 @@
     <select id="findAllByIdPaymentVoucher" parameterType="Long">
         SELECT id, estado_archivo, orden, tipo_archivo, id_payment_voucher, id_register_file_send FROM payment_voucher_file WHERE id_payment_voucher = #{id}
     </select>
-    <update id="update">
+    <update id="update" parameterType="com.certicom.certifact_boletas_service_sp.model.PaymentVoucherFileModel">
         UPDATE payment_voucher_file
         set estado_archivo = #{estadoArchivo},
         orden = #{orden},

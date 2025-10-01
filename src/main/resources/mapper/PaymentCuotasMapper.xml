@@ -14,4 +14,12 @@
     <select id="findAllByIdPaymentVoucher" parameterType="Long">
         SELECT id_cuotas, numero, monto, fecha, id_payment_voucher FROM payment_cuotas WHERE id_payment_voucher = #{id}
     </select>
+    <update id="update" parameterType="com.certicom.certifact_boletas_service_sp.model.PaymentCuotasModel">
+        UPDATE payment_cuotas
+        set numero = #{numero},
+            monto = #{monto},
+            fecha = #{fecha},
+            id_payment_voucher = #{idPaymentVoucher}
+        WHERE id_cuotas = #{idCuotas}
+    </update>
 </mapper>

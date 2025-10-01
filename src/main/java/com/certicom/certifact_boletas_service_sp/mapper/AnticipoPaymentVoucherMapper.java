@@ -11,5 +11,6 @@ public interface AnticipoPaymentVoucherMapper {
     int save(AnticipoPaymentVoucherModel anticipoPaymentVoucherModel);
     int deleteById(Long id);
     List<AnticipoPaymentVoucherModel> findAllByIdPaymentVoucher(Long id);
+    int update(AnticipoPaymentVoucherModel anticipoPaymentVoucherModel);
 
 }
