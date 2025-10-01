@@ -68,7 +68,7 @@ public class PaymentVoucherDto {
     private String tipoDocumentoEmisor;
     private String identificadorDocumento;
     private String ordenCompra;
-    private List<AnticipoPaymentVoucherRequest> anticipos;
+    private List<AnticipoPaymentVoucherDto> anticipos;
     private List<AditionalFieldPaymentVoucherRequest> camposAdicionales;
     private List<PaymentCuotasRequest> cuotas;
     private String codigoBienDetraccion;

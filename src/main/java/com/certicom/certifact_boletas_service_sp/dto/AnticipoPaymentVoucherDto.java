@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class AnticipoPaymentVoucherRequest {
+public class AnticipoPaymentVoucherDto {
 
     private Long idAnticipoPayment;
     private Long idPaymentVoucher;

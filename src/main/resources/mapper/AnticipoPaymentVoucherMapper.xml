@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.certicom.certifact_boletas_service_sp.mapper.AnticipoPaymentVoucherMapper">
-    <insert id="save" parameterType="com.certicom.certifact_boletas_service_sp.response.AnticipoPaymentVoucherResponse">
+    <insert id="insert" parameterType="com.certicom.certifact_boletas_service_sp.model.AnticipoPaymentVoucherModel">
         INSERT INTO anticipo_payment_voucher (id_anticipo_payment, monto_anticipo, numero_anticipo, serie_anticipo, tipo_doc_anticipo, id_payment_voucher)
         values (nextval('anticipo_payment_voucher_seq'), #{montoAnticipo}, #{numeroAnticipo}, #{serieAnticipo}, #{tipoDocAnticipo}, #{idPaymentVoucher})
     </insert>
@@ -15,7 +15,7 @@
         SELECT id_anticipo_payment, monto_anticipo, numero_anticipo, serie_anticipo, tipo_doc_anticipo, id_payment_voucher
         FROM anticipo_payment_voucher WHERE Id_anticipo_payment = #{id}
     </select>
-    <update id="update" parameterType="com.certicom.certifact_boletas_service_sp.response.An">
+    <update id="update" parameterType="com.certicom.certifact_boletas_service_sp.model.AnticipoPaymentVoucherModel">
         UPDATE anticipo_payment_voucher
         set monto_anticipo = #{montoAnticipo},
             numero_anticipo = #{numeroAnticipo},
@@ -23,5 +23,17 @@
             tipo_doc_anticipo = #{tipoDocAnticipo},
             id_payment_voucher = #{idPaymentVoucher}
         WHERE id_anticipo_payment = #{idAnticipoPayment}
+    </update>
+    <update id="updateAll" parameterType="java.util.List">
+        <foreach collection="list" item="item" separator=";">
+            UPDATE anticipo_payment_voucher
+            SET
+            monto_anticipo   = #{item.montoAnticipo},
+            numero_anticipo  = #{item.numeroAnticipo},
+            serie_anticipo   = #{item.serieAnticipo},
+            tipo_doc_anticipo = #{item.tipoDocAnticipo},
+            id_payment_voucher = #{item.idPaymentVoucher}
+            WHERE id_anticipo_payment = #{item.idAnticipoPayment}
+        </foreach>
     </update>
 </mapper>

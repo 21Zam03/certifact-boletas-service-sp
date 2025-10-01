@@ -6,6 +6,8 @@ import com.certicom.certifact_boletas_service_sp.mapper.*;
 import com.certicom.certifact_boletas_service_sp.model.PaymentVoucherModel;
 import com.certicom.certifact_boletas_service_sp.dto.PaymentVoucherDto;
 import com.certicom.certifact_boletas_service_sp.response.PaymentVoucherResponse;
+import com.certicom.certifact_boletas_service_sp.service.AnticipoPaymentVoucherService;
+import com.certicom.certifact_boletas_service_sp.service.PaymentVoucherFileService;
 import com.certicom.certifact_boletas_service_sp.service.PaymentVoucherService;
 import com.certicom.certifact_boletas_service_sp.util.LogMessages;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +34,8 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
     private final PaymentCuotasMapper paymentCuotasMapper;
     private final DetailsPaymentVoucherMapper detailsPaymentVoucherMapper;
     private final GuiaPaymentVoucherMapper guiaPaymentVoucherMapper;
+    private final PaymentVoucherFileService paymentVoucherFileService;
+    private final AnticipoPaymentVoucherService anticipoPaymentVoucherService;
 
     @Override
     @Transactional
@@ -52,9 +56,7 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
             if(paymentVoucherDto.getPaymentVoucherFileModelList()!=null && !paymentVoucherDto.getPaymentVoucherFileModelList().isEmpty()) {
                 for (int i = 0; i< paymentVoucherDto.getPaymentVoucherFileModelList().size(); i++) {
                     paymentVoucherDto.getPaymentVoucherFileModelList().get(i).setIdPaymentVoucher(paymentVoucher.getIdPaymentVoucher());
-                    System.out.println("LISTA: "+paymentVoucherDto.getPaymentVoucherFileModelList());
-                    System.out.println("ID: "+paymentVoucher.getIdPaymentVoucher());
-                    result = paymentVoucherFileMapper.save(PaymentVoucherFileConverter.dtoToModel(paymentVoucherDto.getPaymentVoucherFileModelList().get(i)));
+                    result = paymentVoucherFileMapper.insert(PaymentVoucherFileConverter.dtoToModel(paymentVoucherDto.getPaymentVoucherFileModelList().get(i)));
                     if(result == 0) {
                         throw new RuntimeException("No se pudo registrar el comprobante archivo");
                     }
@@ -63,7 +65,7 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
             if(paymentVoucherDto.getAnticipos() != null && !paymentVoucherDto.getAnticipos().isEmpty()) {
                 for (int i = 0; i< paymentVoucherDto.getAnticipos().size(); i++) {
                     paymentVoucherDto.getAnticipos().get(i).setIdPaymentVoucher(paymentVoucher.getIdPaymentVoucher());
-                    result = anticipoPaymentVoucherMapper.save(AnticipoPaymentVoucherConverter.requestToModel(paymentVoucherDto.getAnticipos().get(i)));
+                    result = anticipoPaymentVoucherMapper.insert(AnticipoPaymentVoucherConverter.dtoToModel(paymentVoucherDto.getAnticipos().get(i)));
                     if(result == 0) {
                         throw new RuntimeException("No se pudo registrar el comprobante archivo");
                     }
@@ -127,26 +129,13 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
         PaymentVoucherDto model = null;
         int result = 0;
         try {
-            PaymentVoucherModel paymentVoucherModel = PaymentVoucherConverter.dtoToModel(paymentVoucherDto);
-            result = paymentVoucherMapper.update(paymentVoucherModel);
-            validateUpdateResult(result, LogMessages.PAYMENT_VOUCHER_NOT_UPDATE, paymentVoucherModel.getIdPaymentVoucher());
-            if(paymentVoucherDto.getPaymentVoucherFileModelList()!=null && !paymentVoucherDto.getPaymentVoucherFileModelList().isEmpty()) {
-                for (int i = 0; i< paymentVoucherDto.getPaymentVoucherFileModelList().size(); i++) {
-                    paymentVoucherDto.getPaymentVoucherFileModelList().get(i).setIdPaymentVoucher(paymentVoucherModel.getIdPaymentVoucher());
-                    result = paymentVoucherFileMapper.update(PaymentVoucherFileConverter.dtoToModel(paymentVoucherDto.getPaymentVoucherFileModelList().get(i)));
-                    validateUpdateResult(result, LogMessages.PAYMENT_VOUCHER_FILE_NOT_UPDATE, paymentVoucherModel.getIdPaymentVoucher());
-                }
-            }
-            if(paymentVoucherDto.getAnticipos() != null && !paymentVoucherDto.getAnticipos().isEmpty()) {
-                for (int i = 0; i< paymentVoucherDto.getAnticipos().size(); i++) {
-                    paymentVoucherDto.getAnticipos().get(i).setIdPaymentVoucher(paymentVoucherModel.getIdPaymentVoucher());
-                    result = anticipoPaymentVoucherMapper.update(AnticipoPaymentVoucherConverter.requestToModel(paymentVoucherDto.getAnticipos().get(i)));
-                    validateUpdateResult(result, LogMessages.ANTICIPO_PAYMENT_VOUCHER_NOT_UPDATE, paymentVoucherDto.getAnticipos().get(i).getIdAnticipoPayment());
-                }
-            }
+            update(paymentVoucherDto);
+            paymentVoucherFileService.updateAllPaymentVoucherFile(paymentVoucherDto.getPaymentVoucherFileModelList(), paymentVoucherDto.getIdPaymentVoucher());
+            anticipoPaymentVoucherService.updateAllAnticipoPaymentVoucher(paymentVoucherDto.getAnticipos(), paymentVoucherDto.getIdPaymentVoucher());
+
             if(paymentVoucherDto.getCamposAdicionales()!= null && !paymentVoucherDto.getCamposAdicionales().isEmpty()) {
                 for (int i = 0; i < paymentVoucherDto.getCamposAdicionales().size(); i++) {
-                    paymentVoucherDto.getCamposAdicionales().get(i).setIdPaymentVoucher(paymentVoucherModel.getIdPaymentVoucher());
+                    paymentVoucherDto.getCamposAdicionales().get(i).setIdPaymentVoucher(paymentVoucherDto.getIdPaymentVoucher());
                     Integer id = typeFieldMapper.getIdByName(paymentVoucherDto.getCamposAdicionales().get(i).getNombreCampo());
                     paymentVoucherDto.getCamposAdicionales().get(i).setTypeFieldId(id);
                     result = aditionalFieldPaymentVoucherMapper.update(AditionalFIeldPaymentVoucherConverter.requestToModel(paymentVoucherDto.getCamposAdicionales().get(i)));
@@ -162,19 +151,19 @@ public class PaymentVoucherServiceImpl implements PaymentVoucherService {
             }
             if(paymentVoucherDto.getItems() != null && !paymentVoucherDto.getItems().isEmpty()) {
                 for (int i = 0; i < paymentVoucherDto.getItems().size(); i++) {
-                    paymentVoucherDto.getItems().get(i).setIdPaymentVoucher(paymentVoucherModel.getIdPaymentVoucher());
+                    paymentVoucherDto.getItems().get(i).setIdPaymentVoucher(paymentVoucherDto.getIdPaymentVoucher());
                     result = detailsPaymentVoucherMapper.update(DetailsPaymentVoucherConverter.requestToModel(paymentVoucherDto.getItems().get(i)));
                     validateUpdateResult(result, LogMessages.DETAILS_PAYMENT_VOUCHER_NOT_UPDATE, paymentVoucherDto.getItems().get(i).getIdPaymentVoucher());
                 }
             }
             if(paymentVoucherDto.getGuiasRelacionadas() != null && !paymentVoucherDto.getGuiasRelacionadas().isEmpty()) {
                 for (int i = 0; i < paymentVoucherDto.getGuiasRelacionadas().size(); i++) {
-                    paymentVoucherDto.getGuiasRelacionadas().get(i).setIdPaymentVoucher(paymentVoucherModel.getIdPaymentVoucher());
+                    paymentVoucherDto.getGuiasRelacionadas().get(i).setIdPaymentVoucher(paymentVoucherDto.getIdPaymentVoucher());
                     result = guiaPaymentVoucherMapper.update(GuiaPaymentVoucherConverter.requestToModel(paymentVoucherDto.getGuiasRelacionadas().get(i)));
                     validateUpdateResult(result, LogMessages.GUIA_PAYMENT_VOUCHER_NOT_UPDATE, paymentVoucherDto.getGuiasRelacionadas().get(i).getIdPaymentVoucher());
                 }
             }
-            PaymentVoucherModel payment = paymentVoucherMapper.findById(paymentVoucherModel.getIdPaymentVoucher());
+            PaymentVoucherModel payment = paymentVoucherMapper.findById(paymentVoucherDto.getIdPaymentVoucher());
             if(payment == null) {
                 throw new ServiceException("");
             }

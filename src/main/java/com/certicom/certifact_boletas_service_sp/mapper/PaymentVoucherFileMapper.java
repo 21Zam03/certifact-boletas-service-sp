@@ -7,10 +7,10 @@ import org.apache.ibatis.annotations.Mapper;
 import java.util.List;
 
 @Mapper
-public interface PaymentVoucherFileMapper {
+public interface PaymentVoucherFileMapper extends BaseMapper<PaymentVoucherFileModel, Long> {
 
-    int save(PaymentVoucherFileModel paymentVoucherFileModel);
+    //int save(PaymentVoucherFileModel paymentVoucherFileModel);
     List<PaymentVoucherFileModel> findAllByIdPaymentVoucher(Long id);
-    int update(PaymentVoucherFileModel paymentVoucherFileModel);
+    //int update(PaymentVoucherFileModel paymentVoucherFileModel);
 
 }
