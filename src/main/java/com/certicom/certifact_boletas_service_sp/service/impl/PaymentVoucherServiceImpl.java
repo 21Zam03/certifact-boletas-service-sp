@@ -168,22 +168,22 @@ public class PaymentVoucherServiceImpl extends AbstractGenericService<PaymentVou
             updatePaymentVoucher(paymentVoucherDto);
 
             setInfoPaymentFiles(paymentVoucherDto.getPaymentVoucherFileModelList(), paymentVoucherDto.getIdPaymentVoucher());
-            paymentVoucherFileService.updateAllPaymentVoucherFile(paymentVoucherDto.getPaymentVoucherFileModelList());
+            //paymentVoucherFileService.updateAllPaymentVoucherFile(paymentVoucherDto.getPaymentVoucherFileModelList());
 
             setInfoAnticipos(paymentVoucherDto.getAnticipos(), paymentVoucherDto.getIdPaymentVoucher());
-            anticipoPaymentVoucherService.updateAllAnticipoPaymentVoucher(paymentVoucherDto.getAnticipos());
+            //anticipoPaymentVoucherService.updateAllAnticipoPaymentVoucher(paymentVoucherDto.getAnticipos());
 
             setInfoCamposAdicionales(paymentVoucherDto.getCamposAdicionales(), paymentVoucherDto.getIdPaymentVoucher());
-            aditionalFieldPaymentVoucherService.updateAllAditionalFieldPaymentVoucher(paymentVoucherDto.getCamposAdicionales());
+            //aditionalFieldPaymentVoucherService.updateAllAditionalFieldPaymentVoucher(paymentVoucherDto.getCamposAdicionales());
 
             setInfoCuotas(paymentVoucherDto.getCuotas(), paymentVoucherDto.getIdPaymentVoucher());
-            paymentCuotasService.updateAllPaymentCuotas(paymentVoucherDto.getCuotas());
+            //paymentCuotasService.updateAllPaymentCuotas(paymentVoucherDto.getCuotas());
 
             setInfoItems(paymentVoucherDto.getItems(), paymentVoucherDto.getIdPaymentVoucher());
-            detailsPaymentVoucherService.updateAllDetailsPaymentVouhcer(paymentVoucherDto.getItems());
+            //detailsPaymentVoucherService.updateAllDetailsPaymentVouhcer(paymentVoucherDto.getItems());
 
             setInfoGuia(paymentVoucherDto.getGuiasRelacionadas(), paymentVoucherDto.getIdPaymentVoucher());
-            guiaPaymentVoucherService.updateGuiaPaymentVoucher(paymentVoucherDto.getGuiasRelacionadas());
+            //guiaPaymentVoucherService.updateGuiaPaymentVoucher(paymentVoucherDto.getGuiasRelacionadas());
 
             Optional<PaymentVoucherModel> payment = findById(paymentVoucherDto.getIdPaymentVoucher());
             if(payment.isEmpty()) {
@@ -200,10 +200,11 @@ public class PaymentVoucherServiceImpl extends AbstractGenericService<PaymentVou
     }
 
     private void setInfoGuia(List<GuiaPaymentVoucherDto> guiaPayments, Long idPaymentVoucher) {
-        if(guiaPayments == null || guiaPayments.isEmpty()) {
+        if(guiaPayments != null && !guiaPayments.isEmpty()) {
             for (GuiaPaymentVoucherDto guiaPayment : guiaPayments) {
                 guiaPayment.setIdPaymentVoucher(idPaymentVoucher);
             }
+            guiaPaymentVoucherService.updateGuiaPaymentVoucher(guiaPayments);
         }
     }
 
@@ -212,6 +213,7 @@ public class PaymentVoucherServiceImpl extends AbstractGenericService<PaymentVou
             for (DetailsPaymentVoucherDto item : items) {
                 item.setIdPaymentVoucher(idPaymentVoucher);
             }
+            detailsPaymentVoucherService.updateAllDetailsPaymentVouhcer(items);
         }
     }
 
@@ -220,6 +222,7 @@ public class PaymentVoucherServiceImpl extends AbstractGenericService<PaymentVou
             for(PaymentCuotasDto cuotasDto : cuotas) {
                 cuotasDto.setIdPaymentVoucher(idPaymentVoucher);
             }
+            paymentCuotasService.updateAllPaymentCuotas(cuotas);
         }
     }
 
@@ -228,6 +231,7 @@ public class PaymentVoucherServiceImpl extends AbstractGenericService<PaymentVou
             for (PaymentVoucherFileDto paymentVoucherFile : paymentFiles) {
                 paymentVoucherFile.setIdPaymentVoucher(idPaymentVoucher);
             }
+            paymentVoucherFileService.updateAllPaymentVoucherFile(paymentFiles);
         }
     }
 
@@ -236,6 +240,7 @@ public class PaymentVoucherServiceImpl extends AbstractGenericService<PaymentVou
             for (AnticipoPaymentVoucherDto anticipo : anticipos) {
                 anticipo.setIdPaymentVoucher(idPaymentVoucher);
             }
+            anticipoPaymentVoucherService.updateAllAnticipoPaymentVoucher(anticipos);
         }
     }
 
@@ -246,6 +251,7 @@ public class PaymentVoucherServiceImpl extends AbstractGenericService<PaymentVou
                 Long id = typeFieldService.getIdByNameTypeField(camposAdicional.getNombreCampo());
                 camposAdicional.setId(id);
             }
+            aditionalFieldPaymentVoucherService.updateAllAditionalFieldPaymentVoucher(camposAdicionales);
         }
     }
 

@@ -69,7 +69,7 @@ public class DetailsPaymentVoucherConverter {
     }
 
     public static List<DetailsPaymentVoucherModel> detoListToModelList(List<DetailsPaymentVoucherDto> detailsPaymentVoucherDtoList) {
-        if(detailsPaymentVoucherDtoList==null && !detailsPaymentVoucherDtoList.isEmpty()){
+        if(detailsPaymentVoucherDtoList!=null && !detailsPaymentVoucherDtoList.isEmpty()){
             List<DetailsPaymentVoucherModel> detailsPaymentVoucherModelList = new ArrayList<>();
             for (DetailsPaymentVoucherDto item : detailsPaymentVoucherDtoList) {
                 detailsPaymentVoucherModelList.add(dtoToModel(item));

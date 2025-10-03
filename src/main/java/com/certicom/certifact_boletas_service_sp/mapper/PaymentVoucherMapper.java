@@ -2,6 +2,7 @@ package com.certicom.certifact_boletas_service_sp.mapper;
 
 import com.certicom.certifact_boletas_service_sp.model.PaymentVoucherModel;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -33,4 +34,5 @@ public interface PaymentVoucherMapper extends BaseMapper<PaymentVoucherModel, Lo
             String tipoComprobante,
             String serie,
             Integer numero);
+
 }

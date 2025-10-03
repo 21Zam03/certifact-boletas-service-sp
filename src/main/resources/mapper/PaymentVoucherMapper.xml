@@ -171,8 +171,10 @@
         AND estado_sunat &lt;&gt; 'ACEPTADO'
     </update>
     <select id="findByRucAndTipoAndSerieAndNumero" parameterType="map">
-        SELECT id_payment_voucher, identificador_documento, ruc_emisor, estado_sunat, tipo_comprobante, tip_comprob_afectado,
-        total_oper_inafecta FROM payment_voucher
+        SELECT id_payment_voucher, ruc_emisor, tipo_comprobante, serie, numero, fecha_emision, codigo_moneda, fecha_vencimiento, tip_doc_ident_receptor, num_doc_ident_receptor,
+            denominacion_receptor, direccion_receptor, email_receptor, total_oper_gravada, sumatoria_igv, monto_imp_total_venta, tipo_operacion, fecha_emision_date, fecha_registro,
+            identificador_documento, codigo_hash, detraccion, estado, estado_anterior, estado_sunat, hora_emision, mensaje_respuesta, ubl_version, user_name, user_name_modify, uuid,
+            oficina_id, tipo_transaccion, monto_pendiente FROM payment_voucher
         WHERE ruc_emisor = #{finalRucEmisor}
         AND tipo_comprobante like #{tipoComprobante} and serie like #{serie}
         AND numero = #{numero}

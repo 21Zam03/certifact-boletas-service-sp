@@ -22,7 +22,7 @@ public class DetailsPaymentVoucherServiceImpl extends AbstractGenericService<Det
 
     @Override
     public void updateAllDetailsPaymentVouhcer(List<DetailsPaymentVoucherDto> detailsPaymentVoucherDtoList) {
-        mapper.updateAll(DetailsPaymentVoucherConverter.detoListToModelList(detailsPaymentVoucherDtoList));
+        updateAll(DetailsPaymentVoucherConverter.detoListToModelList(detailsPaymentVoucherDtoList));
     }
 
 }

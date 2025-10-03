@@ -36,4 +36,5 @@ public interface PaymentVoucherService {
             String tipoComprobante,
             String serie,
             Integer numero);
+
 }

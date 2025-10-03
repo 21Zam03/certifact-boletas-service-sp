@@ -81,6 +81,7 @@ public class PaymentVoucherConverter {
                 .cantidadCuotas(paymentVoucherDto.getCantidadCuotas())
                 .pagoCuenta(paymentVoucherDto.getPagoCuenta())
                 .oficinaId(paymentVoucherDto.getOficinaId())
+                .UblVersion(paymentVoucherDto.getUblVersion())
                 .build();
     }
 
@@ -156,6 +157,7 @@ public class PaymentVoucherConverter {
                 .montoPendiente(paymentVoucherModel.getMontoPendiente())
                 .cantidadCuotas(paymentVoucherModel.getCantidadCuotas())
                 .pagoCuenta(paymentVoucherModel.getPagoCuenta())
+                .ublVersion(paymentVoucherModel.getUblVersion())
                 .build();
     }
 
