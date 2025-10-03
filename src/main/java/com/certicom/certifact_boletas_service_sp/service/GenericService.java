@@ -7,8 +7,8 @@ public interface GenericService<T, ID> {
 
     Optional<T> findById(ID id);
     List<T> findAll();
-    void save(T entity);
-    void update(T entity);
+    int save(T entity);
+    int update(T entity);
     void delete(ID id);
     int updateAll(List<T> list);
 

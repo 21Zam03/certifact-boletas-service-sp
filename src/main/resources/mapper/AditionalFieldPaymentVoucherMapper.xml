@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.certicom.certifact_boletas_service_sp.mapper.AditionalFieldPaymentVoucherMapper">
-    <insert id="save" parameterType="com.certicom.certifact_boletas_service_sp.model.AditionalFieldPaymentVoucherModel">
+    <insert id="insert" parameterType="com.certicom.certifact_boletas_service_sp.model.AditionalFieldPaymentVoucherModel">
         INSERT INTO aditional_field_payment_voucher (id, nombre_campo, valor_campo, id_payment_voucher, type_field_id)
         VALUES (nextval('aditional_field_payment_voucher_seq'), #{nombreCampo}, #{valorCampo}, #{idPaymentVoucher}, #{typeFieldId})
     </insert>
@@ -21,5 +21,15 @@
             id_payment_voucher = #{idPaymentVoucher},
             type_field_id = #{typeFieldId}
         WHERE id = #{id}
+    </update>
+    <update id="updateAll" parameterType="java.util.List">
+        <foreach collection="list" item="item" separator=";">
+            UPDATE aditional_field_payment_voucher
+            SET nombre_campo = #{item.nombreCampo},
+            valor_campo = #{item.valorCampo},
+            id_payment_voucher = #{item.idPaymentVoucher},
+            type_field_id = #{item.typeFieldId}
+            WHERE id = #{item.id}
+        </foreach>
     </update>
 </mapper>

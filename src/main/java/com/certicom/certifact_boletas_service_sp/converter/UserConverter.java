@@ -8,7 +8,7 @@ public class UserConverter {
     public static UserDto modelToDto(UserModel userModel) {
         return UserDto.builder()
                 .idUser(userModel.getIdUser())
-                .idOficina(userModel.getIdOficina())
+                .idOficina(userModel.getOficinaId())
                 .nombreUsuario(userModel.getDeLogin())
                 .contrasena(userModel.getPassword())
                 .nombreCompleto(userModel.getFullName())

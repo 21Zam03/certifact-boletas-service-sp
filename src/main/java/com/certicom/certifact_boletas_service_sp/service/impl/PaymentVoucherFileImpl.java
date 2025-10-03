@@ -20,12 +20,12 @@ public class PaymentVoucherFileImpl extends AbstractGenericService<PaymentVouche
 
     @Override
     public int savePaymentVoucherFile(PaymentVoucherFileDto paymentVoucherFileDto) {
-        return mapper.insert(PaymentVoucherFileConverter.dtoToModel(paymentVoucherFileDto));
+        return save(PaymentVoucherFileConverter.dtoToModel(paymentVoucherFileDto));
     }
 
     @Override
     public int updatePaymentVoucherFile(PaymentVoucherFileDto paymentVoucherFileDto) {
-        return mapper.update(PaymentVoucherFileConverter.dtoToModel(paymentVoucherFileDto));
+        return update(PaymentVoucherFileConverter.dtoToModel(paymentVoucherFileDto));
     }
 
     @Override
@@ -34,13 +34,8 @@ public class PaymentVoucherFileImpl extends AbstractGenericService<PaymentVouche
     }
 
     @Override
-    public void updateAllPaymentVoucherFile(List<PaymentVoucherFileDto> paymentVoucherFileDtos, Long idPaymentVoucher) {
-        if (paymentVoucherFileDtos!=null && !paymentVoucherFileDtos.isEmpty()) {
-            for (PaymentVoucherFileDto paymentVoucherFileDto : paymentVoucherFileDtos) {
-                paymentVoucherFileDto.setIdPaymentVoucher(idPaymentVoucher);
-            }
-            mapper.updateAll(PaymentVoucherFileConverter.dtoListToModelList(paymentVoucherFileDtos));
-        }
+    public void updateAllPaymentVoucherFile(List<PaymentVoucherFileDto> paymentVoucherFileDtos) {
+        updateAll(PaymentVoucherFileConverter.dtoListToModelList(paymentVoucherFileDtos));
     }
 
 

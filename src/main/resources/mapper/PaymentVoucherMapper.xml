@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.certicom.certifact_boletas_service_sp.mapper.PaymentVoucherMapper">
-    <insert id="save"
+    <insert id="insert"
             parameterType="com.certicom.certifact_boletas_service_sp.model.PaymentVoucherModel"
             useGeneratedKeys="true" keyProperty="idPaymentVoucher" keyColumn="id_payment_voucher">
         INSERT INTO payment_voucher

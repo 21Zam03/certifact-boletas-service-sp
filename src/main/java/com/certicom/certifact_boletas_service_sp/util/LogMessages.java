@@ -30,6 +30,7 @@ public class LogMessages {
 
     //LOGS HACIENDO CONSULTAS A BASE DE DATOS
     public static final String ENTITY_NOT_FOUND = "Entidad no encontrada con id: {}";
+    public static final String ENTITY_NOT_FOUND_EXCEPTION = "Entidad no encontrada con id: ";
     public static final String ENTITY_FOUND_ERROR = "Error al obtener la entidad, error={}";
     public static final String ENTITY_LIST_EMPTY = "Se obtuvo la lista vacia";
     public static final String ENTITY_LIST_ERROR = "Error al obtener lista de entidades, error={}";
@@ -43,5 +44,11 @@ public class LogMessages {
     public static final String ENTITY_LIST_UPDATED_ERROR = "Error al actualizar las entidades, error={}";
 
     public static final String ENTITY_LIST_UPDATED = "Se actualizaron las entidades, count={}";
+
+
+    public static final String PARAMETER_NOT_NULL = "Parametro no puede ser nulo";
+    public static final String RESULT_NULL = "El valor de la respuesta de la query es nula";
+
+    public static final String PROCESS_START_1 = "Iniciando proceso transaccional, parameter: {}";
 
 }

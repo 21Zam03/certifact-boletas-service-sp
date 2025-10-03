@@ -22,4 +22,13 @@
             id_payment_voucher = #{idPaymentVoucher},
         WHERE id_guia_payment = #{idGuiaPayment}
     </update>
+    <update id="updateAll" parameterType="java.util.List">
+        <foreach collection="list" item="item" separator=";">
+            UPDATE guia_payment_voucher
+            SET codigo_tipo_guia = #{item.codigoTipoGuia},
+            serie_numero_guia = #{item.serieNumeroGuia},
+            id_payment_voucher = #{item.idPaymentVoucher}
+            WHERE id_guia_payment = #{item.idGuiaPayment}
+        </foreach>
+    </update>
 </mapper>

@@ -20,7 +20,7 @@ public class UserModel {
     private String typeUser;
     private String deLogin;
     private Long codCompany;
-    private Integer idOficina;
+    private Integer oficinaId;
     private Boolean changePass;
     private Boolean hidecomprobante;
     private Boolean pdfUnico;

@@ -33,7 +33,7 @@ public class PaymentVoucherDto {
     private String denominacionReceptor;
     private String direccionReceptor;
     private String emailReceptor;
-    private List<GuiaPaymentVoucherRequest> guiasRelacionadas;
+    private List<GuiaPaymentVoucherDto> guiasRelacionadas;
     private List<DocumentoRelacionadoRequest> documentosRelacionados;
     private List<LeyendaRequest> leyendas;
     private String serieNumeroOtroDocumentoRelacionado;
@@ -62,15 +62,15 @@ public class PaymentVoucherDto {
     private String codigoTipoNotaCredito;
     private String codigoTipoNotaDebito;
     private String motivoNota;
-    private List<DetailsPaymentVoucherRequest> items;
+    private List<DetailsPaymentVoucherDto> items;
     private String denominacionEmisor;
     private String nombreComercialEmisor;
     private String tipoDocumentoEmisor;
     private String identificadorDocumento;
     private String ordenCompra;
     private List<AnticipoPaymentVoucherDto> anticipos;
-    private List<AditionalFieldPaymentVoucherRequest> camposAdicionales;
-    private List<PaymentCuotasRequest> cuotas;
+    private List<AditionalFieldPaymentVoucherDto> camposAdicionales;
+    private List<PaymentCuotasDto> cuotas;
     private String codigoBienDetraccion;
     private BigDecimal porcentajeDetraccion;
     private BigDecimal porcentajeRetencion;

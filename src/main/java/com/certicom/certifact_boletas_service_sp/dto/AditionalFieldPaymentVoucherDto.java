@@ -5,18 +5,16 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PaymentCuotasRequest {
+public class AditionalFieldPaymentVoucherDto {
 
-    private Long idCuotas;
-    private Integer numero;
-    private BigDecimal monto;
-    private String fecha;
+    private Long id;
+    private String nombreCampo;
+    private String valorCampo;
+    private Long typeFieldId;
     private Long idPaymentVoucher;
 
 }

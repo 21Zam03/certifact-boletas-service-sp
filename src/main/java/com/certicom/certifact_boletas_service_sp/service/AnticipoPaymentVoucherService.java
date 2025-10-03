@@ -7,6 +7,6 @@ import java.util.List;
 public interface AnticipoPaymentVoucherService {
 
     void updateAnticipoPaymentVoucher(AnticipoPaymentVoucherDto anticipoPaymentVoucherDto);
-    void updateAllAnticipoPaymentVoucher(List<AnticipoPaymentVoucherDto> anticipoPaymentVoucherDtos, Long idPaymentVoucher);
+    void updateAllAnticipoPaymentVoucher(List<AnticipoPaymentVoucherDto> anticipoPaymentVoucherDtos);
 
 }

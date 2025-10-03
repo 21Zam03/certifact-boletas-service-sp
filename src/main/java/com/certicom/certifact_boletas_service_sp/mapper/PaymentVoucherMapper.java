@@ -7,11 +7,12 @@ import java.sql.Timestamp;
 import java.util.List;
 
 @Mapper
-public interface PaymentVoucherMapper {
+public interface PaymentVoucherMapper extends BaseMapper<PaymentVoucherModel, Long> {
 
-    int insert(PaymentVoucherModel paymentVoucherModel);
-    int update(PaymentVoucherModel paymentVoucherModel);
-    PaymentVoucherModel findById(Long id);
+    //int insert(PaymentVoucherModel paymentVoucherModel);
+    //int update(PaymentVoucherModel paymentVoucherModel);
+    //PaymentVoucherModel findById(Long id);
+
     PaymentVoucherModel findByIdentificadorDocumento(String idDocumento);
     Integer getNumeroByTipoComprobanteAndSerieAndRucEmisor(String tipo, String serie, String ruc);
     List<PaymentVoucherModel> findListSpecificForSummary(

@@ -19,6 +19,10 @@ public abstract class AbstractGenericService<T, ID, M extends BaseMapper<T, ID>>
 
     @Override
     public Optional<T> findById(ID id) {
+        if(id == null) {
+            log.error(LogMessages.PARAMETER_NOT_NULL);
+            throw new ServiceException(LogMessages.PARAMETER_NOT_NULL);
+        }
         try {
             T entity = mapper.findById(id);
             if (entity == null) {
@@ -46,12 +50,17 @@ public abstract class AbstractGenericService<T, ID, M extends BaseMapper<T, ID>>
     }
 
     @Override
-    public void save(T entity) {
+    public int save(T entity) {
+        if(entity == null) {
+            log.error(LogMessages.PARAMETER_NOT_NULL);
+            throw new ServiceException(LogMessages.PARAMETER_NOT_NULL);
+        }
         try {
             int result = mapper.insert(entity);
             if(result < 1) {
                 log.warn(LogMessages.ENTITY_NOT_CREATED, entity);
             }
+            return result;
         } catch (Exception e) {
             log.error(LogMessages.ENTITY_SAVE_ERROR, e.getMessage());
             throw new ServiceException(LogMessages.ERROR_EXCEPTION+e);
@@ -59,12 +68,13 @@ public abstract class AbstractGenericService<T, ID, M extends BaseMapper<T, ID>>
     }
 
     @Override
-    public void update(T entity) {
+    public int update(T entity) {
         try {
             int result = mapper.update(entity);
             if(result < 1) {
                 log.warn(LogMessages.ENTITY_NOT_UPDATED, entity);
             }
+            return result;
         } catch (Exception e) {
             log.error(LogMessages.ENTITY_UPDATE_ERROR, e.getMessage());
             throw new ServiceException(LogMessages.ERROR_EXCEPTION+e);

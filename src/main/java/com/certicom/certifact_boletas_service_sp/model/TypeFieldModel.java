@@ -9,12 +9,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class AditionalFieldPaymentVoucherModel {
+public class TypeFieldModel {
 
     private Long id;
-    private String nombreCampo;
-    private String valorCampo;
-    private Long typeFieldId;
-    private Long idPaymentVoucher;
+    private String name;
 
 }

@@ -8,15 +8,15 @@
             parameterType="java.lang.Long"
             resultType="com.certicom.certifact_boletas_service_sp.model.UserModel">
         SELECT
-        u.id_user AS idUsuario,
-        u.oficina_id AS idOficina,
-        u.de_login AS nombreUsuario,
-        u.password AS contrasena,
-        u.full_name AS nombreCompleto,
-        u.dni AS dni,
-        u.estado AS estado,
-        u.enabled AS activo,
-        c.ruc AS ruc
+            u.id_user,
+            u.oficina_id,
+            u.de_login,
+            u.password,
+            u.full_name,
+            u.dni,
+            u.estado,
+            u.enabled,
+            c.ruc
         FROM users u
         INNER JOIN company c ON u.cod_company = c.cod_company
         WHERE id_user = #{id}

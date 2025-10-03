@@ -6,11 +6,11 @@ import org.apache.ibatis.annotations.Mapper;
 import java.util.List;
 
 @Mapper
-public interface DetailsPaymentVoucherMapper {
+public interface DetailsPaymentVoucherMapper extends BaseMapper<DetailsPaymentVoucherModel, Long> {
 
-    int save(DetailsPaymentVoucherModel detailsPaymentVoucherModel);
-    int deleteById(Long Id);
+    //int save(DetailsPaymentVoucherModel detailsPaymentVoucherModel);
+    //int deleteById(Long Id);
+    //int update(DetailsPaymentVoucherModel detailsPaymentVoucherModel);
     List<DetailsPaymentVoucherModel> findAllByIdPaymentVoucher(Long id);
-    int update(DetailsPaymentVoucherModel detailsPaymentVoucherModel);
 
 }

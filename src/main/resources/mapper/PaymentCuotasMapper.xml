@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.certicom.certifact_boletas_service_sp.mapper.PaymentCuotasMapper">
-    <insert id="save" parameterType="com.certicom.certifact_boletas_service_sp.model.PaymentCuotasModel">
+    <insert id="insert" parameterType="com.certicom.certifact_boletas_service_sp.model.PaymentCuotasModel">
         INSERT INTO payment_cuotas (id_cuotas, numero, monto, fecha, id_payment_voucher)
         VALUES (nextval('payment_cuotas_id_cuotas_seq'), #{numero}, #{monto}, #{fecha}, #{idPaymentVoucher})
     </insert>
@@ -21,5 +21,15 @@
             fecha = #{fecha},
             id_payment_voucher = #{idPaymentVoucher}
         WHERE id_cuotas = #{idCuotas}
+    </update>
+    <update id="updateAll" parameterType="java.util.List">
+        <foreach collection="list" item="item" separator=";">
+            UPDATE payment_cuotas
+            SET numero = #{item.numero},
+            monto = #{item.monto},
+            fecha = #{item.fecha},
+            id_payment_voucher = #{item.idPaymentVoucher}
+            WHERE id_cuotas = #{item.idCuotas}
+        </foreach>
     </update>
 </mapper>

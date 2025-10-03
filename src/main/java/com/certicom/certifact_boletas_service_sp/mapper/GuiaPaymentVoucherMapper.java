@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import java.util.List;
 
 @Mapper
-public interface GuiaPaymentVoucherMapper {
+public interface GuiaPaymentVoucherMapper extends BaseMapper<GuiaPaymentVoucherModel, Long> {
 
     int save(GuiaPaymentVoucherModel guiaPaymentVoucherModel);
     int deleteById(Long id);

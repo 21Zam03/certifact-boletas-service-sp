@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.certicom.certifact_boletas_service_sp.mapper.DetailsPaymentVoucherMapper">
-    <insert id="save" parameterType="com.certicom.certifact_boletas_service_sp.model.DetailsPaymentVoucherModel">
+    <insert id="insert" parameterType="com.certicom.certifact_boletas_service_sp.model.DetailsPaymentVoucherModel">
         INSERT INTO details_payment_voucher
         (id_details_payment, afectacion_igv, cantidad, cod_producto, cod_prod_sunat, cod_tip_afectacion_igv,
         cod_tip_sistema_isc, cod_unid_medida, descripcion_producto, descuento, estado, numero_item, precio_venta_unit,
@@ -91,4 +91,65 @@
             adicional = #{adicional}
         WHERE id_details_payment = #{idDetailsPayment}
     </update>
+    <update id="updateAll" parameterType="java.util.List">
+        <foreach collection="list" item="item" separator=";">
+            UPDATE details_payment_voucher
+            SET
+            afectacion_igv = #{item.afectacionIgv},
+            cantidad = #{item.cantidad},
+            cod_producto = #{item.codProducto},
+            cod_prod_sunat = #{item.codProdSunat},
+            cod_tip_afectacion_igv = #{item.codTipAfectacionIgv},
+            cod_tip_sistema_isc = #{item.codTipSistemaIsc},
+            cod_unid_medida = #{item.codUnidMedida},
+            descripcion_producto = #{item.descripcionProducto},
+            descuento = #{item.descuento},
+            estado = #{item.estado},
+            numero_item = #{item.numeroItem},
+            precio_venta_unit = #{item.precioVentaUnit},
+            sistema_isc = #{item.sistemaIsc},
+            valor_referencial_unit = #{item.valorReferencialUnit},
+            valor_unit = #{item.valorUnit},
+            valor_venta = #{item.valorVenta},
+            id_payment_voucher = #{item.idPaymentVoucher},
+            codigo_dscto = #{item.codigoDscto},
+            cod_producto_gs1 = #{item.codProductoGs1},
+            monto_base_exone = #{item.montoBaseExone},
+            monto_base_export = #{item.montoBaseExport},
+            monto_base_grat = #{item.montoBaseGrat},
+            monto_base_igv = #{item.montoBaseIgv},
+            monto_base_inafec = #{item.montoBaseInafec},
+            monto_base_isc = #{item.montoBaseIsc},
+            monto_base_ivap = #{item.montoBaseIvap},
+            monto_otros_trib = #{item.montoOtrosTrib},
+            porcent_igv = #{item.porcentIgv},
+            porcent_isc = #{item.porcentIsc},
+            porcent_ivap = #{item.porcentIvap},
+            porcent_otr_trib = #{item.porcentOtrTrib},
+            porcent_vta_grat = #{item.porcentVtaGrat},
+            monto_trib_vta_grat = #{item.montoTribVtaGrat},
+            detalle_viaje_detraccion = #{item.detalleViajeDetraccion},
+            direccion_destino_detraccion = #{item.direccionDestinoDetraccion},
+            direccion_origen_detraccion = #{item.direccionOrigenDetraccion},
+            ubigeo_destino_detraccion = #{item.ubigeoDestinoDetraccion},
+            ubigeo_origen_detraccion = #{item.ubigeoOrigenDetraccion},
+            valor_carga_efectiva = #{item.valorCargaEfectiva},
+            valor_carga_util = #{item.valorCargaUtil},
+            valor_servicio_transporte = #{item.valorServicioTransporte},
+            hidro_cantidad = #{item.hidroCantidad},
+            hidro_descripcion_tipo = #{item.hidroDescripcionTipo},
+            hidro_embarcacion = #{item.hidroEmbarcacion},
+            hidro_fecha_descarga = #{item.hidroFechaDescarga},
+            hidro_lugar_descarga = #{item.hidroLugarDescarga},
+            hidro_matricula = #{item.hidroMatricula},
+            monto_base_icbper = #{item.montoBaseIcbper},
+            monto_icbper = #{item.montoIcbper},
+            instrucciones_especiales = #{item.instruccionesEspeciales},
+            marca = #{item.marca},
+            unidad_manejo = #{item.unidadManejo},
+            adicional = #{item.adicional}
+            WHERE id_details_payment = #{item.idDetailsPayment}
+        </foreach>
+    </update>
+
 </mapper>

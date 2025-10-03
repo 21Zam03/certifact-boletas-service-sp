@@ -9,12 +9,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class AditionalFieldPaymentVoucherRequest {
+public class GuiaPaymentVoucherDto {
 
-    private Integer id;
-    private String nombreCampo;
-    private String valorCampo;
-    private Integer typeFieldId;
+    private Long idguiaremision;
+    private String codigoTipoGuia;
+    private String serieNumeroGuia;
     private Long idPaymentVoucher;
 
 }

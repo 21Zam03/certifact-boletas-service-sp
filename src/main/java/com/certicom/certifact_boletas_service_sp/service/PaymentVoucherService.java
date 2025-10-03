@@ -10,12 +10,13 @@ import java.util.List;
 public interface PaymentVoucherService {
 
     //Estos metodo save y update tiene un flujo completo de la creacion de la entidad payment_voucher y sus entidades relacionadas.
-    PaymentVoucherDto savePaymentVoucher(PaymentVoucherDto paymentVoucherDto);
-    PaymentVoucherDto updatePaymentVoucher(PaymentVoucherDto paymentVoucherDto);
+    PaymentVoucherDto savePaymentVoucherProcess(PaymentVoucherDto paymentVoucherDto);
+    PaymentVoucherDto updatePaymentVoucherProcess(PaymentVoucherDto paymentVoucherDto);
 
-    int save(PaymentVoucherDto paymentVoucherDto);
-    int update(PaymentVoucherDto paymentVoucherDto);
-    int delete(Long id);
+    int savePaymentVoucher(PaymentVoucherDto paymentVoucherDto);
+    int updatePaymentVoucher(PaymentVoucherDto paymentVoucherDto);
+    int deletePaymentVoucherById(Long id);
+
     PaymentVoucherDto findByIdentificadorDocumento(String identificadorDocumento);
     Integer getNumeracion(String tipoComprobante, String serie, String ruc);
     List<PaymentVoucherDto> findListSpecificForSummary(
