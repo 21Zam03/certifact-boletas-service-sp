@@ -1,12 +1,16 @@
 package com.certicom.certifact_boletas_service_sp.service.impl;
 
+import com.certicom.certifact_boletas_service_sp.enums.LogTitle;
 import com.certicom.certifact_boletas_service_sp.exception.ServiceException;
 import com.certicom.certifact_boletas_service_sp.mapper.TypeFieldMapper;
 import com.certicom.certifact_boletas_service_sp.model.TypeFieldModel;
 import com.certicom.certifact_boletas_service_sp.service.AbstractGenericService;
 import com.certicom.certifact_boletas_service_sp.service.TypeFieldService;
+import com.certicom.certifact_boletas_service_sp.util.LogHelper;
 import com.certicom.certifact_boletas_service_sp.util.LogMessages;
+import jakarta.persistence.PersistenceException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -20,19 +24,26 @@ public class TypeFieldServiceImpl extends AbstractGenericService<TypeFieldModel,
 
     @Override
     public Long getIdByNameTypeField(String name) {
+        if(name == null) {
+            LogHelper.warnLog(LogTitle.WARN_VALIDATION.getType(), LogMessages.currentMethod(), "variable rucEmisor es nulo");
+            throw new ServiceException(String.format("%s: el ruc no puede ser nulo", LogMessages.ERROR_VALIDATION));
+        }
         try {
-            if(name == null) {
-                log.error(LogMessages.PARAMETER_NOT_NULL);
-                throw new ServiceException(LogMessages.PARAMETER_NOT_NULL);
-            }
             Long id = mapper.getIdByName(name);
             if(id == null) {
-                log.error(LogMessages.RESULT_NULL);
-                throw new ServiceException(LogMessages.RESULT_NULL);
+                LogHelper.warnLog(LogTitle.WARN_NOT_RESULT.getType(), LogMessages.currentMethod(), "variable id es nulo");
+            } else {
+                LogHelper.infoLog(LogTitle.INFO.getType(),
+                        LogMessages.currentMethod(), "La consulta se realizo exitosamente");
             }
-            return mapper.getIdByName(name);
-        } catch (Exception e) {
-            throw new ServiceException(LogMessages.ERROR_EXCEPTION+e.getMessage());
+            return id;
+        } catch (DataAccessException | PersistenceException e) {
+            LogHelper.errorLog(LogTitle.ERROR_DATABASE.getType(), LogMessages.currentMethod(), "Ocurrio un error en la base de datos", e);
+            throw new ServiceException(LogMessages.ERROR_DATABASE, e);
+        }
+        catch (Exception e) {
+            LogHelper.errorLog(LogTitle.ERROR_UNEXPECTED.getType(), LogMessages.currentMethod(), "Ocurrio un error inesperado", e);
+            throw new ServiceException(LogMessages.ERROR_UNEXPECTED, e);
         }
     }
 

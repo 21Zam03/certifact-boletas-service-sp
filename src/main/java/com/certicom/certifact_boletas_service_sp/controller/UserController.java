@@ -20,14 +20,12 @@ public class UserController {
 
     @GetMapping("/idUser")
     public ResponseEntity<UserDto> findById(@RequestParam Long idUser) {
-        UserDto usuario = userService.findById(idUser);
-        return  new ResponseEntity<>(usuario, HttpStatus.OK);
+        return new ResponseEntity<>(userService.findUserById(idUser), HttpStatus.OK);
     }
 
     @GetMapping("/username")
     public ResponseEntity<?> findUserByUsername(@RequestParam String username) {
-        UserDto usuario = userService.findByUsername(username);
-        return  new ResponseEntity<>(usuario, HttpStatus.OK);
+        return new ResponseEntity<>(userService.findByUsername(username), HttpStatus.OK);
     }
 
 }

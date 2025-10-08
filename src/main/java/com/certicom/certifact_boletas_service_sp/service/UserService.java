@@ -4,7 +4,7 @@ import com.certicom.certifact_boletas_service_sp.dto.UserDto;
 
 public interface UserService {
 
-    UserDto findById(Long id);
+    UserDto findUserById(Long id);
     UserDto findByUsername(String username);
 
 }

@@ -1,9 +1,13 @@
 package com.certicom.certifact_boletas_service_sp.service;
 
+import com.certicom.certifact_boletas_service_sp.enums.LogTitle;
 import com.certicom.certifact_boletas_service_sp.exception.ServiceException;
 import com.certicom.certifact_boletas_service_sp.mapper.BaseMapper;
+import com.certicom.certifact_boletas_service_sp.util.LogHelper;
 import com.certicom.certifact_boletas_service_sp.util.LogMessages;
+import jakarta.persistence.PersistenceException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataAccessException;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,18 +24,24 @@ public abstract class AbstractGenericService<T, ID, M extends BaseMapper<T, ID>>
     @Override
     public Optional<T> findById(ID id) {
         if(id == null) {
-            log.error(LogMessages.PARAMETER_NOT_NULL);
-            throw new ServiceException(LogMessages.PARAMETER_NOT_NULL);
+            LogHelper.warnLog(LogTitle.WARN_VALIDATION.getType(), LogMessages.currentMethod(), "parametro id es nulo");
+            throw new ServiceException(String.format("%s: el id no puede ser nulo", LogMessages.ERROR_VALIDATION));
         }
         try {
             T entity = mapper.findById(id);
-            if (entity == null) {
-                log.warn(LogMessages.ENTITY_NOT_FOUND, id);
+            if(entity == null) {
+                LogHelper.warnLog(LogTitle.WARN_NOT_RESULT.getType(), LogMessages.currentMethod(), "variable entity es nulo");
+            } else {
+                LogHelper.infoLog(LogTitle.INFO.getType(), LogMessages.currentMethod(), "La consulta se realizo exitosamente, parametro[entity]="+entity);
             }
             return Optional.ofNullable(entity);
-        } catch (Exception e) {
-            log.error(LogMessages.ENTITY_FOUND_ERROR, e.getMessage());
-            throw new ServiceException(LogMessages.ERROR_EXCEPTION+e);
+        } catch (DataAccessException | PersistenceException e) {
+            LogHelper.errorLog(LogTitle.ERROR_DATABASE.getType(), LogMessages.currentMethod(), "Ocurrio un error en la base de datos", e);
+            throw new ServiceException(LogMessages.ERROR_DATABASE, e);
+        }
+        catch (Exception e) {
+            LogHelper.errorLog(LogTitle.ERROR_UNEXPECTED.getType(), LogMessages.currentMethod(), "Ocurrio un error inesperado", e);
+            throw new ServiceException(LogMessages.ERROR_UNEXPECTED, e);
         }
     }
 
@@ -40,75 +50,136 @@ public abstract class AbstractGenericService<T, ID, M extends BaseMapper<T, ID>>
         try {
             List<T> list = mapper.findAll();
             if(list.isEmpty()) {
-                log.warn(LogMessages.ENTITY_LIST_EMPTY);
+                LogHelper.warnLog(LogTitle.WARN_NOT_RESULT.getType(), LogMessages.currentMethod(), "La lista esta vacia");
+            } else {
+                LogHelper.infoLog(LogTitle.INFO.getType(), LogMessages.currentMethod(), "La consulta se realizo exitosamente, parametro[list]="+list);
             }
             return list;
-        } catch (Exception e) {
-            log.error(LogMessages.ENTITY_LIST_ERROR, e.getMessage());
-            throw new ServiceException(LogMessages.ERROR_EXCEPTION+e);
+        } catch (DataAccessException | PersistenceException e) {
+            LogHelper.errorLog(LogTitle.ERROR_DATABASE.getType(), LogMessages.currentMethod(), "Ocurrio un error en la base de datos", e);
+            throw new ServiceException(LogMessages.ERROR_DATABASE, e);
+        }
+        catch (Exception e) {
+            LogHelper.errorLog(LogTitle.ERROR_UNEXPECTED.getType(), LogMessages.currentMethod(), "Ocurrio un error inesperado", e);
+            throw new ServiceException(LogMessages.ERROR_UNEXPECTED, e);
         }
     }
 
     @Override
-    public int save(T entity) {
+    public T save(T entity) {
         if(entity == null) {
-            log.error(LogMessages.PARAMETER_NOT_NULL);
-            throw new ServiceException(LogMessages.PARAMETER_NOT_NULL);
+            LogHelper.warnLog(LogTitle.WARN_VALIDATION.getType(),
+                    LogMessages.currentMethod(), "parametro entity no puede ser nulo");
+            throw new ServiceException(String.format("%s: la entidad no puede ser nulo", LogMessages.ERROR_VALIDATION));
         }
         try {
             int result = mapper.insert(entity);
-            if(result < 1) {
-                log.warn(LogMessages.ENTITY_NOT_CREATED, entity);
+            if(result == 0) {
+                LogHelper.warnLog(LogTitle.WARN_NOT_RESULT.getType(),
+                        LogMessages.currentMethod(), "No se registro la entidad");
+            } else {
+                LogHelper.infoLog(LogTitle.INFO.getType(),
+                        LogMessages.currentMethod(), "El registro se realizo exitosamente");
             }
-            return result;
-        } catch (Exception e) {
-            log.error(LogMessages.ENTITY_SAVE_ERROR, e.getMessage());
-            throw new ServiceException(LogMessages.ERROR_EXCEPTION+e);
+            return entity;
+        } catch (DataAccessException | PersistenceException e) {
+            LogHelper.errorLog(LogTitle.ERROR_DATABASE.getType(),
+                    LogMessages.currentMethod(), "Ocurrio un error en la base de datos", e);
+            throw new ServiceException(LogMessages.ERROR_DATABASE, e);
+        }
+        catch (Exception e) {
+            LogHelper.errorLog(LogTitle.ERROR_UNEXPECTED.getType(),
+                    LogMessages.currentMethod(), "Ocurrio un error inesperado", e);
+            throw new ServiceException(LogMessages.ERROR_UNEXPECTED, e);
         }
     }
 
     @Override
     public int update(T entity) {
+        if(entity == null) {
+            LogHelper.warnLog(LogTitle.WARN_VALIDATION.getType(),
+                    LogMessages.currentMethod(), "parametro entity es nulo");
+            throw new ServiceException(String.format("%s: la entidad no puede ser nulo", LogMessages.ERROR_VALIDATION));
+        }
         try {
             int result = mapper.update(entity);
-            if(result < 1) {
-                log.warn(LogMessages.ENTITY_NOT_UPDATED, entity);
+            if(result == 0) {
+                LogHelper.warnLog(LogTitle.WARN_NOT_RESULT.getType(),
+                        LogMessages.currentMethod(), "No se actualizo la entidad");
+            } else {
+                LogHelper.infoLog(LogTitle.INFO.getType(),
+                        LogMessages.currentMethod(), "La actualizacion se realizo exitosamente");
             }
             return result;
-        } catch (Exception e) {
-            log.error(LogMessages.ENTITY_UPDATE_ERROR, e.getMessage());
-            throw new ServiceException(LogMessages.ERROR_EXCEPTION+e);
+        } catch (DataAccessException | PersistenceException e) {
+            LogHelper.errorLog(LogTitle.ERROR_DATABASE.getType(),
+                    LogMessages.currentMethod(), "Ocurrio un error en la base de datos", e);
+            throw new ServiceException(LogMessages.ERROR_DATABASE, e);
+        }
+        catch (Exception e) {
+            LogHelper.errorLog(LogTitle.ERROR_UNEXPECTED.getType(),
+                    LogMessages.currentMethod(), "Ocurrio un error inesperado", e);
+            throw new ServiceException(LogMessages.ERROR_UNEXPECTED, e);
         }
     }
 
     @Override
-    public void delete(ID id) {
+    public int delete(ID id) {
+        if(id == null) {
+            LogHelper.warnLog(LogTitle.WARN_VALIDATION.getType(),
+                    LogMessages.currentMethod(), "parametro id es nulo");
+            throw new ServiceException(String.format("%s: el id no puede ser nulo", LogMessages.ERROR_VALIDATION));
+        }
         try {
             int result = mapper.deleteById(id);
-            if(result < 1) {
-                log.warn(LogMessages.ENTITY_NOT_DELETED);
-                throw new ServiceException(LogMessages.ENTITY_NOT_DELETED);
+            if(result == 0) {
+                LogHelper.warnLog(LogTitle.WARN_NOT_RESULT.getType(),
+                        LogMessages.currentMethod(), "No se pudo eliminar");
+            } else {
+                LogHelper.infoLog(LogTitle.INFO.getType(),
+                        LogMessages.currentMethod(), "Eliminacion exitosa");
             }
-        } catch (Exception e) {
-            log.error(LogMessages.ENTITY_DELETE_ERROR, e.getMessage());
-            throw new ServiceException(LogMessages.ERROR_EXCEPTION+e);
+            return result;
+        } catch (DataAccessException | PersistenceException e) {
+            LogHelper.errorLog(LogTitle.ERROR_DATABASE.getType(),
+                    LogMessages.currentMethod(), "Ocurrio un error en la base de datos", e);
+            throw new ServiceException(LogMessages.ERROR_DATABASE, e);
+        }
+        catch (Exception e) {
+            LogHelper.errorLog(LogTitle.ERROR_UNEXPECTED.getType(),
+                    LogMessages.currentMethod(), "Ocurrio un error inesperado", e);
+            throw new ServiceException(LogMessages.ERROR_UNEXPECTED, e);
         }
     }
 
     @Override
     public int updateAll(List<T> list) {
-        int updatedCount = 0;
-        try {
-            updatedCount = mapper.updateAll(list);
-            if(updatedCount == 0) {
-                log.warn(LogMessages.ENTITY_LIST_NOT_UPDATED);
-            }
-            log.info(LogMessages.ENTITY_LIST_UPDATED, updatedCount);
-        } catch (Exception e) {
-            log.error(LogMessages.ENTITY_LIST_UPDATED_ERROR, e.getMessage());
-            throw new ServiceException(LogMessages.ERROR_EXCEPTION+e);
+        if(list == null || list.isEmpty()) {
+            LogHelper.warnLog(LogTitle.WARN_VALIDATION.getType(),
+                    LogMessages.currentMethod(), "La lista es nulo o esta vacia");
+            throw new ServiceException(String.format("%s: lista es nulo o esta vacia", LogMessages.ERROR_VALIDATION));
         }
-        return updatedCount;
+        try {
+            int expectedRows = list.size();
+            int updatedRows = mapper.updateAll(list);
+            if(updatedRows != expectedRows) {
+                LogHelper.warnLog(LogTitle.WARN_NOT_RESULT.getType(),
+                        LogMessages.currentMethod(), "filas="+expectedRows+", filasActualizadas="+updatedRows);
+            } else {
+                LogHelper.infoLog(LogTitle.INFO.getType(),
+                        LogMessages.currentMethod(), "filas="+expectedRows+", filasActualizadas="+updatedRows);
+            }
+            return updatedRows;
+        } catch (DataAccessException | PersistenceException e) {
+            LogHelper.errorLog(LogTitle.ERROR_DATABASE.getType(),
+                    LogMessages.currentMethod(), "Ocurrio un error en la base de datos", e);
+            throw new ServiceException(LogMessages.ERROR_DATABASE, e);
+        }
+        catch (Exception e) {
+            LogHelper.errorLog(LogTitle.ERROR_UNEXPECTED.getType(),
+                    LogMessages.currentMethod(), "Ocurrio un error inesperado", e);
+            throw new ServiceException(LogMessages.ERROR_UNEXPECTED, e);
+        }
     }
 
 }

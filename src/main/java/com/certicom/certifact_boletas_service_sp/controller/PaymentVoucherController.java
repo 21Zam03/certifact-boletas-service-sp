@@ -22,14 +22,14 @@ public class PaymentVoucherController {
 
     @PostMapping
     public ResponseEntity<PaymentVoucherDto> savePaymentVoucher(@RequestBody PaymentVoucherDto paymentVoucherDto) {
-        log.info("Recibida petición POST /payment-voucher para guardar comprobante con identificador={}", paymentVoucherDto.getIdentificadorDocumento());
+//        log.info("Recibida petición POST /payment-voucher para guardar comprobante con identificador={}", paymentVoucherDto.getIdentificadorDocumento());
         PaymentVoucherDto paymentCreated = paymentVoucherService.savePaymentVoucherProcess(paymentVoucherDto);
-        log.info("Respuesta ok al guardar comprobante con identificador={}", paymentCreated.getIdentificadorDocumento());
         return new ResponseEntity<>(paymentCreated, HttpStatus.OK);
     }
 
     @PutMapping
     public ResponseEntity<?> updatePaymentVoucher(@RequestBody PaymentVoucherDto paymentVoucherDto) {
+        log.info("");
         return new ResponseEntity<>(paymentVoucherService.updatePaymentVoucherProcess(paymentVoucherDto), HttpStatus.OK);
     }
 

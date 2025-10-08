@@ -22,7 +22,7 @@ public class PaymentCuotasServiceImpl extends AbstractGenericService<PaymentCuot
 
     @Override
     public void updateAllPaymentCuotas(List<PaymentCuotasDto> paymentCuotasDtoList) {
-        mapper.updateAll(PaymentCuotasConverter.dtoListToModelList(paymentCuotasDtoList));
+        updateAll(PaymentCuotasConverter.dtoListToModelList(paymentCuotasDtoList));
     }
 
 }

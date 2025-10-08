@@ -9,9 +9,11 @@ import com.certicom.certifact_boletas_service_sp.model.PaymentVoucherModel;
 import com.certicom.certifact_boletas_service_sp.response.PaymentVoucherResponse;
 import com.certicom.certifact_boletas_service_sp.service.*;
 import com.certicom.certifact_boletas_service_sp.util.LogMessages;
+import jakarta.persistence.PersistenceException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -166,29 +168,18 @@ public class PaymentVoucherServiceImpl extends AbstractGenericService<PaymentVou
         log.debug(LogMessages.PROCESS_START_1, paymentVoucherDto);
         try {
             updatePaymentVoucher(paymentVoucherDto);
-
             setInfoPaymentFiles(paymentVoucherDto.getPaymentVoucherFileModelList(), paymentVoucherDto.getIdPaymentVoucher());
-            //paymentVoucherFileService.updateAllPaymentVoucherFile(paymentVoucherDto.getPaymentVoucherFileModelList());
-
             setInfoAnticipos(paymentVoucherDto.getAnticipos(), paymentVoucherDto.getIdPaymentVoucher());
-            //anticipoPaymentVoucherService.updateAllAnticipoPaymentVoucher(paymentVoucherDto.getAnticipos());
-
             setInfoCamposAdicionales(paymentVoucherDto.getCamposAdicionales(), paymentVoucherDto.getIdPaymentVoucher());
-            //aditionalFieldPaymentVoucherService.updateAllAditionalFieldPaymentVoucher(paymentVoucherDto.getCamposAdicionales());
-
             setInfoCuotas(paymentVoucherDto.getCuotas(), paymentVoucherDto.getIdPaymentVoucher());
-            //paymentCuotasService.updateAllPaymentCuotas(paymentVoucherDto.getCuotas());
-
             setInfoItems(paymentVoucherDto.getItems(), paymentVoucherDto.getIdPaymentVoucher());
-            //detailsPaymentVoucherService.updateAllDetailsPaymentVouhcer(paymentVoucherDto.getItems());
-
             setInfoGuia(paymentVoucherDto.getGuiasRelacionadas(), paymentVoucherDto.getIdPaymentVoucher());
-            //guiaPaymentVoucherService.updateGuiaPaymentVoucher(paymentVoucherDto.getGuiasRelacionadas());
 
             Optional<PaymentVoucherModel> payment = findById(paymentVoucherDto.getIdPaymentVoucher());
             if(payment.isEmpty()) {
                 throw new ServiceException(LogMessages.ENTITY_NOT_FOUND_EXCEPTION+paymentVoucherDto.getIdPaymentVoucher());
             }
+
             PaymentVoucherDto model = PaymentVoucherConverter.modelToDto(payment.get());
             log.info(LogMessages.PAYMENT_VOUCHER_UPDATED, model.getIdentificadorDocumento());
 
@@ -272,24 +263,52 @@ public class PaymentVoucherServiceImpl extends AbstractGenericService<PaymentVou
 
     @Override
     public PaymentVoucherDto findByIdentificadorDocumento(String identificadorDocumento) {
-        PaymentVoucherDto paymentVoucherDto = null;
-        try {
-            System.out.println("IDENTIFICADOR: "+identificadorDocumento);
-            PaymentVoucherModel paymentVoucherModel = mapper.findByIdentificadorDocumento(identificadorDocumento);
-            System.out.println("MODEL: "+ paymentVoucherModel);
-            if(paymentVoucherModel!=null) {
-                paymentVoucherDto = PaymentVoucherConverter.modelToDto(paymentVoucherModel);
-                System.out.println("PAYNMENTVOUCHER DTO: "+paymentVoucherDto);
-            }
-        } catch (Exception e) {
-            watchErrorLogs(e);
+        if(identificadorDocumento == null) {
+            throw new ServiceException(String.format("%s: el identificadorDocumento no puede ser nulo", LogMessages.ERROR_VALIDATION));
         }
-        return paymentVoucherDto;
+        try {
+            PaymentVoucherModel paymentVoucherModel = mapper.findByIdentificadorDocumento(identificadorDocumento);
+            PaymentVoucherDto paymentVoucherDto = PaymentVoucherConverter.modelToDto(paymentVoucherModel);
+            if(paymentVoucherDto == null) {
+                log.warn("{} - method=findByIdentificadorDocumento, identificadorDocumento={}",
+                        LogMessages.WARN_GET, identificadorDocumento);
+            } else {
+                log.debug("{} - method=findByIdentificadorDocumento, identificadorDocumento={}",
+                        LogMessages.SUCCESS_GET, identificadorDocumento);
+            }
+            return paymentVoucherDto;
+        } catch (DataAccessException | PersistenceException e) {
+            log.error("{} - method=findByIdentificadorDocumento, identificadorDocumento={}",
+                    LogMessages.ERROR_DATABASE, identificadorDocumento, e);
+            throw new ServiceException(LogMessages.ERROR_DATABASE, e);
+        }
+        catch (Exception e) {
+            log.error("{} - method=findByIdentificadorDocumento, identificadorDocumento={}",
+                    LogMessages.ERROR_UNEXPECTED, identificadorDocumento, e);
+            throw new ServiceException(LogMessages.ERROR_UNEXPECTED, e);
+        }
     }
 
     @Override
     public Integer getNumeracion(String tipoComprobante, String serie, String ruc) {
-        return mapper.getNumeroByTipoComprobanteAndSerieAndRucEmisor(tipoComprobante, serie, ruc);
+        if(tipoComprobante == null || serie == null || ruc == null) {
+            throw new ServiceException(String.format("%s: el tipo de comprobante, serie y ruc no pueden ser nulo", LogMessages.ERROR_VALIDATION));
+        }
+        try {
+            Integer numeracion = mapper.getNumeroByTipoComprobanteAndSerieAndRucEmisor(tipoComprobante, serie, ruc);
+            log.debug("{} - method=getNumeracion, tipoComprobante={}, serie={}, ruc={}",
+                    LogMessages.SUCCESS_GET, tipoComprobante, serie, ruc);
+            return numeracion;
+        } catch (DataAccessException | PersistenceException e) {
+            log.error("{} - method=getNumeracion, tipoComprobante={}, serie={},ruc={}",
+                    LogMessages.ERROR_DATABASE, tipoComprobante, serie, ruc, e);
+            throw new ServiceException(LogMessages.ERROR_DATABASE, e);
+        }
+        catch (Exception e) {
+            log.error("{} - method=getNumeracion, tipoComprobante={}, serie={}, ruc={}",
+                    LogMessages.ERROR_UNEXPECTED, tipoComprobante, serie, ruc, e);
+            throw new ServiceException(LogMessages.ERROR_UNEXPECTED, e);
+        }
     }
 
     @Override

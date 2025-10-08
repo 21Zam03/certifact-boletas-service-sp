@@ -2,11 +2,17 @@ package com.certicom.certifact_boletas_service_sp.service.impl;
 
 import com.certicom.certifact_boletas_service_sp.converter.BranchOfficeConverter;
 import com.certicom.certifact_boletas_service_sp.dto.BranchOfficeDto;
+import com.certicom.certifact_boletas_service_sp.enums.LogTitle;
+import com.certicom.certifact_boletas_service_sp.exception.ServiceException;
 import com.certicom.certifact_boletas_service_sp.mapper.BranchOfficeMapper;
 import com.certicom.certifact_boletas_service_sp.model.BranchOfficeModel;
 import com.certicom.certifact_boletas_service_sp.service.BranchOfficeService;
+import com.certicom.certifact_boletas_service_sp.util.LogHelper;
+import com.certicom.certifact_boletas_service_sp.util.LogMessages;
+import jakarta.persistence.PersistenceException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,18 +24,31 @@ public class BranchOfficeServiceImpl implements BranchOfficeService {
 
     @Override
     public BranchOfficeDto findByCompanyIdAndSerieAndTipoComprobante(Integer empresaId, String serie, String tipoComprobante) {
-        BranchOfficeDto branchOfficeDto = null;
+        if(empresaId == null || serie == null || tipoComprobante == null) {
+            LogHelper.warnLog(LogTitle.WARN_VALIDATION.getType(),
+                    LogMessages.currentMethod(), "uno o varios de los parametros: empresaId, serie o tipoComprobante son nulos");
+            throw new ServiceException(String.format("%s: uno o varios de los parametros: empresaId, serie o tipoComprobante son nulos", LogMessages.ERROR_VALIDATION));
+        }
         try {
             BranchOfficeModel branchOfficeModel = branchOfficeMapper.findByCompanyIdAndSerieAndTipoComprobante(empresaId, serie, tipoComprobante);
-            branchOfficeDto = BranchOfficeConverter.modelToDto(branchOfficeModel);
-        } catch (Exception e) {
-            watchLogs(e);
+            if(branchOfficeModel == null) {
+                LogHelper.warnLog(LogTitle.WARN_NOT_RESULT.getType(),
+                        LogMessages.currentMethod(), "La variable branchOfficeModel es nulo");
+                return null;
+            } else {
+                BranchOfficeDto branchOfficeDto = BranchOfficeConverter.modelToDto(branchOfficeModel);
+                LogHelper.infoLog(LogTitle.INFO.getType(),
+                        LogMessages.currentMethod(), "La consulta se realizo con extio, id="+branchOfficeDto.getId());
+                return branchOfficeDto;
+            }
+        } catch (DataAccessException | PersistenceException e) {
+            LogHelper.errorLog(LogTitle.ERROR_DATABASE.getType(), LogMessages.currentMethod(), "Ocurrio un error en la base de datos", e);
+            throw new ServiceException(LogMessages.ERROR_DATABASE, e);
         }
-        return branchOfficeDto;
-    }
-
-    private void watchLogs(Exception e ){
-        log.error("ERROR: {}", e.getMessage());
+        catch (Exception e) {
+            LogHelper.errorLog(LogTitle.ERROR_UNEXPECTED.getType(), LogMessages.currentMethod(), "Ocurrio un error inesperado", e);
+            throw new ServiceException(LogMessages.ERROR_UNEXPECTED, e);
+        }
     }
 
 }

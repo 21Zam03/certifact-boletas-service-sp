@@ -20,12 +20,12 @@ public class AnticipoPaymentVoucherServiceImpl extends AbstractGenericService<An
 
     @Override
     public void updateAnticipoPaymentVoucher(AnticipoPaymentVoucherDto anticipoPaymentVoucherDto) {
-        mapper.update(AnticipoPaymentVoucherConverter.dtoToModel(anticipoPaymentVoucherDto));
+        update(AnticipoPaymentVoucherConverter.dtoToModel(anticipoPaymentVoucherDto));
     }
 
     @Override
     public void updateAllAnticipoPaymentVoucher(List<AnticipoPaymentVoucherDto> anticipoPaymentVoucherDtos) {
-        mapper.updateAll(AnticipoPaymentVoucherConverter.dtoListToModelList(anticipoPaymentVoucherDtos));
+        updateAll(AnticipoPaymentVoucherConverter.dtoListToModelList(anticipoPaymentVoucherDtos));
     }
 
 }

@@ -10,6 +10,9 @@ import java.util.List;
 public class PaymentVoucherConverter {
 
     public static PaymentVoucherModel dtoToModel(PaymentVoucherDto paymentVoucherDto) {
+        if (paymentVoucherDto == null) {
+            return null;
+        }
         return PaymentVoucherModel.builder()
                 .idPaymentVoucher(paymentVoucherDto.getIdPaymentVoucher())
                 .serie(paymentVoucherDto.getSerie())
@@ -86,6 +89,9 @@ public class PaymentVoucherConverter {
     }
 
     public static PaymentVoucherDto modelToDto(PaymentVoucherModel paymentVoucherModel) {
+        if(paymentVoucherModel == null) {
+            return null;
+        }
         return PaymentVoucherDto.builder()
                 .oficinaId(paymentVoucherModel.getOficinaId())
                 .idPaymentVoucher(paymentVoucherModel.getIdPaymentVoucher())

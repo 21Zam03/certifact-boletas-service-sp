@@ -7,11 +7,13 @@ import java.util.List;
 
 public interface SummaryDocumentsService {
 
-    Integer getCorrelativoInSummary(String rucEmisor, String fechaEmision);
     SummaryDto save(SummaryDto summaryDto);
+    SummaryDto update(SummaryDto summaryDto);
+
+    Integer getCorrelativoInSummary(String rucEmisor, String fechaEmision);
     String getEstadoByNumeroTicket(String ticket);
     List<RucEstadoOther> getEstadoAndRucEmisorByNumeroTicket(String ticket);
     SummaryDto findByTicket(String ticket);
-    SummaryDto update(SummaryDto summaryDto);
     Long getIdDocumentSummaryByIdPaymentVoucher(Long idPaymentVoucher);
+
 }

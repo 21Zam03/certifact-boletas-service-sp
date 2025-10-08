@@ -18,7 +18,7 @@ public class RegisterFileUploadController {
 
     @PostMapping
     private ResponseEntity<RegisterFileUploadDto> registrarArchivo(@RequestBody RegisterFileUploadDto registerFileUpload) {
-        return new ResponseEntity<>(registerFileUploadService.save(registerFileUpload), HttpStatus.CREATED);
+        return new ResponseEntity<>(registerFileUploadService.saveRegisterFileUpload(registerFileUpload), HttpStatus.CREATED);
     }
 
     @GetMapping

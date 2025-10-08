@@ -23,7 +23,7 @@ public class GuiaPaymentVoucherServiceImpl extends AbstractGenericService<GuiaPa
 
     @Override
     public void updateGuiaPaymentVoucher(List<GuiaPaymentVoucherDto> guiaPaymentVoucherDtoList) {
-        mapper.updateAll(GuiaPaymentVoucherConverter.dtoListToModelList(guiaPaymentVoucherDtoList));
+        updateAll(GuiaPaymentVoucherConverter.dtoListToModelList(guiaPaymentVoucherDtoList));
     }
 
 }
