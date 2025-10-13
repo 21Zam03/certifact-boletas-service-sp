@@ -164,7 +164,7 @@
             user_name_modify = :usuario,
             fecha_modificacion = :fechaModificacion
         WHERE identificador_documento IN
-        <foreach item="item" index="index" collection="identificadorComprobantes"
+        <foreach item="item" index="index" collection="identificadoresComprobantes"
                  open="(" separator="," close=")">
             #{item}
         </foreach>

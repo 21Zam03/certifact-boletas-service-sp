@@ -1,5 +1,6 @@
 package com.certicom.certifact_boletas_service_sp.converter;
 
+import com.certicom.certifact_boletas_service_sp.dto.PaymentVoucherDto;
 import com.certicom.certifact_boletas_service_sp.model.PaymentVoucherFileModel;
 import com.certicom.certifact_boletas_service_sp.dto.PaymentVoucherFileDto;
 import com.certicom.certifact_boletas_service_sp.service.PaymentVoucherFileService;
@@ -8,6 +9,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PaymentVoucherFileConverter {
+
+    public static PaymentVoucherFileDto modelToDto(PaymentVoucherFileModel paymentVoucherFileModel) {
+        if( paymentVoucherFileModel != null) {
+            return PaymentVoucherFileDto.builder()
+                    .tipoArchivo(paymentVoucherFileModel.getTipoArchivo())
+                    .estadoArchivo(paymentVoucherFileModel.getEstadoArchivo())
+                    .idPaymentVoucher(paymentVoucherFileModel.getIdPaymentVoucher())
+                    .idRegisterFileSend(paymentVoucherFileModel.getIdRegisterFileSend())
+                    .orden(paymentVoucherFileModel.getOrden())
+                    .build();
+        } else return null;
+    }
 
     public static PaymentVoucherFileModel dtoToModel(PaymentVoucherFileDto paymentVoucherFileDto) {
         return PaymentVoucherFileModel.builder()

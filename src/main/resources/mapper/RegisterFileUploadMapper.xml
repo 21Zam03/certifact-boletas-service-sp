@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.certicom.certifact_boletas_service_sp.mapper.RegisterFileUploadMapper">
-    <insert id="save"
+    <insert id="insert"
             parameterType="com.certicom.certifact_boletas_service_sp.model.RegisterFileUploadModel"
             useGeneratedKeys="true" keyProperty="idRegisterFileSend" keyColumn="id_register_file_send">
         INSERT INTO register_file_upload (id_register_file_send, bucket, nombre_generado, nombre_archivo, cod_company, estado, fecha_upload)

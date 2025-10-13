@@ -1,6 +1,7 @@
 package com.certicom.certifact_boletas_service_sp.service.impl;
 
 import com.certicom.certifact_boletas_service_sp.converter.PaymentVoucherFileConverter;
+import com.certicom.certifact_boletas_service_sp.dto.PaymentVoucherDto;
 import com.certicom.certifact_boletas_service_sp.dto.PaymentVoucherFileDto;
 import com.certicom.certifact_boletas_service_sp.mapper.PaymentVoucherFileMapper;
 import com.certicom.certifact_boletas_service_sp.model.PaymentVoucherFileModel;
@@ -19,8 +20,9 @@ public class PaymentVoucherFileImpl extends AbstractGenericService<PaymentVouche
     }
 
     @Override
-    public int savePaymentVoucherFile(PaymentVoucherFileDto paymentVoucherFileDto) {
-        return save(PaymentVoucherFileConverter.dtoToModel(paymentVoucherFileDto));
+    public PaymentVoucherFileDto savePaymentVoucherFile(PaymentVoucherFileDto paymentVoucherFileDto) {
+        PaymentVoucherFileModel p = save(PaymentVoucherFileConverter.dtoToModel(paymentVoucherFileDto));
+        return PaymentVoucherFileConverter.modelToDto(p);
     }
 
     @Override

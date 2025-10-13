@@ -165,7 +165,6 @@ public class PaymentVoucherServiceImpl extends AbstractGenericService<PaymentVou
     @Transactional
     @Override
     public PaymentVoucherDto updatePaymentVoucherProcess(PaymentVoucherDto paymentVoucherDto) {
-        log.debug(LogMessages.PROCESS_START_1, paymentVoucherDto);
         try {
             updatePaymentVoucher(paymentVoucherDto);
             setInfoPaymentFiles(paymentVoucherDto.getPaymentVoucherFileModelList(), paymentVoucherDto.getIdPaymentVoucher());
@@ -253,7 +252,7 @@ public class PaymentVoucherServiceImpl extends AbstractGenericService<PaymentVou
 
     @Override
     public int updatePaymentVoucher(PaymentVoucherDto paymentVoucherDto) {
-        return mapper.update(PaymentVoucherConverter.dtoToModel(paymentVoucherDto));
+        return update(PaymentVoucherConverter.dtoToModel(paymentVoucherDto));
     }
 
     @Override
