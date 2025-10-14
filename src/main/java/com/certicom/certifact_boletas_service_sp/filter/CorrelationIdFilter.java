@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Enumeration;
 import java.util.UUID;
 
 @Slf4j
@@ -18,7 +19,7 @@ public class CorrelationIdFilter extends OncePerRequestFilter {
 
     public static final String CORRELATION_ID_HEADER = "X-Correlation-Id";
     public static final String REQUEST_ID_HEADER = "X-Request-Id";
-
+    public static final String TRACE_ID = "X-B3-TraceId";
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -27,6 +28,18 @@ public class CorrelationIdFilter extends OncePerRequestFilter {
 
         String correlationId = request.getHeader(CORRELATION_ID_HEADER);
         String requestId = request.getHeader(REQUEST_ID_HEADER);
+
+        System.out.println("TEST HEADER"+ request.getHeader(TRACE_ID));
+        log.info("🔍 [HEADERS ENTRANTES]");
+        Enumeration<String> headerNames = request.getHeaderNames();
+
+        if (headerNames != null) {
+            while (headerNames.hasMoreElements()) {
+                String headerName = headerNames.nextElement();
+                String headerValue = request.getHeader(headerName);
+                log.info("{}: {}", headerName, headerValue);
+            }
+        }
 
         if (correlationId == null || correlationId.isEmpty()) {
             correlationId = UUID.randomUUID().toString();
