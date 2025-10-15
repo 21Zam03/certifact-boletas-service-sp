@@ -26,4 +26,9 @@ public class GuiaPaymentVoucherServiceImpl extends AbstractGenericService<GuiaPa
         updateAll(GuiaPaymentVoucherConverter.dtoListToModelList(guiaPaymentVoucherDtoList));
     }
 
+    @Override
+    public int deleteGuiaPaymentVoucherById(Long id) {
+        return delete(id);
+    }
+
 }

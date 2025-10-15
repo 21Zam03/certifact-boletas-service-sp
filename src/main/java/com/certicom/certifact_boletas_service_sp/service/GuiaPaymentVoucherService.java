@@ -7,5 +7,6 @@ import java.util.List;
 public interface GuiaPaymentVoucherService {
 
     void updateGuiaPaymentVoucher(List<GuiaPaymentVoucherDto> guiaPaymentVoucherDtoList);
+    int deleteGuiaPaymentVoucherById(Long id);
 
 }

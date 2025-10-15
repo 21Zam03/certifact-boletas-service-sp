@@ -5,7 +5,7 @@ public enum LogTitle {
     ERROR_DATABASE("Error in database"),
     ERROR_UNEXPECTED("Error unexpected"),
 
-    //Advertencia para validaciones
+    //Advertencia para validaciones, no corta el flujo de la peticion pero si es una observacion a tener en cuenta si se presenta.
     WARN_VALIDATION("Validation"),
 
     //Advertencia para resultados vacios o nulos

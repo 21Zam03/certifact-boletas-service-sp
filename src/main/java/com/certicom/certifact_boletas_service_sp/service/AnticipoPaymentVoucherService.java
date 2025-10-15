@@ -8,5 +8,5 @@ public interface AnticipoPaymentVoucherService {
 
     void updateAnticipoPaymentVoucher(AnticipoPaymentVoucherDto anticipoPaymentVoucherDto);
     void updateAllAnticipoPaymentVoucher(List<AnticipoPaymentVoucherDto> anticipoPaymentVoucherDtos);
-
+    int deleteAnticipoPaymentVoucherById(Long id);
 }

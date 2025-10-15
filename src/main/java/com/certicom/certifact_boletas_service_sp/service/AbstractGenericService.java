@@ -32,7 +32,7 @@ public abstract class AbstractGenericService<T, ID, M extends BaseMapper<T, ID>>
             if(entity == null) {
                 LogHelper.warnLog(LogTitle.WARN_NOT_RESULT.getType(), LogMessages.currentMethod(), "variable entity es nulo");
             } else {
-                LogHelper.infoLog(LogTitle.INFO.getType(), LogMessages.currentMethod(), "La consulta se realizo exitosamente, parametro[entity]="+entity);
+                LogHelper.infoLog(LogTitle.INFO.getType(), LogMessages.currentMethod(), "La consulta se realizo exitosamente");
             }
             return Optional.ofNullable(entity);
         } catch (DataAccessException | PersistenceException e) {

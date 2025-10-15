@@ -25,4 +25,9 @@ public class PaymentCuotasServiceImpl extends AbstractGenericService<PaymentCuot
         updateAll(PaymentCuotasConverter.dtoListToModelList(paymentCuotasDtoList));
     }
 
+    @Override
+    public int deletePaymentCuotasById(Long id) {
+        return delete(id);
+    }
+
 }

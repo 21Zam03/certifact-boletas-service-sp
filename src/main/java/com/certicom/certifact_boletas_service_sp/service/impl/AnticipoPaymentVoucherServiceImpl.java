@@ -28,4 +28,9 @@ public class AnticipoPaymentVoucherServiceImpl extends AbstractGenericService<An
         updateAll(AnticipoPaymentVoucherConverter.dtoListToModelList(anticipoPaymentVoucherDtos));
     }
 
+    @Override
+    public int deleteAnticipoPaymentVoucherById(Long id) {
+        return delete(id);
+    }
+
 }

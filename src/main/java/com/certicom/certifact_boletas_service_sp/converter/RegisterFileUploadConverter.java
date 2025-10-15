@@ -28,8 +28,6 @@ public class RegisterFileUploadConverter {
     }
 
     public static RegisterFileUploadModel dtoToModel(RegisterFileUploadDto registerFileUploadDto) {
-        System.out.println("BUCKET: " + registerFileUploadDto.getBucket());
-        System.out.println("NOMBRE GENERADO: " + registerFileUploadDto.getNombreGenerado());
         return RegisterFileUploadModel.builder()
                 .idRegisterFileSend(registerFileUploadDto.getIdRegisterFileSend())
                 .extension(registerFileUploadDto.getExtension())

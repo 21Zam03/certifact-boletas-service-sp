@@ -116,7 +116,6 @@ public class PaymentVoucherServiceImpl extends AbstractGenericService<PaymentVou
             if(paymentVoucherDto.getCamposAdicionales()!= null && !paymentVoucherDto.getCamposAdicionales().isEmpty()) {
                 for (int i = 0; i < paymentVoucherDto.getCamposAdicionales().size(); i++) {
                     paymentVoucherDto.getCamposAdicionales().get(i).setIdPaymentVoucher(paymentVoucher.getIdPaymentVoucher());
-                    System.out.println("NAME TEST: "+paymentVoucherDto.getCamposAdicionales().get(i).getNombreCampo());
                     Long id = typeFieldMapper.getIdByName(paymentVoucherDto.getCamposAdicionales().get(i).getNombreCampo());
                     paymentVoucherDto.getCamposAdicionales().get(i).setTypeFieldId(id);
                     result = aditionalFieldPaymentVoucherMapper.insert(AditionalFIeldPaymentVoucherConverter.dtoToModel(paymentVoucherDto.getCamposAdicionales().get(i)));
@@ -136,7 +135,6 @@ public class PaymentVoucherServiceImpl extends AbstractGenericService<PaymentVou
             }
             if(paymentVoucherDto.getItems() != null && !paymentVoucherDto.getItems().isEmpty()) {
                 for (int i = 0; i < paymentVoucherDto.getItems().size(); i++) {
-                    System.out.println("ID paymente voucher: "+paymentVoucher.getIdPaymentVoucher());
                     paymentVoucherDto.getItems().get(i).setIdPaymentVoucher(paymentVoucher.getIdPaymentVoucher());
                     result = detailsPaymentVoucherMapper.insert(DetailsPaymentVoucherConverter.dtoToModel(paymentVoucherDto.getItems().get(i)));
                     if(result == 0){
@@ -265,17 +263,16 @@ public class PaymentVoucherServiceImpl extends AbstractGenericService<PaymentVou
     @Override
     public PaymentVoucherDto findByIdentificadorDocumento(String identificadorDocumento) {
         if(identificadorDocumento == null) {
+            LogHelper.warnLog(LogTitle.WARN_VALIDATION.getType(), LogMessages.currentMethod(), "parametro identificadorDocumento es nulo");
             throw new ServiceException(String.format("%s: el identificadorDocumento no puede ser nulo", LogMessages.ERROR_VALIDATION));
         }
         try {
             PaymentVoucherModel paymentVoucherModel = mapper.findByIdentificadorDocumento(identificadorDocumento);
             PaymentVoucherDto paymentVoucherDto = PaymentVoucherConverter.modelToDto(paymentVoucherModel);
             if(paymentVoucherDto == null) {
-                log.warn("{} - method=findByIdentificadorDocumento, identificadorDocumento={}",
-                        LogMessages.WARN_GET, identificadorDocumento);
+                LogHelper.warnLog(LogTitle.WARN_NOT_RESULT.getType(), LogMessages.currentMethod(), "variable paymentVoucherDto es nulo");
             } else {
-                log.debug("{} - method=findByIdentificadorDocumento, identificadorDocumento={}",
-                        LogMessages.SUCCESS_GET, identificadorDocumento);
+                LogHelper.infoLog(LogTitle.INFO.getType(), LogMessages.currentMethod(), "La consulta se realizo exitosamente");
             }
             return paymentVoucherDto;
         } catch (DataAccessException | PersistenceException e) {

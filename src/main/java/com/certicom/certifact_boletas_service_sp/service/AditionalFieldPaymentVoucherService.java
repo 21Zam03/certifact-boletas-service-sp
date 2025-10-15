@@ -7,5 +7,6 @@ import java.util.List;
 public interface AditionalFieldPaymentVoucherService {
 
     void updateAllAditionalFieldPaymentVoucher(List<AditionalFieldPaymentVoucherDto> aditionalFieldPaymentVoucherDtoList);
+    int deleteAditionalFieldPaymentVoucherService(Long id);
 
 }

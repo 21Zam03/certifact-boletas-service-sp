@@ -7,5 +7,6 @@ import java.util.List;
 public interface DetailsPaymentVoucherService {
 
     void updateAllDetailsPaymentVouhcer(List<DetailsPaymentVoucherDto> detailsPaymentVoucherDtoList);
+    int deleteDetailPaymentVoucherById(Long id);
 
 }

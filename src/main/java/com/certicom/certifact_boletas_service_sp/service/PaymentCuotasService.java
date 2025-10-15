@@ -7,5 +7,6 @@ import java.util.List;
 public interface PaymentCuotasService {
 
     void updateAllPaymentCuotas(List<PaymentCuotasDto> paymentCuotasDtoList);
+    int deletePaymentCuotasById(Long id);
 
 }

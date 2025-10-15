@@ -33,12 +33,13 @@ public class BranchOfficeServiceImpl implements BranchOfficeService {
             BranchOfficeModel branchOfficeModel = branchOfficeMapper.findByCompanyIdAndSerieAndTipoComprobante(empresaId, serie, tipoComprobante);
             if(branchOfficeModel == null) {
                 LogHelper.warnLog(LogTitle.WARN_NOT_RESULT.getType(),
-                        LogMessages.currentMethod(), "La variable branchOfficeModel es nulo");
+                        LogMessages.currentMethod(), "La variable branchOfficeModel es nulo, " +
+                                "[empresaId="+empresaId+", serie="+serie+", tipoComprobante="+tipoComprobante+"]");
                 return null;
             } else {
                 BranchOfficeDto branchOfficeDto = BranchOfficeConverter.modelToDto(branchOfficeModel);
                 LogHelper.infoLog(LogTitle.INFO.getType(),
-                        LogMessages.currentMethod(), "La consulta se realizo con extio, id="+branchOfficeDto.getId());
+                        LogMessages.currentMethod(), "La consulta se realizo con exito");
                 return branchOfficeDto;
             }
         } catch (DataAccessException | PersistenceException e) {

@@ -16,7 +16,6 @@ public class LogMessages {
     public static final String ERROR_DATABASE = "Error en base de datos";
     public static final String ERROR_VALIDATION = "Error de validación";
     public static final String SUCCESS_GET = "Consulta exitosa";
-    public static final String WARN_GET = "Consulta a medias";
 
     public static String currentMethod() {
         return Thread.currentThread().getStackTrace()[2].getMethodName();

@@ -25,4 +25,9 @@ public class AditionalFieldPaymentVoucherServiceImpl extends AbstractGenericServ
         updateAll(AditionalFIeldPaymentVoucherConverter.dtoListToModelList(aditionalFieldPaymentVoucherDtoList));
     }
 
+    @Override
+    public int deleteAditionalFieldPaymentVoucherService(Long id) {
+        return delete(id);
+    }
+
 }

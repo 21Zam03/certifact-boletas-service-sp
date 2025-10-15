@@ -1,5 +1,8 @@
 package com.certicom.certifact_boletas_service_sp.filter;
 
+import com.certicom.certifact_boletas_service_sp.enums.LogTitle;
+import com.certicom.certifact_boletas_service_sp.util.LogHelper;
+import com.certicom.certifact_boletas_service_sp.util.LogMessages;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -33,9 +36,9 @@ public class DataFilter implements Filter {
         }
 
         try {
-            log.info("Incoming request [{} {}]", request.getMethod(), request.getRequestURI());
+            LogHelper.infoLog(LogTitle.INFO.getType(), LogMessages.currentMethod(), "Incoming request ["+request.getMethod()+" "+request.getRequestURI()+"]");
             filterChain.doFilter(servletRequest, servletResponse);
-            log.info("Completed request: duration={}ms", (System.currentTimeMillis() - startTime));
+            LogHelper.infoLog(LogTitle.INFO.getType(), LogMessages.currentMethod(), "Completed request: duration="+(System.currentTimeMillis() - startTime)+"ms");
         } finally {
             MDC.clear();
         }
