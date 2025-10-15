@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.List;
 
 @RestController
@@ -62,8 +63,9 @@ public class PaymentVoucherController {
 
     @PutMapping("/state")
     public ResponseEntity<Integer> updateStateToSendSunatForSummaryDocuments(
-            @RequestParam List<Long> ids, @RequestParam String usuario, @RequestParam Timestamp fechaModificacion) {
-        return new ResponseEntity<>(paymentVoucherService.updateStateToSendSunatForSummaryDocuments(ids, usuario, fechaModificacion), HttpStatus.OK);
+            @RequestParam List<Long> ids, @RequestParam String usuario, @RequestParam Instant fechaModificacion) {
+        Timestamp ts = Timestamp.from(fechaModificacion);
+        return new ResponseEntity<>(paymentVoucherService.updateStateToSendSunatForSummaryDocuments(ids, usuario, ts), HttpStatus.OK);
     }
 
     @PutMapping("/payment-summary-accept")

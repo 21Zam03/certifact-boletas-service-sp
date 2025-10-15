@@ -30,7 +30,7 @@
         u.estado,
         u.full_name,
         u.password,
-        u.typeUser,
+        u.type_user,
         u.de_login,
         u.cod_company,
         u.oficina_id,

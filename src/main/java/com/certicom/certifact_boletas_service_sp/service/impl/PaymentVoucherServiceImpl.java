@@ -2,12 +2,14 @@ package com.certicom.certifact_boletas_service_sp.service.impl;
 
 import com.certicom.certifact_boletas_service_sp.converter.*;
 import com.certicom.certifact_boletas_service_sp.dto.*;
+import com.certicom.certifact_boletas_service_sp.enums.LogTitle;
 import com.certicom.certifact_boletas_service_sp.exception.ServiceException;
 import com.certicom.certifact_boletas_service_sp.mapper.*;
 import com.certicom.certifact_boletas_service_sp.model.AnticipoPaymentVoucherModel;
 import com.certicom.certifact_boletas_service_sp.model.PaymentVoucherModel;
 import com.certicom.certifact_boletas_service_sp.response.PaymentVoucherResponse;
 import com.certicom.certifact_boletas_service_sp.service.*;
+import com.certicom.certifact_boletas_service_sp.util.LogHelper;
 import com.certicom.certifact_boletas_service_sp.util.LogMessages;
 import jakarta.persistence.PersistenceException;
 import lombok.RequiredArgsConstructor;
@@ -277,13 +279,13 @@ public class PaymentVoucherServiceImpl extends AbstractGenericService<PaymentVou
             }
             return paymentVoucherDto;
         } catch (DataAccessException | PersistenceException e) {
-            log.error("{} - method=findByIdentificadorDocumento, identificadorDocumento={}",
-                    LogMessages.ERROR_DATABASE, identificadorDocumento, e);
+            LogHelper.errorLog(LogTitle.ERROR_DATABASE.getType(),
+                    LogMessages.currentMethod(), "Ocurrio un error en la base de datos", e);
             throw new ServiceException(LogMessages.ERROR_DATABASE, e);
         }
         catch (Exception e) {
-            log.error("{} - method=findByIdentificadorDocumento, identificadorDocumento={}",
-                    LogMessages.ERROR_UNEXPECTED, identificadorDocumento, e);
+            LogHelper.errorLog(LogTitle.ERROR_UNEXPECTED.getType(),
+                    LogMessages.currentMethod(), "Ocurrio un error inesperado", e);
             throw new ServiceException(LogMessages.ERROR_UNEXPECTED, e);
         }
     }
