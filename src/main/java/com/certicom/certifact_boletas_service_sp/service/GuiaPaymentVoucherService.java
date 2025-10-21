@@ -8,5 +8,6 @@ public interface GuiaPaymentVoucherService {
 
     void updateGuiaPaymentVoucher(List<GuiaPaymentVoucherDto> guiaPaymentVoucherDtoList);
     int deleteGuiaPaymentVoucherById(Long id);
+    int saveAllGuiaPaymentVoucher(List<GuiaPaymentVoucherDto> guiaPayments);
 
 }

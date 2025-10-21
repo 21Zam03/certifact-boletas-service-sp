@@ -32,4 +32,26 @@
             WHERE id = #{item.id}
         </foreach>
     </update>
+    <select id="listAditionalFieldByIdPaymentVoucher" parameterType="Long">
+        SELECT id, nombre_campo, valor_campo, id_payment_voucher, type_field_id FROM aditional_field_payment_voucher WHERE id_payment_voucher = #{id}
+    </select>
+    <insert id="insertAll" parameterType="java.util.List">
+        INSERT INTO aditional_field_payment_voucher (
+            id,
+            nombre_campo,
+            valor_campo,
+            id_payment_voucher,
+            type_field_id
+        )
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (
+                nextval('aditional_field_payment_voucher_seq'),
+                #{item.nombreCampo},
+                #{item.valorCampo},
+                #{item.idPaymentVoucher},
+                #{item.typeFieldId}
+            )
+        </foreach>
+    </insert>
 </mapper>

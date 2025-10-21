@@ -33,4 +33,9 @@ public class AnticipoPaymentVoucherServiceImpl extends AbstractGenericService<An
         return delete(id);
     }
 
+    @Override
+    public int saveAllAnticipoPaymentVoucher(List<AnticipoPaymentVoucherDto> anticipos) {
+        return saveAll(AnticipoPaymentVoucherConverter.dtoListToModelList(anticipos));
+    }
+
 }

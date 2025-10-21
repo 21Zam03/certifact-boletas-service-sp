@@ -49,8 +49,7 @@
             u.extension
         from register_file_upload u
         inner join summary_file sf on sf.id_register_file_send = u.id_register_file_send
-        inner join summary_documents sd on sd.id_document_summary = sd.id_document_summary
-        where sd.id_document_summary = #{id} and sf.tipo_archivo = #{tipo} order by u.id_register_file_send desc limit 1;
+        where sf.id_document_summary = #{id} and sf.tipo_archivo = #{tipo};
     </select>
     <select id="getDataForXml">
         SELECT

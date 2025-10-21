@@ -30,4 +30,9 @@ public class PaymentCuotasServiceImpl extends AbstractGenericService<PaymentCuot
         return delete(id);
     }
 
+    @Override
+    public int saveAllPaymentCuotas(List<PaymentCuotasDto> cuotas) {
+        return saveAll(PaymentCuotasConverter.dtoListToModelList(cuotas));
+    }
+
 }

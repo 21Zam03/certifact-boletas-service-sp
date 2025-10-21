@@ -8,5 +8,6 @@ public interface AditionalFieldPaymentVoucherService {
 
     void updateAllAditionalFieldPaymentVoucher(List<AditionalFieldPaymentVoucherDto> aditionalFieldPaymentVoucherDtoList);
     int deleteAditionalFieldPaymentVoucherService(Long id);
+    int saveAllAditionalFieldPaymentVoucher(List<AditionalFieldPaymentVoucherDto> camposAdicionales);
 
 }

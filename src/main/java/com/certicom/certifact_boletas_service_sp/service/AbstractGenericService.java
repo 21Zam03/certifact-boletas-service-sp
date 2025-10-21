@@ -182,4 +182,64 @@ public abstract class AbstractGenericService<T, ID, M extends BaseMapper<T, ID>>
         }
     }
 
+    @Override
+    public int deleteAll(List<T> list) {
+        if(list == null || list.isEmpty()) {
+            LogHelper.warnLog(LogTitle.WARN_VALIDATION.getType(),
+                    LogMessages.currentMethod(), "La lista es nulo o esta vacia");
+            throw new ServiceException(String.format("%s: lista es nulo o esta vacia", LogMessages.ERROR_VALIDATION));
+        }
+        try {
+            int expectedRows = list.size();
+            int deletedRows = mapper.deleteAll(list);
+            if(deletedRows != expectedRows) {
+                LogHelper.warnLog(LogTitle.WARN_NOT_RESULT.getType(),
+                        LogMessages.currentMethod(), "filas="+expectedRows+", filasEliminadas="+deletedRows);
+            } else {
+                LogHelper.infoLog(LogTitle.INFO.getType(),
+                        LogMessages.currentMethod(), "filas="+expectedRows+", filasEliminadas="+deletedRows);
+            }
+            return deletedRows;
+        } catch (DataAccessException | PersistenceException e) {
+            LogHelper.errorLog(LogTitle.ERROR_DATABASE.getType(),
+                    LogMessages.currentMethod(), "Ocurrio un error en la base de datos", e);
+            throw new ServiceException(LogMessages.ERROR_DATABASE, e);
+        }
+        catch (Exception e) {
+            LogHelper.errorLog(LogTitle.ERROR_UNEXPECTED.getType(),
+                    LogMessages.currentMethod(), "Ocurrio un error inesperado", e);
+            throw new ServiceException(LogMessages.ERROR_UNEXPECTED, e);
+        }
+    }
+
+    @Override
+    public int saveAll(List<T> list) {
+        if(list == null || list.isEmpty()) {
+            LogHelper.warnLog(LogTitle.WARN_VALIDATION.getType(),
+                    LogMessages.currentMethod(), "La lista es nulo o esta vacia");
+            throw new ServiceException(String.format("%s: lista es nulo o esta vacia", LogMessages.ERROR_VALIDATION));
+        }
+        try {
+            int expectedRows = list.size();
+            int savedRows = mapper.insertAll(list);
+            if(savedRows != expectedRows) {
+                LogHelper.warnLog(LogTitle.WARN_NOT_RESULT.getType(),
+                        LogMessages.currentMethod(), "filas="+expectedRows+", filasRegistradas="+savedRows);
+            } else {
+                LogHelper.infoLog(LogTitle.INFO.getType(),
+                        LogMessages.currentMethod(), "filas="+expectedRows+", filasRegistradas="+savedRows);
+            }
+            return savedRows;
+        } catch (DataAccessException | PersistenceException e) {
+            LogHelper.errorLog(LogTitle.ERROR_DATABASE.getType(),
+                    LogMessages.currentMethod(), "Ocurrio un error en la base de datos", e);
+            throw new ServiceException(LogMessages.ERROR_DATABASE, e);
+        }
+        catch (Exception e) {
+            LogHelper.errorLog(LogTitle.ERROR_UNEXPECTED.getType(),
+                    LogMessages.currentMethod(), "Ocurrio un error inesperado", e);
+            throw new ServiceException(LogMessages.ERROR_UNEXPECTED, e);
+        }
+    }
+
 }

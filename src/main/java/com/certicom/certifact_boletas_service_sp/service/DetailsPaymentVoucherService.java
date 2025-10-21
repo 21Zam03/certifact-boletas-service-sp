@@ -8,5 +8,6 @@ public interface DetailsPaymentVoucherService {
 
     void updateAllDetailsPaymentVouhcer(List<DetailsPaymentVoucherDto> detailsPaymentVoucherDtoList);
     int deleteDetailPaymentVoucherById(Long id);
+    int saveAllDetailsPaymentVouhcer(List<DetailsPaymentVoucherDto> items);
 
 }

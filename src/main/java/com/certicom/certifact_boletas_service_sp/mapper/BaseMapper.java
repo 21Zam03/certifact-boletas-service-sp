@@ -10,5 +10,7 @@ public interface BaseMapper<T, ID> {
     T findById(ID id);
     List<T> findAll();
     int updateAll(List<T> list);
+    int deleteAll(List<T> list);
+    int insertAll(List<T> list);
 
 }

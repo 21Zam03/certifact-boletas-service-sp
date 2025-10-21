@@ -9,14 +9,29 @@ import java.util.List;
 public class PaymentCuotasConverter {
 
     public static PaymentCuotasModel dtoToModel(PaymentCuotasDto paymentCuotasDto) {
-        return PaymentCuotasModel.builder()
-                .idCuotas(paymentCuotasDto.getIdCuotas())
-                .numero(paymentCuotasDto.getNumero())
-                .monto(paymentCuotasDto.getMonto())
-                .fecha(paymentCuotasDto.getFecha())
-                .idPaymentVoucher(paymentCuotasDto.getIdPaymentVoucher())
-                .build();
+        if(paymentCuotasDto != null) {
+            return PaymentCuotasModel.builder()
+                    .idCuotas(paymentCuotasDto.getIdCuotas())
+                    .numero(paymentCuotasDto.getNumero())
+                    .monto(paymentCuotasDto.getMonto())
+                    .fecha(paymentCuotasDto.getFecha())
+                    .idPaymentVoucher(paymentCuotasDto.getIdPaymentVoucher())
+                    .build();
+        } else return null;
     }
+
+    public static PaymentCuotasDto modelToDto(PaymentCuotasModel paymentCuotasModel) {
+        if(paymentCuotasModel != null) {
+            return PaymentCuotasDto.builder()
+                    .idCuotas(paymentCuotasModel.getIdCuotas())
+                    .numero(paymentCuotasModel.getNumero())
+                    .monto(paymentCuotasModel.getMonto())
+                    .fecha(paymentCuotasModel.getFecha())
+                    .idPaymentVoucher(paymentCuotasModel.getIdPaymentVoucher())
+                    .build();
+        } else return null;
+    }
+
 
     public static List<PaymentCuotasModel> dtoListToModelList(List<PaymentCuotasDto> paymentCuotasDtoList) {
         if(paymentCuotasDtoList != null && !paymentCuotasDtoList.isEmpty()) {
@@ -25,6 +40,16 @@ public class PaymentCuotasConverter {
                 paymentCuotasModelList.add(dtoToModel(paymentCuotasDto));
             }
             return paymentCuotasModelList;
+        } else return null;
+    }
+
+    public static List<PaymentCuotasDto> modelListToDtoList(List<PaymentCuotasModel> paymentCuotasModelList) {
+        if (paymentCuotasModelList != null && !paymentCuotasModelList.isEmpty()) {
+            List<PaymentCuotasDto> paymentCuotasDtoList = new ArrayList<>();
+            for (PaymentCuotasModel paymentCuotasModel : paymentCuotasModelList) {
+                paymentCuotasDtoList.add(modelToDto(paymentCuotasModel));
+            }
+            return paymentCuotasDtoList;
         } else return null;
     }
 

@@ -68,7 +68,69 @@ public class DetailsPaymentVoucherConverter {
                 .build();
     }
 
-    public static List<DetailsPaymentVoucherModel> detoListToModelList(List<DetailsPaymentVoucherDto> detailsPaymentVoucherDtoList) {
+    public static DetailsPaymentVoucherDto modelToDto(DetailsPaymentVoucherModel detailsPaymentVoucherModel) {
+        if(detailsPaymentVoucherModel != null) {
+            return DetailsPaymentVoucherDto.builder()
+                    .idPaymentVoucher(detailsPaymentVoucherModel.getIdPaymentVoucher())
+                    .idComprobanteDetalle(detailsPaymentVoucherModel.getIdComprobanteDetalle())
+                    .numeroItem(detailsPaymentVoucherModel.getNumeroItem())
+                    .codigoUnidadMedida(detailsPaymentVoucherModel.getCodigoUnidadMedida())
+                    .cantidad(detailsPaymentVoucherModel.getCantidad())
+                    .descripcion(detailsPaymentVoucherModel.getDescripcion())
+                    .codigoProducto(detailsPaymentVoucherModel.getCodigoProducto())
+                    .codigoProductoGS1(detailsPaymentVoucherModel.getCodigoProductoGS1())
+                    .valorUnitario(detailsPaymentVoucherModel.getValorUnitario())
+                    .valorVenta(detailsPaymentVoucherModel.getValorVenta())
+                    .descuento(detailsPaymentVoucherModel.getDescuento())
+                    .codigoDescuento(detailsPaymentVoucherModel.getCodigoDescuento())
+                    .precioVentaUnitario(detailsPaymentVoucherModel.getPrecioVentaUnitario())
+                    .valorReferencialUnitario(detailsPaymentVoucherModel.getValorReferencialUnitario())
+                    .montoBaseIgv(detailsPaymentVoucherModel.getMontoBaseIgv())
+                    .montoBaseIvap(detailsPaymentVoucherModel.getMontoBaseIvap())
+                    .montoBaseExportacion(detailsPaymentVoucherModel.getMontoBaseExportacion())
+                    .montoBaseExonerado(detailsPaymentVoucherModel.getMontoBaseExonerado())
+                    .montoBaseInafecto(detailsPaymentVoucherModel.getMontoBaseInafecto())
+                    .montoBaseGratuito(detailsPaymentVoucherModel.getMontoBaseGratuito())
+                    .montoBaseIsc(detailsPaymentVoucherModel.getMontoBaseIsc())
+                    .montoBaseOtrosTributos(detailsPaymentVoucherModel.getMontoBaseOtrosTributos())
+                    .igv(detailsPaymentVoucherModel.getIgv())
+                    .isc(detailsPaymentVoucherModel.getIsc())
+                    .montoIcbper(detailsPaymentVoucherModel.getMontoIcbper())
+                    .ivap(detailsPaymentVoucherModel.getIvap())
+                    .impuestoVentaGratuita(detailsPaymentVoucherModel.getImpuestoVentaGratuita())
+                    .otrosTributos(detailsPaymentVoucherModel.getOtrosTributos())
+                    .porcentajeIgv(detailsPaymentVoucherModel.getPorcentajeIgv())
+                    .porcentajeIvap(detailsPaymentVoucherModel.getPorcentajeIvap())
+                    .porcentajeIsc(detailsPaymentVoucherModel.getPorcentajeIsc())
+                    .porcentajeOtrosTributos(detailsPaymentVoucherModel.getPorcentajeOtrosTributos())
+                    .porcentajeTributoVentaGratuita(detailsPaymentVoucherModel.getPorcentajeTributoVentaGratuita())
+                    .codigoTipoAfectacionIGV(detailsPaymentVoucherModel.getCodigoTipoAfectacionIGV())
+                    .codigoTipoCalculoISC(detailsPaymentVoucherModel.getCodigoTipoCalculoISC())
+                    .productoId(detailsPaymentVoucherModel.getProductoId())
+                    .detalleViajeDetraccion(detailsPaymentVoucherModel.getDetalleViajeDetraccion())
+                    .ubigeoOrigenDetraccion(detailsPaymentVoucherModel.getUbigeoOrigenDetraccion())
+                    .direccionOrigenDetraccion(detailsPaymentVoucherModel.getDireccionOrigenDetraccion())
+                    .ubigeoDestinoDetraccion(detailsPaymentVoucherModel.getUbigeoDestinoDetraccion())
+                    .direccionDestinoDetraccion(detailsPaymentVoucherModel.getDireccionDestinoDetraccion())
+                    .valorServicioTransporte(detailsPaymentVoucherModel.getValorServicioTransporte())
+                    .valorCargaEfectiva(detailsPaymentVoucherModel.getValorCargaEfectiva())
+                    .valorCargaUtil(detailsPaymentVoucherModel.getValorCargaUtil())
+                    .hidroMatricula(detailsPaymentVoucherModel.getHidroMatricula())
+                    .hidroEmbarcacion(detailsPaymentVoucherModel.getHidroEmbarcacion())
+                    .hidroDescripcionTipo(detailsPaymentVoucherModel.getHidroDescripcionTipo())
+                    .hidroLugarDescarga(detailsPaymentVoucherModel.getHidroLugarDescarga())
+                    .hidroFechaDescarga(detailsPaymentVoucherModel.getHidroFechaDescarga())
+                    .hidroCantidad(detailsPaymentVoucherModel.getHidroCantidad())
+                    .unidadManejo(detailsPaymentVoucherModel.getUnidadManejo())
+                    .instruccionesEspeciales(detailsPaymentVoucherModel.getInstruccionesEspeciales())
+                    .marca(detailsPaymentVoucherModel.getMarca())
+                    .adicional(detailsPaymentVoucherModel.getAdicional())
+                    .estado(detailsPaymentVoucherModel.getEstado())
+                    .build();
+        } return null;
+    }
+
+    public static List<DetailsPaymentVoucherModel> dtoListToModelList(List<DetailsPaymentVoucherDto> detailsPaymentVoucherDtoList) {
         if(detailsPaymentVoucherDtoList!=null && !detailsPaymentVoucherDtoList.isEmpty()){
             List<DetailsPaymentVoucherModel> detailsPaymentVoucherModelList = new ArrayList<>();
             for (DetailsPaymentVoucherDto item : detailsPaymentVoucherDtoList) {
@@ -76,5 +138,16 @@ public class DetailsPaymentVoucherConverter {
             }
             return detailsPaymentVoucherModelList;
         } else return null;
+    }
+
+    public static List<DetailsPaymentVoucherDto> modelListToDtoList(List<DetailsPaymentVoucherModel> detailsPaymentVoucherModelList) {
+        if(detailsPaymentVoucherModelList == null || !detailsPaymentVoucherModelList.isEmpty()) {
+            List<DetailsPaymentVoucherDto> detailsPaymentVoucherDtoList = new ArrayList<>();
+            for (DetailsPaymentVoucherModel detailsPaymentVoucherModel : detailsPaymentVoucherModelList) {
+                DetailsPaymentVoucherDto detailsPaymentVoucherDto = modelToDto(detailsPaymentVoucherModel);
+                detailsPaymentVoucherDtoList.add(detailsPaymentVoucherDto);
+            }
+            return detailsPaymentVoucherDtoList;
+        } return null;
     }
 }

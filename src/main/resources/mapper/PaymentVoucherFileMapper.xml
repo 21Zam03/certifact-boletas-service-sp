@@ -32,4 +32,30 @@
             WHERE id = #{item.id}
         </foreach>
     </update>
+    <update id="deleteAll" parameterType="java.util.List">
+        <foreach collection="list" item="item" separator=";">
+            DELETE FROM payment_voucher_file WHERE id = #{item.id}
+        </foreach>
+    </update>
+    <insert id="insertAll" parameterType="java.util.List">
+        INSERT INTO payment_voucher_file (
+            id,
+            estado_archivo,
+            orden,
+            tipo_archivo,
+            id_payment_voucher,
+            id_register_file_send
+        )
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (
+                nextval('file_comprobante_pago_seq'),
+                #{item.estadoArchivo},
+                #{item.orden},
+                #{item.tipoArchivo},
+                #{item.idPaymentVoucher},
+                #{item.idRegisterFileSend}
+            )
+        </foreach>
+    </insert>
 </mapper>

@@ -11,5 +11,7 @@ public interface GenericService<T, ID> {
     int update(T entity);
     int delete(ID id);
     int updateAll(List<T> list);
+    int deleteAll(List<T> list);
+    int saveAll(List<T> list);
 
 }

@@ -1,5 +1,6 @@
 package com.certicom.certifact_boletas_service_sp.mapper;
 
+import com.certicom.certifact_boletas_service_sp.dto.AditionalFieldPaymentVoucherDto;
 import com.certicom.certifact_boletas_service_sp.model.AditionalFieldPaymentVoucherModel;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -12,5 +13,6 @@ public interface AditionalFieldPaymentVoucherMapper extends BaseMapper<Aditional
     //int deleteById(Long id);
     //int update(AditionalFieldPaymentVoucherModel aditionalFieldPaymentVoucherModel);
     List<AditionalFieldPaymentVoucherModel> findAllByIdPaymentVoucher(Long id);
+    List<AditionalFieldPaymentVoucherModel> listAditionalFieldByIdPaymentVoucher(Long idPaymentVoucher);
 
 }

@@ -12,6 +12,7 @@ public interface PaymentVoucherService {
     //Estos metodo save y update tiene un flujo completo de la creacion de la entidad payment_voucher y sus entidades relacionadas.
     PaymentVoucherDto savePaymentVoucherProcess(PaymentVoucherDto paymentVoucherDto);
     PaymentVoucherDto updatePaymentVoucherProcess(PaymentVoucherDto paymentVoucherDto);
+    PaymentVoucherDto getPaymentVoucherProcess(String rucEmisor, String tipoComprobante, String serie, Integer numero);
 
     int savePaymentVoucher(PaymentVoucherDto paymentVoucherDto);
     int updatePaymentVoucher(PaymentVoucherDto paymentVoucherDto);

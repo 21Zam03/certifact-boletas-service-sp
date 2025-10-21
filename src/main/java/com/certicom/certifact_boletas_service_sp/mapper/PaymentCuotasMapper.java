@@ -12,5 +12,6 @@ public interface PaymentCuotasMapper extends BaseMapper<PaymentCuotasModel, Long
     //int deleteById(Long id);
     //int update(PaymentCuotasModel paymentCuotasModel);
     List<PaymentCuotasModel> findAllByIdPaymentVoucher(Long id);
+    List<PaymentCuotasModel> listCuotasByIdPaymentVoucher(Long idPaymentVoucher);
 
 }

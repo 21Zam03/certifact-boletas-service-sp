@@ -5,8 +5,7 @@ import com.certicom.certifact_boletas_service_sp.dto.*;
 import com.certicom.certifact_boletas_service_sp.enums.LogTitle;
 import com.certicom.certifact_boletas_service_sp.exception.ServiceException;
 import com.certicom.certifact_boletas_service_sp.mapper.*;
-import com.certicom.certifact_boletas_service_sp.model.AnticipoPaymentVoucherModel;
-import com.certicom.certifact_boletas_service_sp.model.PaymentVoucherModel;
+import com.certicom.certifact_boletas_service_sp.model.*;
 import com.certicom.certifact_boletas_service_sp.response.PaymentVoucherResponse;
 import com.certicom.certifact_boletas_service_sp.service.*;
 import com.certicom.certifact_boletas_service_sp.util.LogHelper;
@@ -95,10 +94,10 @@ public class PaymentVoucherServiceImpl extends AbstractGenericService<PaymentVou
             if(result == 0) {
                 throw new RuntimeException("No se pudo registrar el comprobante");
             }
-            if(paymentVoucherDto.getPaymentVoucherFileModelList()!=null && !paymentVoucherDto.getPaymentVoucherFileModelList().isEmpty()) {
-                for (int i = 0; i< paymentVoucherDto.getPaymentVoucherFileModelList().size(); i++) {
-                    paymentVoucherDto.getPaymentVoucherFileModelList().get(i).setIdPaymentVoucher(paymentVoucher.getIdPaymentVoucher());
-                    result = paymentVoucherFileMapper.insert(PaymentVoucherFileConverter.dtoToModel(paymentVoucherDto.getPaymentVoucherFileModelList().get(i)));
+            if(paymentVoucherDto.getPaymentVoucherFileDtoList()!=null && !paymentVoucherDto.getPaymentVoucherFileDtoList().isEmpty()) {
+                for (int i = 0; i< paymentVoucherDto.getPaymentVoucherFileDtoList().size(); i++) {
+                    paymentVoucherDto.getPaymentVoucherFileDtoList().get(i).setIdPaymentVoucher(paymentVoucher.getIdPaymentVoucher());
+                    result = paymentVoucherFileMapper.insert(PaymentVoucherFileConverter.dtoToModel(paymentVoucherDto.getPaymentVoucherFileDtoList().get(i)));
                     if(result == 0) {
                         throw new RuntimeException("No se pudo registrar el comprobante archivo");
                     }
@@ -165,28 +164,28 @@ public class PaymentVoucherServiceImpl extends AbstractGenericService<PaymentVou
     @Transactional
     @Override
     public PaymentVoucherDto updatePaymentVoucherProcess(PaymentVoucherDto paymentVoucherDto) {
-        try {
-            updatePaymentVoucher(paymentVoucherDto);
-            setInfoPaymentFiles(paymentVoucherDto.getPaymentVoucherFileModelList(), paymentVoucherDto.getIdPaymentVoucher());
-            setInfoAnticipos(paymentVoucherDto.getAnticipos(), paymentVoucherDto.getIdPaymentVoucher());
-            setInfoCamposAdicionales(paymentVoucherDto.getCamposAdicionales(), paymentVoucherDto.getIdPaymentVoucher());
-            setInfoCuotas(paymentVoucherDto.getCuotas(), paymentVoucherDto.getIdPaymentVoucher());
-            setInfoItems(paymentVoucherDto.getItems(), paymentVoucherDto.getIdPaymentVoucher());
-            setInfoGuia(paymentVoucherDto.getGuiasRelacionadas(), paymentVoucherDto.getIdPaymentVoucher());
+        updatePaymentVoucher(paymentVoucherDto);
+        setInfoPaymentFiles(paymentVoucherDto.getPaymentVoucherFileDtoList(), paymentVoucherDto.getIdPaymentVoucher());
+        setInfoAnticipos(paymentVoucherDto.getAnticipos(), paymentVoucherDto.getIdPaymentVoucher());
+        setInfoCamposAdicionales(paymentVoucherDto.getCamposAdicionales(), paymentVoucherDto.getIdPaymentVoucher());
+        setInfoCuotas(paymentVoucherDto.getCuotas(), paymentVoucherDto.getIdPaymentVoucher());
+        setInfoItems(paymentVoucherDto.getItems(), paymentVoucherDto.getIdPaymentVoucher());
+        setInfoGuia(paymentVoucherDto.getGuiasRelacionadas(), paymentVoucherDto.getIdPaymentVoucher());
 
-            Optional<PaymentVoucherModel> payment = findById(paymentVoucherDto.getIdPaymentVoucher());
-            if(payment.isEmpty()) {
-                throw new ServiceException(LogMessages.ENTITY_NOT_FOUND_EXCEPTION+paymentVoucherDto.getIdPaymentVoucher());
-            }
-
-            PaymentVoucherDto model = PaymentVoucherConverter.modelToDto(payment.get());
-            log.info(LogMessages.PAYMENT_VOUCHER_UPDATED, model.getIdentificadorDocumento());
-
-            return model;
-        } catch (Exception e) {
-            log.error(LogMessages.PROCESS_FAILED_LOG, e.getMessage());
-            throw new ServiceException(LogMessages.PROCESS_FAILED_EXCEPTION+ e.getMessage());
+        Optional<PaymentVoucherModel> payment = findById(paymentVoucherDto.getIdPaymentVoucher());
+        if(payment.isEmpty()) {
+            throw new ServiceException(LogMessages.ENTITY_NOT_FOUND_EXCEPTION+paymentVoucherDto.getIdPaymentVoucher());
         }
+
+        PaymentVoucherDto model = PaymentVoucherConverter.modelToDto(payment.get());
+        log.info(LogMessages.PAYMENT_VOUCHER_UPDATED, model.getIdentificadorDocumento());
+
+        return model;
+    }
+
+    @Override
+    public PaymentVoucherDto getPaymentVoucherProcess(String rucEmisor, String tipoComprobante, String serie, Integer numero) {
+        return null;
     }
 
     private void setInfoGuia(List<GuiaPaymentVoucherDto> guiaPayments, Long idPaymentVoucher) {
@@ -194,7 +193,7 @@ public class PaymentVoucherServiceImpl extends AbstractGenericService<PaymentVou
             for (GuiaPaymentVoucherDto guiaPayment : guiaPayments) {
                 guiaPayment.setIdPaymentVoucher(idPaymentVoucher);
             }
-            guiaPaymentVoucherService.updateGuiaPaymentVoucher(guiaPayments);
+            guiaPaymentVoucherService.saveAllGuiaPaymentVoucher(guiaPayments);
         }
     }
 
@@ -203,7 +202,7 @@ public class PaymentVoucherServiceImpl extends AbstractGenericService<PaymentVou
             for (DetailsPaymentVoucherDto item : items) {
                 item.setIdPaymentVoucher(idPaymentVoucher);
             }
-            detailsPaymentVoucherService.updateAllDetailsPaymentVouhcer(items);
+            detailsPaymentVoucherService.saveAllDetailsPaymentVouhcer(items);
         }
     }
 
@@ -212,7 +211,7 @@ public class PaymentVoucherServiceImpl extends AbstractGenericService<PaymentVou
             for(PaymentCuotasDto cuotasDto : cuotas) {
                 cuotasDto.setIdPaymentVoucher(idPaymentVoucher);
             }
-            paymentCuotasService.updateAllPaymentCuotas(cuotas);
+            paymentCuotasService.saveAllPaymentCuotas(cuotas);
         }
     }
 
@@ -220,8 +219,12 @@ public class PaymentVoucherServiceImpl extends AbstractGenericService<PaymentVou
         if(paymentFiles != null && !paymentFiles.isEmpty()) {
             for (PaymentVoucherFileDto paymentVoucherFile : paymentFiles) {
                 paymentVoucherFile.setIdPaymentVoucher(idPaymentVoucher);
+                if(paymentVoucherFile.getId() == null) {
+                    paymentVoucherFileService.savePaymentVoucherFile(paymentVoucherFile);
+                } else {
+                    paymentVoucherFileService.updatePaymentVoucherFile(paymentVoucherFile);
+                }
             }
-            paymentVoucherFileService.updateAllPaymentVoucherFile(paymentFiles);
         }
     }
 
@@ -230,7 +233,7 @@ public class PaymentVoucherServiceImpl extends AbstractGenericService<PaymentVou
             for (AnticipoPaymentVoucherDto anticipo : anticipos) {
                 anticipo.setIdPaymentVoucher(idPaymentVoucher);
             }
-            anticipoPaymentVoucherService.updateAllAnticipoPaymentVoucher(anticipos);
+            anticipoPaymentVoucherService.saveAllAnticipoPaymentVoucher(anticipos);
         }
     }
 
@@ -239,9 +242,9 @@ public class PaymentVoucherServiceImpl extends AbstractGenericService<PaymentVou
             for (AditionalFieldPaymentVoucherDto camposAdicional : camposAdicionales) {
                 camposAdicional.setIdPaymentVoucher(idPaymentVoucher);
                 Long id = typeFieldService.getIdByNameTypeField(camposAdicional.getNombreCampo());
-                camposAdicional.setId(id);
+                camposAdicional.setTypeFieldId(id);
             }
-            aditionalFieldPaymentVoucherService.updateAllAditionalFieldPaymentVoucher(camposAdicionales);
+            aditionalFieldPaymentVoucherService.saveAllAditionalFieldPaymentVoucher(camposAdicionales);
         }
     }
 
@@ -361,9 +364,24 @@ public class PaymentVoucherServiceImpl extends AbstractGenericService<PaymentVou
         PaymentVoucherDto paymentVoucherDto = null;
         try {
             PaymentVoucherModel paymentVoucherModel = mapper.findByRucAndTipoAndSerieAndNumero(finalRucEmisor, tipoComprobante, serie, numero);
+            List<DetailsPaymentVoucherModel> items = detailsPaymentVoucherMapper.findByIdPaymentVoucher(paymentVoucherModel.getIdPaymentVoucher());
+            List<AditionalFieldPaymentVoucherModel> aditionalFields = aditionalFieldPaymentVoucherMapper.listAditionalFieldByIdPaymentVoucher(paymentVoucherModel.getIdPaymentVoucher());
+            List<AnticipoPaymentVoucherModel> anticipos = anticipoPaymentVoucherMapper.listAnticiposByIdPaymentVoucher(paymentVoucherModel.getIdPaymentVoucher());
+            List<PaymentCuotasModel> cuotas = paymentCuotasMapper.listCuotasByIdPaymentVoucher(paymentVoucherModel.getIdPaymentVoucher());
+            List<GuiaPaymentVoucherModel> guiasRelacionadas = guiaPaymentVoucherMapper.listGuiasByIdPaymentVoucher(paymentVoucherModel.getIdPaymentVoucher());
+            List<PaymentVoucherFileModel> files = paymentVoucherFileMapper.findAllByIdPaymentVoucher(paymentVoucherModel.getIdPaymentVoucher());
+
             paymentVoucherDto = PaymentVoucherConverter.modelToDto(paymentVoucherModel);
+            paymentVoucherDto.setItems(DetailsPaymentVoucherConverter.modelListToDtoList(items));
+            paymentVoucherDto.setCamposAdicionales(AditionalFIeldPaymentVoucherConverter.modelListToDtoList(aditionalFields));
+            paymentVoucherDto.setAnticipos(AnticipoPaymentVoucherConverter.modelListToDtoList(anticipos));
+            paymentVoucherDto.setCuotas(PaymentCuotasConverter.modelListToDtoList(cuotas));
+            paymentVoucherDto.setGuiasRelacionadas(GuiaPaymentVoucherConverter.modelListToDtoList(guiasRelacionadas));
+            paymentVoucherDto.setPaymentVoucherFileDtoList(PaymentVoucherFileConverter.modelListToDtoList(files));
+            System.out.println("ANTICIPOS: "+anticipos);
         } catch (Exception e) {
-            watchErrorLogs(e);
+            LogHelper.errorLog(LogTitle.ERROR_UNEXPECTED.getType(), LogMessages.currentMethod(), "Ocurrio un error inesperado", e);
+            throw new ServiceException(LogMessages.ERROR_UNEXPECTED, e);
         }
         return paymentVoucherDto;
     }

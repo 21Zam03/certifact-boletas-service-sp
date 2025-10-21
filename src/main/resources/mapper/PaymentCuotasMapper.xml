@@ -32,4 +32,26 @@
             WHERE id_cuotas = #{item.idCuotas}
         </foreach>
     </update>
+    <insert id="insertAll" parameterType="java.util.List">
+        INSERT INTO payment_cuotas (
+            id_cuotas,
+            numero,
+            monto,
+            fecha,
+            id_payment_voucher
+        )
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (
+                nextval('payment_cuotas_id_cuotas_seq'),
+                #{item.numero},
+                #{item.monto},
+                #{item.fecha},
+                #{item.idPaymentVoucher}
+            )
+        </foreach>
+    </insert>
+    <select id="listCuotasByIdPaymentVoucher" parameterType="Long">
+        SELECT id_cuotas, numero, monto, fecha, id_payment_voucher FROM payment_cuotas WHERE id_payment_voucher = #{id}
+    </select>
 </mapper>

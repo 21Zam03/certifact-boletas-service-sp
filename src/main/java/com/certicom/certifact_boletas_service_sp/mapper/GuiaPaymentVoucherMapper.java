@@ -12,5 +12,6 @@ public interface GuiaPaymentVoucherMapper extends BaseMapper<GuiaPaymentVoucherM
     int deleteById(Long id);
     List<GuiaPaymentVoucherModel> findAllByIdPaymentVoucher(Long id);
     int update(GuiaPaymentVoucherModel guiaPaymentVoucherModel);
+    List<GuiaPaymentVoucherModel> listGuiasByIdPaymentVoucher(Long idPaymentVoucher);
 
 }

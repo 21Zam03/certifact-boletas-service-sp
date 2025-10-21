@@ -22,12 +22,17 @@ public class DetailsPaymentVoucherServiceImpl extends AbstractGenericService<Det
 
     @Override
     public void updateAllDetailsPaymentVouhcer(List<DetailsPaymentVoucherDto> detailsPaymentVoucherDtoList) {
-        updateAll(DetailsPaymentVoucherConverter.detoListToModelList(detailsPaymentVoucherDtoList));
+        updateAll(DetailsPaymentVoucherConverter.dtoListToModelList(detailsPaymentVoucherDtoList));
     }
 
     @Override
     public int deleteDetailPaymentVoucherById(Long id) {
         return delete(id);
+    }
+
+    @Override
+    public int saveAllDetailsPaymentVouhcer(List<DetailsPaymentVoucherDto> items) {
+        return saveAll(DetailsPaymentVoucherConverter.dtoListToModelList(items));
     }
 
 }
