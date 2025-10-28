@@ -1,6 +1,5 @@
 package com.certicom.certifact_boletas_service_sp.controller;
 
-import com.certicom.certifact_boletas_service_sp.dto.OseDto;
 import com.certicom.certifact_boletas_service_sp.service.HistorialStockService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
