@@ -13,11 +13,8 @@ import com.certicom.certifact_boletas_service_sp.service.AbstractGenericService;
 import com.certicom.certifact_boletas_service_sp.service.CompanyService;
 import com.certicom.certifact_boletas_service_sp.util.LogHelper;
 import com.certicom.certifact_boletas_service_sp.util.LogMessages;
-import com.certicom.certifact_boletas_service_sp.util.LogTemplates;
 import jakarta.persistence.PersistenceException;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.MDC;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
