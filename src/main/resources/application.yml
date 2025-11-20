@@ -1,6 +1,6 @@
 spring:
   application:
-    name: boletas-service-sp
+    name: boleta-service-sp
   profiles:
     active: test
   config:
