@@ -164,6 +164,7 @@ public class PaymentVoucherConverter {
                 .cantidadCuotas(paymentVoucherModel.getCantidadCuotas())
                 .pagoCuenta(paymentVoucherModel.getPagoCuenta())
                 .ublVersion(paymentVoucherModel.getUblVersion())
+                .anticipos(paymentVoucherModel.getAnticipos())
                 .build();
     }
 

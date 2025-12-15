@@ -56,7 +56,45 @@
         WHERE id_payment_voucher = #{idPaymentVoucher}
     </update>
     <select id="findById" parameterType="long" resultType="com.certicom.certifact_boletas_service_sp.model.PaymentVoucherModel">
-        select p.id_payment_voucher, p.uuid, p.identificador_documento, p.codigo_hash, p.tipo_comprobante, p.estado_item from payment_voucher p
+        select
+            p.id_payment_voucher,
+            p.serie,
+            p.numero,
+            p.fecha_emision,
+            p.fecha_emision_date,
+            p.hora_emision,
+            p.tipo_comprobante,
+            p.codigo_moneda,
+            p.fecha_vencimiento,
+            p.fecha_registro,
+            p.fecha_modificacion,
+            p.tipo_operacion,
+            p.ruc_emisor,
+            p.cod_local_anexo,
+            p.tip_doc_ident_receptor,
+            p.num_doc_ident_receptor,
+            p.denominacion_receptor,
+            p.direccion_receptor,
+            p.email_receptor,
+            p.cod_tip_doc_ref,
+            p.serie_numero_referencia,
+            p.total_oper_exportada,
+            p.total_oper_gravada,
+            p.total_oper_inafecta,
+            p.total_oper_exonerada,
+            p.total_oper_gratuita,
+            p.total_base_isc,
+            p.total_base_otros_trib,
+            p.uuid,
+            p.identificador_documento,
+            p.codigo_hash,
+            p.tipo_comprobante,
+            p.estado_item,
+            p.estado_sunat,
+            p.estado,
+            p.estado_anterior,
+            p.mensaje_respuesta,
+            p.user_name from payment_voucher p
         where p.id_payment_voucher = #{id}
     </select>
     <select id="getNumeroByTipoComprobanteAndSerieAndRucEmisor" parameterType="map" resultType="Integer">
@@ -178,5 +216,36 @@
         WHERE ruc_emisor = #{finalRucEmisor}
         AND tipo_comprobante like #{tipoComprobante} and serie like #{serie}
         AND numero = #{numero}
+    </select>
+    <select id="findAnticipos" resultType="com.certicom.certifact_boletas_service_sp.model.PaymentVoucherModel">
+        SELECT * FROM payment_voucher WHERE 1 = 1
+        <if test="tipoComprobante != null and tipoComprobante.size > 0">
+            AND tipo_comprobante IN
+            <foreach collection="tipoComprobante" item="tipo" open="(" separator="," close=")">
+                #{tipo}
+            </foreach>
+        </if>
+        <if test="numDocIdentReceptor != null">
+            AND num_doc_ident_receptor = #{numDocIdentReceptor}
+        </if>
+        <if test="rucEmisor != null">
+            AND ruc_emisor = #{rucEmisor}
+        </if>
+        <if test="tipoOperacion != null">
+            AND tipo_operacion = #{tipoOperacion}
+        </if>
+        <if test="estado != null">
+            AND estado = #{estado}
+        </if>
+        ORDER BY num_doc_ident_receptor ASC
+    </select>
+    <select id="findCreditos" resultType="com.certicom.certifact_boletas_service_sp.model.PaymentVoucherModel">
+        SELECT pv.* FROM payment_voucher pv
+        INNER JOIN (select id_payment_voucher_reference as reference,MAX(n_cuota) as max_n_cuota from payment_voucher where
+        tipo_comprobante='01'
+        and tipo_transaccion=2 group by id_payment_voucher_reference having id_payment_voucher_reference is not null) maximos
+        on pv.id_payment_voucher_reference=maximos.reference and pv.n_cuota=maximos.max_n_cuota
+        where pv.ruc_emisor= #{rucEmisor} and pv.num_doc_ident_receptor= #{numDocIdentReceptor} and pv.monto_pendiente>0
+        and tipo_comprobante='01' and tipo_transaccion=2
     </select>
 </mapper>

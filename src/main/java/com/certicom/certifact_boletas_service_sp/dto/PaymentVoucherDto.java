@@ -1,5 +1,6 @@
 package com.certicom.certifact_boletas_service_sp.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -23,12 +24,16 @@ public class PaymentVoucherDto {
     private String horaEmision;
     private String fechaVencimiento;
     private String codigoMoneda;
+    @JsonProperty("tipoOperacion")
     private String codigoTipoOperacion;
     private String codigoTipoOperacionCatalogo51;
     private String rucEmisor;
     private String direccionOficinaEmisor;
+    @JsonProperty("codigoLocalAnexo")
     private String codigoLocalAnexoEmisor;
+    @JsonProperty("tipoDocIdentReceptor")
     private String tipoDocumentoReceptor;
+    @JsonProperty("numDocIdentReceptor")
     private String numeroDocumentoReceptor;
     private String denominacionReceptor;
     private String direccionReceptor;
@@ -38,11 +43,16 @@ public class PaymentVoucherDto {
     private List<LeyendaRequest> leyendas;
     private String serieNumeroOtroDocumentoRelacionado;
     private String codigoTipoOtroDocumentoRelacionado;
+    @JsonProperty("totalValorVentaOperacionExportada")
     private BigDecimal totalValorVentaExportacion;
+    @JsonProperty("totalValorVentaOperacionGravada")
     private BigDecimal totalValorVentaGravada;
     private BigDecimal totalValorVentaGravadaIVAP;
+    @JsonProperty("totalValorVentaOperacionInafecta")
     private BigDecimal totalValorVentaInafecta;
+    @JsonProperty("totalValorVentaOperacionExonerada")
     private BigDecimal totalValorVentaExonerada;
+    @JsonProperty("totalValorVentaOperacionGratuita")
     private BigDecimal totalValorVentaGratuita;
     private BigDecimal totalValorBaseOtrosTributos;
     private BigDecimal totalValorBaseIsc;
@@ -54,6 +64,7 @@ public class PaymentVoucherDto {
     private BigDecimal totalDescuento;
     private BigDecimal descuentoGlobales;
     private BigDecimal sumatoriaOtrosCargos;
+    @JsonProperty("montoTotalAnticipos")
     private BigDecimal totalAnticipos;
     private BigDecimal importeTotalVenta;
     private String serieAfectado;
@@ -62,6 +73,7 @@ public class PaymentVoucherDto {
     private String codigoTipoNotaCredito;
     private String codigoTipoNotaDebito;
     private String motivoNota;
+    @JsonProperty("detailsPaymentVouchers")
     private List<DetailsPaymentVoucherDto> items;
     private String denominacionEmisor;
     private String nombreComercialEmisor;
@@ -98,6 +110,8 @@ public class PaymentVoucherDto {
     private Timestamp fechaRegistro;
     private String userName;
     private Timestamp fechaModificacion;
+
+    @JsonProperty("userNameModify")
     private String userNameModificacion;
     private String Uuid;
     private Date fechaEmisionDate;

@@ -161,6 +161,21 @@ public class PaymentVoucherServiceImpl extends AbstractGenericService<PaymentVou
         return model;
     }
 
+    @Override
+    public PaymentVoucherDto findPaymentVoucherById(Long id) {
+        PaymentVoucherModel paymentVoucherModel = mapper.findById(id);
+        PaymentVoucherDto paymentVoucherDto = PaymentVoucherConverter.modelToDto(paymentVoucherModel);
+
+        List<DetailsPaymentVoucherModel> items = detailsPaymentVoucherMapper.findByIdPaymentVoucher(paymentVoucherDto.getIdPaymentVoucher());
+        System.out.println("CODIGO: "+items.get(0).getCodigoTipoAfectacionIGV());
+        List<PaymentCuotasModel> cuotas = paymentCuotasMapper.listCuotasByIdPaymentVoucher(paymentVoucherDto.getIdPaymentVoucher());
+        List<GuiaPaymentVoucherModel> guias = guiaPaymentVoucherMapper.listGuiasByIdPaymentVoucher(paymentVoucherDto.getIdPaymentVoucher());
+        paymentVoucherDto.setItems(DetailsPaymentVoucherConverter.modelListToDtoList(items));
+        paymentVoucherDto.setCuotas(PaymentCuotasConverter.modelListToDtoList(cuotas) == null ? List.of() : PaymentCuotasConverter.modelListToDtoList(cuotas));
+        paymentVoucherDto.setGuiasRelacionadas(GuiaPaymentVoucherConverter.modelListToDtoList(guias) == null ? List.of() : GuiaPaymentVoucherConverter.modelListToDtoList(guias));
+        return paymentVoucherDto;
+    }
+
     @Transactional
     @Override
     public PaymentVoucherDto updatePaymentVoucherProcess(PaymentVoucherDto paymentVoucherDto) {
@@ -384,6 +399,23 @@ public class PaymentVoucherServiceImpl extends AbstractGenericService<PaymentVou
             throw new ServiceException(LogMessages.ERROR_UNEXPECTED, e);
         }
         return paymentVoucherDto;
+    }
+
+    @Override
+    public List<PaymentVoucherDto> findAllByTipoComprobanteInAndNumDocIdentReceptorAndRucEmisorAndTipoOperacionAndEstadoOrderByNumDocIdentReceptor(List<String> tipoComprobante, String numDocIdentReceptor, String rucEmisor, String tipoOperacion, String estado) {
+        List<PaymentVoucherModel> list = mapper.findAnticipos(tipoComprobante, numDocIdentReceptor, rucEmisor, tipoOperacion, estado);
+        System.out.println("LIST: "+list);
+        for (PaymentVoucherModel paymentVoucherModel : list) {
+            List<AnticipoPaymentVoucherDto> anticipos = AnticipoPaymentVoucherConverter.modelListToDtoList(anticipoPaymentVoucherMapper.listAnticiposByIdPaymentVoucher(paymentVoucherModel.getIdPaymentVoucher()));
+            paymentVoucherModel.setAnticipos(anticipos);
+        }
+        return PaymentVoucherConverter.modelListToDtoList(list) == null ? List.of() : PaymentVoucherConverter.modelListToDtoList(list);
+    }
+
+    @Override
+    public List<PaymentVoucherDto> getPaymentVocuherByCredito(String numDocIdentReceptor, String rucEmisor) {
+        List<PaymentVoucherModel> list = mapper.findCreditos(numDocIdentReceptor, rucEmisor);
+        return PaymentVoucherConverter.modelListToDtoList(list) == null ? List.of() : PaymentVoucherConverter.modelListToDtoList(list);
     }
 
     private void watchErrorLogs(Exception e) {

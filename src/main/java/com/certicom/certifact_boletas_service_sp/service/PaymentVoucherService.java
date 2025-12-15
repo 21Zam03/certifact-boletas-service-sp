@@ -11,7 +11,11 @@ public interface PaymentVoucherService {
 
     //Estos metodo save y update tiene un flujo completo de la creacion de la entidad payment_voucher y sus entidades relacionadas.
     PaymentVoucherDto savePaymentVoucherProcess(PaymentVoucherDto paymentVoucherDto);
+
+    PaymentVoucherDto findPaymentVoucherById(Long id);
+
     PaymentVoucherDto updatePaymentVoucherProcess(PaymentVoucherDto paymentVoucherDto);
+
     PaymentVoucherDto getPaymentVoucherProcess(String rucEmisor, String tipoComprobante, String serie, Integer numero);
 
     int savePaymentVoucher(PaymentVoucherDto paymentVoucherDto);
@@ -37,5 +41,10 @@ public interface PaymentVoucherService {
             String tipoComprobante,
             String serie,
             Integer numero);
+
+    List<PaymentVoucherDto> findAllByTipoComprobanteInAndNumDocIdentReceptorAndRucEmisorAndTipoOperacionAndEstadoOrderByNumDocIdentReceptor(
+            List<String> tipoComprobante, String numDocIdentReceptor, String rucEmisor, String tipoOperacion, String estado);
+
+    List<PaymentVoucherDto> getPaymentVocuherByCredito(String numDocIdentReceptor, String rucEmisor);
 
 }

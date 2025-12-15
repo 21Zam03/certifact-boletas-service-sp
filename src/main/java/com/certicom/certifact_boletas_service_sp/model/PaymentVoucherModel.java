@@ -1,10 +1,12 @@
 package com.certicom.certifact_boletas_service_sp.model;
 
+import com.certicom.certifact_boletas_service_sp.dto.AnticipoPaymentVoucherDto;
 import lombok.*;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -96,5 +98,7 @@ public class PaymentVoucherModel {
 
     private Integer oficinaId;
     private Boolean boletaAnuladaSinEmitir;
+
+    private List<AnticipoPaymentVoucherDto> anticipos;
 
 }

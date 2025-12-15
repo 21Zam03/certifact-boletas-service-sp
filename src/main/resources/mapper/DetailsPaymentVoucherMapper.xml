@@ -29,8 +29,10 @@
     </delete>
     <select id="findAllByIdPaymentVoucher" resultType="com.certicom.certifact_boletas_service_sp.model.DetailsPaymentVoucherModel">
         SELECT
-        id_details_payment AS idComprobanteDetalle,
-        afectacion_igv AS IGV
+            id_details_payment AS idComprobanteDetalle,
+            afectacion_igv AS IGV,
+            cod_tip_afectacion_igv AS codigoTipoAfectacionIGV,
+            numero_item
         FROM details_payment_voucher WHERE id_payment_voucher = #{id}
     </select>
     <update id="update" parameterType="com.certicom.certifact_boletas_service_sp.model.DetailsPaymentVoucherModel">
@@ -154,7 +156,19 @@
     <select id="findByIdPaymentVoucher" resultType="com.certicom.certifact_boletas_service_sp.model.DetailsPaymentVoucherModel">
         SELECT
             id_details_payment AS idComprobanteDetalle,
-            afectacion_igv as igv
+            numero_item,
+            cantidad,
+            cod_unid_medida AS codigoUnidadMedida,
+            descripcion_producto,
+            cod_producto AS codigoProducto,
+            valor_unit AS valorUnitario,
+            precio_venta_unit AS precioVentaUnitario,
+            monto_base_igv,
+            afectacion_igv AS afectacionIGV,
+            porcent_igv,
+            cod_tip_afectacion_igv as codigoTipoAfectacionIGV,
+            valor_venta,
+            estado
         FROM details_payment_voucher WHERE id_payment_voucher = #{id}
     </select>
     <insert id="insertAll" parameterType="java.util.List">

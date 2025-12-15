@@ -10,10 +10,6 @@ import java.util.List;
 @Mapper
 public interface PaymentVoucherMapper extends BaseMapper<PaymentVoucherModel, Long> {
 
-    //int insert(PaymentVoucherModel paymentVoucherModel);
-    //int update(PaymentVoucherModel paymentVoucherModel);
-    //PaymentVoucherModel findById(Long id);
-
     PaymentVoucherModel findByIdentificadorDocumento(String idDocumento);
     Integer getNumeroByTipoComprobanteAndSerieAndRucEmisor(String tipo, String serie, String ruc);
     List<PaymentVoucherModel> findListSpecificForSummary(
@@ -34,5 +30,18 @@ public interface PaymentVoucherMapper extends BaseMapper<PaymentVoucherModel, Lo
             String tipoComprobante,
             String serie,
             Integer numero);
+
+    List<PaymentVoucherModel> findAnticipos(
+            @Param("tipoComprobante") List<String> tipoComprobante,
+            @Param("numDocIdentReceptor") String numDocIdentReceptor,
+            @Param("rucEmisor") String rucEmisor,
+            @Param("tipoOperacion") String tipoOperacion,
+            @Param("estado") String estado
+    );
+
+    List<PaymentVoucherModel> findCreditos(
+            @Param("numDocIdentReceptor") String numDocIdentReceptor,
+            @Param("rucEmisor") String rucEmisor
+    );
 
 }

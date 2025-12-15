@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
@@ -74,8 +76,10 @@ public class PaymentVoucherController {
             @RequestParam String codigo,
             @RequestParam String abreviado,
             @RequestParam String usuario,
-            @RequestParam Timestamp fechaModificacion) {
-        return new ResponseEntity<>(paymentVoucherService.updateComprobantesBySummaryDocuments(comprobantesByAceptar, codigo, abreviado, usuario, fechaModificacion), HttpStatus.OK);
+            @RequestParam String fechaModificacion) {
+        String fechaDecodificada = URLDecoder.decode(fechaModificacion, StandardCharsets.UTF_8);
+        Timestamp fecha = Timestamp.valueOf(fechaDecodificada);
+        return new ResponseEntity<>(paymentVoucherService.updateComprobantesBySummaryDocuments(comprobantesByAceptar, codigo, abreviado, usuario, fecha), HttpStatus.OK);
     }
 
     @PutMapping("/payment-summary-error")
@@ -93,6 +97,37 @@ public class PaymentVoucherController {
             @RequestParam String serie,
             @RequestParam Integer numero) {
         return new ResponseEntity<>(paymentVoucherService.findByRucAndTipoAndSerieAndNumero(finalRucEmisor, tipoComprobante, serie, numero), HttpStatus.OK);
+    }
+
+    @GetMapping("/anticipo")
+    public ResponseEntity<List<PaymentVoucherDto>> findAllByTipoComprobanteInAndNumDocIdentReceptorAndRucEmisorAndTipoOperacionAndEstadoOrderByNumDocIdentReceptor(
+            @RequestParam List<String> tipoComprobante,
+            @RequestParam String numDocIdentReceptor,
+            @RequestParam String rucEmisor,
+            @RequestParam String tipoOperacion,
+            @RequestParam String estado
+    ) {
+        return new ResponseEntity<>(
+                paymentVoucherService.findAllByTipoComprobanteInAndNumDocIdentReceptorAndRucEmisorAndTipoOperacionAndEstadoOrderByNumDocIdentReceptor(
+                        tipoComprobante,
+                        numDocIdentReceptor,
+                        rucEmisor,
+                        tipoOperacion,
+                        estado), HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/credito")
+    public ResponseEntity<List<PaymentVoucherDto>> getPaymentVocuherByCredito(
+            @RequestParam String numDocIdentReceptor,
+            @RequestParam String rucEmisor
+    ) {
+        return new ResponseEntity<>(paymentVoucherService.getPaymentVocuherByCredito(numDocIdentReceptor, rucEmisor), HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<PaymentVoucherDto> findPaymentVoucherById(@PathVariable(name = "id") Long idPaymentVoucher) {
+        return new ResponseEntity<>(paymentVoucherService.findPaymentVoucherById(idPaymentVoucher), HttpStatus.OK);
     }
 
 }
