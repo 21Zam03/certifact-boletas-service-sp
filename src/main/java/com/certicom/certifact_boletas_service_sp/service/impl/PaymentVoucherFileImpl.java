@@ -53,30 +53,25 @@ public class PaymentVoucherFileImpl extends AbstractGenericService<PaymentVouche
     @Override
     public List<PaymentVoucherFileDto> findAllByIdPaymentVoucher(Long id) {
         if(id == null) {
-            LogHelper.warnLog(LogTitle.WARN_VALIDATION.getType(),
-                    LogMessages.currentMethod(), "parametro id no puede ser nulo");
+            LogHelper.warnLog(LogMessages.currentMethod(), "parametro id no puede ser nulo");
             throw new ServiceException(String.format("%s: parametro id no puede ser nulo", LogMessages.ERROR_VALIDATION));
         }
        try {
            List<PaymentVoucherFileModel> list = mapper.findAllByIdPaymentVoucher(id);
            if(list == null || list.isEmpty()) {
-               LogHelper.warnLog(LogTitle.WARN_NOT_RESULT.getType(),
-                       LogMessages.currentMethod(), "La lista es nulo o esta vacia");
+               LogHelper.warnLog(LogMessages.currentMethod(), "La lista es nulo o esta vacia");
                return null;
            } else {
                List<PaymentVoucherFileDto> listDto = PaymentVoucherFileConverter.modelListToDtoList(list);
-               LogHelper.infoLog(LogTitle.INFO.getType(),
-                       LogMessages.currentMethod(), "La consulta se realizo exitosamente");
+               LogHelper.infoLog(LogMessages.currentMethod(), "La consulta se realizo exitosamente");
                return listDto;
            }
        } catch (DataAccessException | PersistenceException e) {
-           LogHelper.errorLog(LogTitle.ERROR_DATABASE.getType(),
-                   LogMessages.currentMethod(), "Ocurrio un error en la base de datos", e);
+           LogHelper.errorLog(LogMessages.currentMethod(), "Ocurrio un error en la base de datos", e);
            throw new ServiceException(LogMessages.ERROR_DATABASE, e);
        }
        catch (Exception e) {
-           LogHelper.errorLog(LogTitle.ERROR_UNEXPECTED.getType(),
-                   LogMessages.currentMethod(), "Ocurrio un error inesperado", e);
+           LogHelper.errorLog(LogMessages.currentMethod(), "Ocurrio un error inesperado", e);
            throw new ServiceException(LogMessages.ERROR_UNEXPECTED, e);
        }
     }

@@ -4,10 +4,7 @@ package com.certicom.certifact_boletas_service_sp.util;
 public class LogMessages {
 
     public static final String PAYMENT_VOUCHER_UPDATED = "Se actualizó la entidad payment_voucher exitosamente, identificador: {}";
-
-    public static final String PROCESS_FAILED_LOG = "Error en el proceso, error: {}";
-    public static final String PROCESS_FAILED_EXCEPTION = "Error en el proceso, error:";
-    public static final String ERROR_EXCEPTION = "Error: ";
+    public static final String PAYMENT_VOUCHER_SAVED = "Se registró la entidad payment_voucher exitosamente, identificador: {}";
 
     //LOGS HACIENDO CONSULTAS A BASE DE DATOS
     public static final String ENTITY_NOT_FOUND_EXCEPTION = "Entidad no encontrada con id: ";

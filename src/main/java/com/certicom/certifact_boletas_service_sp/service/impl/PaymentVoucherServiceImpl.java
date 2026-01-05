@@ -81,7 +81,7 @@ public class PaymentVoucherServiceImpl extends AbstractGenericService<PaymentVou
     @Override
     @Transactional
     public PaymentVoucherDto savePaymentVoucherProcess(PaymentVoucherDto paymentVoucherDto) {
-        log.debug("Guardando paymentvoucher con datos completos: {}", paymentVoucherDto);
+        //log.debug("Guardando paymentvoucher con datos completos: {}", paymentVoucherDto);
         PaymentVoucherDto model = null;
         int result = 0;
         try {
@@ -150,11 +150,12 @@ public class PaymentVoucherServiceImpl extends AbstractGenericService<PaymentVou
                     }
                 }
             }
-            PaymentVoucherModel payment = mapper.findById(paymentVoucher.getIdPaymentVoucher());
-            model = PaymentVoucherConverter.modelToDto(payment);
-            if(model==null) {
-                throw new RuntimeException("No se pudo obtener el registro de payment");
+            Optional<PaymentVoucherModel> payment = findById(paymentVoucher.getIdPaymentVoucher());
+            if(payment.isEmpty()) {
+                throw new ServiceException(LogMessages.ENTITY_NOT_FOUND_EXCEPTION+paymentVoucherDto.getIdPaymentVoucher());
             }
+            model = PaymentVoucherConverter.modelToDto(payment.get());
+            log.info(LogMessages.PAYMENT_VOUCHER_SAVED, model.getIdentificadorDocumento());
         } catch (Exception e) {
             watchErrorLogs(e);
         }
@@ -281,26 +282,24 @@ public class PaymentVoucherServiceImpl extends AbstractGenericService<PaymentVou
     @Override
     public PaymentVoucherDto findByIdentificadorDocumento(String identificadorDocumento) {
         if(identificadorDocumento == null) {
-            LogHelper.warnLog(LogTitle.WARN_VALIDATION.getType(), LogMessages.currentMethod(), "parametro identificadorDocumento es nulo");
+            LogHelper.warnLog(LogMessages.currentMethod(), "parametro identificadorDocumento es nulo");
             throw new ServiceException(String.format("%s: el identificadorDocumento no puede ser nulo", LogMessages.ERROR_VALIDATION));
         }
         try {
             PaymentVoucherModel paymentVoucherModel = mapper.findByIdentificadorDocumento(identificadorDocumento);
             PaymentVoucherDto paymentVoucherDto = PaymentVoucherConverter.modelToDto(paymentVoucherModel);
             if(paymentVoucherDto == null) {
-                LogHelper.warnLog(LogTitle.WARN_NOT_RESULT.getType(), LogMessages.currentMethod(), "variable paymentVoucherDto es nulo");
+                LogHelper.warnLog(LogMessages.currentMethod(), "variable paymentVoucherDto es nulo");
             } else {
-                LogHelper.infoLog(LogTitle.INFO.getType(), LogMessages.currentMethod(), "La consulta se realizo exitosamente");
+                LogHelper.infoLog(LogMessages.currentMethod(), "La consulta se realizo exitosamente");
             }
             return paymentVoucherDto;
         } catch (DataAccessException | PersistenceException e) {
-            LogHelper.errorLog(LogTitle.ERROR_DATABASE.getType(),
-                    LogMessages.currentMethod(), "Ocurrio un error en la base de datos", e);
+            LogHelper.errorLog(LogMessages.currentMethod(), "Ocurrio un error en la base de datos", e);
             throw new ServiceException(LogMessages.ERROR_DATABASE, e);
         }
         catch (Exception e) {
-            LogHelper.errorLog(LogTitle.ERROR_UNEXPECTED.getType(),
-                    LogMessages.currentMethod(), "Ocurrio un error inesperado", e);
+            LogHelper.errorLog(LogMessages.currentMethod(), "Ocurrio un error inesperado", e);
             throw new ServiceException(LogMessages.ERROR_UNEXPECTED, e);
         }
     }
@@ -395,7 +394,7 @@ public class PaymentVoucherServiceImpl extends AbstractGenericService<PaymentVou
             paymentVoucherDto.setPaymentVoucherFileDtoList(PaymentVoucherFileConverter.modelListToDtoList(files));
             System.out.println("ANTICIPOS: "+anticipos);
         } catch (Exception e) {
-            LogHelper.errorLog(LogTitle.ERROR_UNEXPECTED.getType(), LogMessages.currentMethod(), "Ocurrio un error inesperado", e);
+            LogHelper.errorLog(LogMessages.currentMethod(), "Ocurrio un error inesperado", e);
             throw new ServiceException(LogMessages.ERROR_UNEXPECTED, e);
         }
         return paymentVoucherDto;

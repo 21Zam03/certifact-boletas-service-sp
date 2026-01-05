@@ -25,24 +25,23 @@ public class TypeFieldServiceImpl extends AbstractGenericService<TypeFieldModel,
     @Override
     public Long getIdByNameTypeField(String name) {
         if(name == null) {
-            LogHelper.warnLog(LogTitle.WARN_VALIDATION.getType(), LogMessages.currentMethod(), "variable rucEmisor es nulo");
+            LogHelper.warnLog(LogMessages.currentMethod(), "variable rucEmisor es nulo");
             throw new ServiceException(String.format("%s: el ruc no puede ser nulo", LogMessages.ERROR_VALIDATION));
         }
         try {
             Long id = mapper.getIdByName(name);
             if(id == null) {
-                LogHelper.warnLog(LogTitle.WARN_NOT_RESULT.getType(), LogMessages.currentMethod(), "variable id es nulo");
+                LogHelper.warnLog(LogMessages.currentMethod(), "variable id es nulo");
             } else {
-                LogHelper.infoLog(LogTitle.INFO.getType(),
-                        LogMessages.currentMethod(), "La consulta se realizo exitosamente");
+                LogHelper.infoLog(LogMessages.currentMethod(), "La consulta se realizo exitosamente");
             }
             return id;
         } catch (DataAccessException | PersistenceException e) {
-            LogHelper.errorLog(LogTitle.ERROR_DATABASE.getType(), LogMessages.currentMethod(), "Ocurrio un error en la base de datos", e);
+            LogHelper.errorLog(LogMessages.currentMethod(), "Ocurrio un error en la base de datos", e);
             throw new ServiceException(LogMessages.ERROR_DATABASE, e);
         }
         catch (Exception e) {
-            LogHelper.errorLog(LogTitle.ERROR_UNEXPECTED.getType(), LogMessages.currentMethod(), "Ocurrio un error inesperado", e);
+            LogHelper.errorLog(LogMessages.currentMethod(), "Ocurrio un error inesperado", e);
             throw new ServiceException(LogMessages.ERROR_UNEXPECTED, e);
         }
     }

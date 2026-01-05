@@ -40,28 +40,25 @@ public class RegisterFileUploadServiceImpl extends AbstractGenericService<Regist
     @Override
     public RegisterFileUploadDto getDataForCdr(Long id, String uuid, String tipo) {
         if(id == null || uuid == null || tipo == null) {
-            LogHelper.warnLog(LogTitle.WARN_VALIDATION.getType(),
-                    LogMessages.currentMethod(), "Uno de los parametros id, uuid o tipo son nulos");
+            LogHelper.warnLog(LogMessages.currentMethod(), "Uno de los parametros id, uuid o tipo son nulos");
             throw new ServiceException(String.format("%s: Uno de los parametros id, uuid o tipo son nulos", LogMessages.ERROR_VALIDATION));
         }
         try {
             RegisterFileUploadModel registerFileUploadModel = mapper.getDataForCdr(id, uuid, tipo);
             if(registerFileUploadModel == null) {
-                LogHelper.warnLog(LogTitle.WARN_NOT_RESULT.getType(),
-                        LogMessages.currentMethod(), "La variable registerFileUploadModel es nulo");
+                LogHelper.warnLog(LogMessages.currentMethod(), "La variable registerFileUploadModel es nulo");
                 return null;
             } else {
                 RegisterFileUploadDto registerFileUploadDto = RegisterFileUploadConverter.modelToDto(registerFileUploadModel);
-                LogHelper.infoLog(LogTitle.INFO.getType(),
-                        LogMessages.currentMethod(), "La consulta se realizo con exito, dataForCdr: "+registerFileUploadDto.getNombreGenerado());
+                LogHelper.infoLog(LogMessages.currentMethod(), "La consulta se realizo con exito, dataForCdr: "+registerFileUploadDto.getNombreGenerado());
                 return registerFileUploadDto;
             }
         } catch (DataAccessException | PersistenceException e) {
-            LogHelper.errorLog(LogTitle.ERROR_DATABASE.getType(), LogMessages.currentMethod(), "Ocurrio un error en la base de datos", e);
+            LogHelper.errorLog(LogMessages.currentMethod(), "Ocurrio un error en la base de datos", e);
             throw new ServiceException(LogMessages.ERROR_DATABASE, e);
         }
         catch (Exception e) {
-            LogHelper.errorLog(LogTitle.ERROR_UNEXPECTED.getType(), LogMessages.currentMethod(), "Ocurrio un error inesperado", e);
+            LogHelper.errorLog(LogMessages.currentMethod(), "Ocurrio un error inesperado", e);
             throw new ServiceException(LogMessages.ERROR_UNEXPECTED, e);
         }
     }
@@ -69,28 +66,25 @@ public class RegisterFileUploadServiceImpl extends AbstractGenericService<Regist
     @Override
     public RegisterFileUploadDto getDataForXml(Long id, String uuid, String tipo) {
         if(id == null || uuid == null || tipo == null) {
-            LogHelper.warnLog(LogTitle.WARN_VALIDATION.getType(),
-                    LogMessages.currentMethod(), "Uno de los parametros id, uuid o tipo son nulos");
+            LogHelper.warnLog(LogMessages.currentMethod(), "Uno de los parametros id, uuid o tipo son nulos");
             throw new ServiceException(String.format("%s: Uno de los parametros id, uuid o tipo son nulos", LogMessages.ERROR_VALIDATION));
         }
         try {
             RegisterFileUploadModel registerFileUploadModel = mapper.getDataForXml(id, uuid, tipo);
             if(registerFileUploadModel == null) {
-                LogHelper.warnLog(LogTitle.WARN_NOT_RESULT.getType(),
-                        LogMessages.currentMethod(), "La variable registerFileUploadModel es nulo");
+                LogHelper.warnLog(LogMessages.currentMethod(), "La variable registerFileUploadModel es nulo");
                 return null;
             } else {
                 RegisterFileUploadDto registerFileUploadDto = RegisterFileUploadConverter.modelToDto(registerFileUploadModel);
-                LogHelper.infoLog(LogTitle.INFO.getType(),
-                        LogMessages.currentMethod(), "La consulta se realizo con exito, dataForXml: "+registerFileUploadDto.getNombreGenerado());
+                LogHelper.infoLog(LogMessages.currentMethod(), "La consulta se realizo con exito, dataForXml: "+registerFileUploadDto.getNombreGenerado());
                 return registerFileUploadDto;
             }
         } catch (DataAccessException | PersistenceException e) {
-            LogHelper.errorLog(LogTitle.ERROR_DATABASE.getType(), LogMessages.currentMethod(), "Ocurrio un error en la base de datos", e);
+            LogHelper.errorLog(LogMessages.currentMethod(), "Ocurrio un error en la base de datos", e);
             throw new ServiceException(LogMessages.ERROR_DATABASE, e);
         }
         catch (Exception e) {
-            LogHelper.errorLog(LogTitle.ERROR_UNEXPECTED.getType(), LogMessages.currentMethod(), "Ocurrio un error inesperado", e);
+            LogHelper.errorLog(LogMessages.currentMethod(), "Ocurrio un error inesperado", e);
             throw new ServiceException(LogMessages.ERROR_UNEXPECTED, e);
         }
     }

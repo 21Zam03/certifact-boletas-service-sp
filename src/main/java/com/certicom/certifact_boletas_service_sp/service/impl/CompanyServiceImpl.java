@@ -30,23 +30,23 @@ public class CompanyServiceImpl extends AbstractGenericService<CompanyModel, Lon
     @Override
     public String getEstadoByRuc(String rucEmisor) {
         if(rucEmisor == null) {
-            LogHelper.warnLog(LogTitle.WARN_VALIDATION.getType(), LogMessages.currentMethod(), "variable rucEmisor es nulo");
+            LogHelper.warnLog(LogMessages.currentMethod(), "variable rucEmisor es nulo");
             throw new ServiceException(String.format("%s: el ruc no puede ser nulo", LogMessages.ERROR_VALIDATION));
         }
         try {
             String estado = mapper.getEstadoByRuc(rucEmisor);
             if(estado == null) {
-                LogHelper.warnLog(LogTitle.WARN_NOT_RESULT.getType(), LogMessages.currentMethod(), "variable estado es nulo");
+                LogHelper.warnLog(LogMessages.currentMethod(), "variable estado es nulo");
             } else {
-                LogHelper.infoLog(LogTitle.INFO.getType(), LogMessages.currentMethod(), "La consulta se realizo exitosamente, parametro[estado]="+estado);
+                LogHelper.infoLog(LogMessages.currentMethod(), "La consulta se realizo exitosamente, parametro[estado]="+estado);
             }
             return estado;
         } catch (DataAccessException | PersistenceException e) {
-            LogHelper.errorLog(LogTitle.ERROR_DATABASE.getType(), LogMessages.currentMethod(), "Ocurrio un error en la base de datos", e);
+            LogHelper.errorLog(LogMessages.currentMethod(), "Ocurrio un error en la base de datos", e);
             throw new ServiceException(LogMessages.ERROR_DATABASE, e);
         }
         catch (Exception e) {
-            LogHelper.errorLog(LogTitle.ERROR_UNEXPECTED.getType(), LogMessages.currentMethod(), "Ocurrio un error inesperado", e);
+            LogHelper.errorLog(LogMessages.currentMethod(), "Ocurrio un error inesperado", e);
             throw new ServiceException(LogMessages.ERROR_UNEXPECTED, e);
         }
     }
@@ -54,26 +54,26 @@ public class CompanyServiceImpl extends AbstractGenericService<CompanyModel, Lon
     @Override
     public CompanyDto findByRuc(String ruc) {
         if(ruc == null) {
-            LogHelper.warnLog(LogTitle.WARN_VALIDATION.getType(), LogMessages.currentMethod(), "variable ruc es nulo");
+            LogHelper.warnLog(LogMessages.currentMethod(), "variable ruc es nulo");
             throw new ServiceException(String.format("%s: el ruc no puede ser nulo", LogMessages.ERROR_VALIDATION));
         }
         try {
             CompanyModel company = mapper.findCompanyByRuc(ruc);
             if(company == null) {
-                LogHelper.warnLog(LogTitle.WARN_NOT_RESULT.getType(), LogMessages.currentMethod(), "variable company es nulo");
+                LogHelper.warnLog(LogMessages.currentMethod(), "variable company es nulo");
                 return null;
             } else {
                 CompanyDto companyDto = CompanyConverter.modelToDto(company);
-                LogHelper.infoLog(LogTitle.INFO.getType(), LogMessages.currentMethod(),
+                LogHelper.infoLog(LogMessages.currentMethod(),
                         "La consulta se realizo exitosamente, parametro[company_ruc]="+company.getRuc());
                 return companyDto;
             }
         } catch (DataAccessException | PersistenceException e) {
-            LogHelper.errorLog(LogTitle.ERROR_DATABASE.getType(), LogMessages.currentMethod(), "Ocurrio un error en la base de datos", e);
+            LogHelper.errorLog(LogMessages.currentMethod(), "Ocurrio un error en la base de datos", e);
             throw new ServiceException(LogMessages.ERROR_DATABASE, e);
         }
         catch (Exception e) {
-            LogHelper.errorLog(LogTitle.ERROR_UNEXPECTED.getType(), LogMessages.currentMethod(), "Ocurrio un error inesperado", e);
+            LogHelper.errorLog(LogMessages.currentMethod(), "Ocurrio un error inesperado", e);
             throw new ServiceException(LogMessages.ERROR_UNEXPECTED, e);
         }
     }
@@ -81,25 +81,25 @@ public class CompanyServiceImpl extends AbstractGenericService<CompanyModel, Lon
     @Override
     public OseDto findOseByRuc(String ruc) {
         if(ruc == null) {
-            LogHelper.warnLog(LogTitle.WARN_VALIDATION.getType(), LogMessages.currentMethod(), "variable ruc es nulo");
+            LogHelper.warnLog(LogMessages.currentMethod(), "variable ruc es nulo");
             throw new ServiceException(String.format("%s: el ruc no puede ser nulo", LogMessages.ERROR_VALIDATION));
         }
         try {
             OseModel ose = mapper.findOseByRuc(ruc);
             if(ose == null) {
-                LogHelper.warnLog(LogTitle.WARN_NOT_RESULT.getType(), LogMessages.currentMethod(), "variable ose es nulo");
+                LogHelper.warnLog(LogMessages.currentMethod(), "variable ose es nulo");
                 return null;
             } else {
                 OseDto oseDto = OseConverter.modelToDto(ose);
-                LogHelper.infoLog(LogTitle.INFO.getType(), LogMessages.currentMethod(),
+                LogHelper.infoLog(LogMessages.currentMethod(),
                         "La consulta se realizo exitosamente, parametro[ose_id]="+oseDto.getId());
                 return oseDto;
             }
         } catch (DataAccessException | PersistenceException e) {
-            LogHelper.errorLog(LogTitle.ERROR_DATABASE.getType(), LogMessages.currentMethod(), "Ocurrio un error en la base de datos", e);
+            LogHelper.errorLog(LogMessages.currentMethod(), "Ocurrio un error en la base de datos", e);
             throw new ServiceException(LogMessages.ERROR_DATABASE, e);
         } catch (Exception e) {
-            LogHelper.errorLog(LogTitle.ERROR_UNEXPECTED.getType(), LogMessages.currentMethod(), "Ocurrio un error inesperado", e);
+            LogHelper.errorLog(LogMessages.currentMethod(), "Ocurrio un error inesperado", e);
             throw new ServiceException(LogMessages.ERROR_UNEXPECTED, e);
         }
     }

@@ -36,28 +36,25 @@ public class UserServiceImpl extends AbstractGenericService<UserModel, Long, Use
     @Override
     public UserDto findByUsername(String username) {
         if(username == null) {
-            LogHelper.warnLog(LogTitle.WARN_VALIDATION.getType(),
-                    LogMessages.currentMethod(), "El parametro username es nulo");
+            LogHelper.warnLog(LogMessages.currentMethod(), "El parametro username es nulo");
             throw new ServiceException(String.format("%s: el username es nulo", LogMessages.ERROR_VALIDATION));
         }
         try {
             UserModel user = mapper.findByUsername(username);
             if(user == null) {
-                LogHelper.warnLog(LogTitle.WARN_NOT_RESULT.getType(),
-                        LogMessages.currentMethod(), "La variable user es nulo");
+                LogHelper.warnLog(LogMessages.currentMethod(), "La variable user es nulo");
                 return null;
             } else {
                 UserDto userDto = UserConverter.modelToDto(user);
-                LogHelper.infoLog(LogTitle.INFO.getType(),
-                        LogMessages.currentMethod(), "La consulta se realizo exitosamente, idUser:"+user.getIdUser());
+                LogHelper.infoLog(LogMessages.currentMethod(), "La consulta se realizo exitosamente, idUser:"+user.getIdUser());
                 return userDto;
             }
         } catch (DataAccessException | PersistenceException e) {
-            LogHelper.errorLog(LogTitle.ERROR_DATABASE.getType(), LogMessages.currentMethod(), "Ocurrio un error en la base de datos", e);
+            LogHelper.errorLog(LogMessages.currentMethod(), "Ocurrio un error en la base de datos", e);
             throw new ServiceException(LogMessages.ERROR_DATABASE, e);
         }
         catch (Exception e) {
-            LogHelper.errorLog(LogTitle.ERROR_UNEXPECTED.getType(), LogMessages.currentMethod(), "Ocurrio un error inesperado", e);
+            LogHelper.errorLog(LogMessages.currentMethod(), "Ocurrio un error inesperado", e);
             throw new ServiceException(LogMessages.ERROR_UNEXPECTED, e);
         }
     }
